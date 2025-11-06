@@ -1,0 +1,8 @@
+{
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "emulators": {
+    "singleProjectMode": true
+  }
+}
