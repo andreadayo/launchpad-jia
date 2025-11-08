@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectMongoDB from "@/lib/mongoDB/mongoDB";
-import { sendEmail } from "@/lib/Email";
-import { getInvitationEmailTemplate } from "@/lib/Utils";
+// Temporarily disable email invites while Mailgun / API keys are not configured
+// import { sendEmail } from "@/lib/Email";
+// import { getInvitationEmailTemplate } from "@/lib/Utils";
 
 export async function POST(request: NextRequest) {
   const { name, image, coverImage, description, status, organizationType, members, planId, extraJobSlots, country, province, city, address, documents, lastEditedBy, createdBy } = await request.json();
@@ -57,11 +58,13 @@ try {
         status: "invited",
     })));
 
-    // Send email to new members
+    // Send email to new members (temporarily disabled)
+    /*
     await Promise.all(members.map((member: any) => sendEmail({
         recipient: member.email,
         html: getInvitationEmailTemplate(member.email, name, member.role),
     })));
+    */
     return NextResponse.json({ orgID: organization.insertedId.toString() });
 } catch (error) {
     console.error(error);
