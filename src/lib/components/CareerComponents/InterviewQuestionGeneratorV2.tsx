@@ -328,14 +328,26 @@ export default function (props) {
       .post("/api/fetch-global-settings", {
         fields: { question_gen_prompt: 1 },
       })
-      .then((res) => {
-        return res.data;
-      })
+      .then((res) => res.data)
       .catch((err) => {
-        console.log("[Question Generator Fetch Prompt Error]", err);
+        console.warn("[Question Generator Fetch Prompt Error]", err);
+        return null;
       });
 
-    setQuestionGenPrompt(configData.question_gen_prompt.prompt);
+    // Defensive checks: the global settings document may be missing or malformed.
+    if (
+      configData &&
+      configData.question_gen_prompt &&
+      typeof configData.question_gen_prompt.prompt === "string"
+    ) {
+      setQuestionGenPrompt(configData.question_gen_prompt.prompt);
+    } else {
+      // Fallback to empty string (friendly default) and log for diagnostics
+      console.warn(
+        "fetchInstructionPrompt: question_gen_prompt not found in global settings, using default prompt."
+      );
+      setQuestionGenPrompt("");
+    }
   }
 
   useEffect(() => {
