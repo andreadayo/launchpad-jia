@@ -90,20 +90,21 @@ export default function OrganizationForm({ organization, formType }: { organizat
 
     const uploadFile = async (file: File, fileName: string): Promise<string | null> => {
        try {
-            const response = await axios.post("/api/admin/get-presigned-url", {
-                fileName,
-                fileType: file.type,
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("path", fileName);
+
+            const response = await axios.post("/api/admin/upload-organization-image", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
             });
-            const uploadResponse = await axios.put(response.data.presignedUrl, file, {
-                headers: {
-                    "Content-Type": file.type,
-                },
-            });
-            if (uploadResponse.status !== 200) {
-                throw new Error("Error uploading file");
+
+            if (response.status !== 200) {
+                throw new Error(response.data?.error || "Error uploading file");
             }
-            return fileName;
+
+            return response.data?.url || null;
        } catch (error) {
+            console.error("Upload error:", error);
             errorToast("Error uploading file", 1300);
             return null;
        }
@@ -163,8 +164,8 @@ export default function OrganizationForm({ organization, formType }: { organizat
                     await axios.post("/api/admin/update-organization", {
                         orgID: response.data.orgID,
                         update: {
-                            image: imageUrl ? `https://cdn.hellojia.ai/${imageUrl}` : "",
-                            coverImage: coverImageUrl ? `https://cdn.hellojia.ai/${coverImageUrl}` : "",
+                            image: imageUrl || "",
+                            coverImage: coverImageUrl || "",
                             documents,
                         }
                     })
