@@ -167,7 +167,8 @@ export default function ManageCareerPage() {
     description: "",
     questions: [],
     status: "",
-    screeningSetting: "",
+    cvScreeningSetting: "",
+    aiScreeningSetting: "",
     requireVideo: false,
     directInterviewLink: "",
   });
@@ -291,7 +292,10 @@ export default function ManageCareerPage() {
           description: response.data?.description || "",
           questions: deepCopy,
           status: response.data?.status || "",
-          screeningSetting: response.data?.screeningSetting || "",
+          cvScreeningSetting:
+            response.data?.cvScreeningSetting || response.data?.screeningSetting || "",
+          aiScreeningSetting:
+            response.data?.aiScreeningSetting || response.data?.screeningSetting || "",
           requireVideo:
             response.data?.requireVideo === null || response.data?.requireVideo === undefined
               ? true
@@ -370,7 +374,8 @@ export default function ManageCareerPage() {
       description: career?.description || "",
       questions: career?.questions || [],
       status: career?.status || "",
-      screeningSetting: career?.screeningSetting || "",
+      cvScreeningSetting: career?.cvScreeningSetting || career?.screeningSetting || "",
+      aiScreeningSetting: career?.aiScreeningSetting || career?.screeningSetting || "",
       requireVideo:
         career?.requireVideo === null || career?.requireVideo === undefined
           ? true

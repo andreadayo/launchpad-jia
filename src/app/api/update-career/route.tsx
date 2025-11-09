@@ -15,6 +15,7 @@ export async function POST(request: Request) {
     const { db } = await connectMongoDB();
 
     let dataUpdates = { ...requestData };
+    delete dataUpdates.screeningSetting;
 
     delete dataUpdates._id;
 
@@ -29,7 +30,7 @@ export async function POST(request: Request) {
       career,
     });
   } catch (error) {
-    console.error("Error adding career:", error);
+    console.error("Error updating career:", error);
     return NextResponse.json({ error: "Failed to add career" }, { status: 500 });
   }
 }

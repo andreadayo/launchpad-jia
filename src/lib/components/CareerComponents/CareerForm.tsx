@@ -60,8 +60,11 @@ export default function CareerForm({
   const [description, setDescription] = useState(career?.description || "");
   const [workSetup, setWorkSetup] = useState(career?.workSetup || "");
   const [workSetupRemarks, setWorkSetupRemarks] = useState(career?.workSetupRemarks || "");
-  const [screeningSetting, setScreeningSetting] = useState(
-    career?.screeningSetting || "Good Fit and above"
+  const [cvScreeningSetting, setCvScreeningSetting] = useState(
+    career?.cvScreeningSetting || career?.screeningSetting || "Good Fit and above"
+  );
+  const [aiScreeningSetting, setAiScreeningSetting] = useState(
+    career?.aiScreeningSetting || career?.screeningSetting || "Good Fit and above"
   );
   const [employmentType, setEmploymentType] = useState(career?.employmentType || "Full-Time");
   const [requireVideo, setRequireVideo] = useState(career?.requireVideo || true);
@@ -144,7 +147,8 @@ export default function CareerForm({
       lastEditedBy: userInfoSlice,
       status,
       updatedAt: Date.now(),
-      screeningSetting,
+      cvScreeningSetting,
+      aiScreeningSetting,
       requireVideo,
       salaryNegotiable,
       minimumSalary: isNaN(Number(minimumSalary)) ? null : Number(minimumSalary),
@@ -221,7 +225,8 @@ export default function CareerForm({
         questions,
         lastEditedBy: userInfoSlice,
         createdBy: userInfoSlice,
-        screeningSetting,
+        cvScreeningSetting,
+        aiScreeningSetting,
         orgID,
         requireVideo,
         salaryNegotiable,
@@ -737,7 +742,7 @@ export default function CareerForm({
             </div>
           </div>
 
-          {/* STEP 2: 1. CV Review Settings */}
+          {/* TODO: STEP 2: 1. CV Review Settings */}
           <div className="layered-card-outer">
             <div className="layered-card-middle">
               <div
@@ -767,9 +772,9 @@ export default function CareerForm({
                 <span>Jia automatically endorses candidates who meet the chosen criteria.</span>
                 <CustomDropdown
                   onSelectSetting={(setting) => {
-                    setScreeningSetting(setting);
+                    setCvScreeningSetting(setting);
                   }}
-                  screeningSetting={screeningSetting}
+                  screeningSetting={cvScreeningSetting}
                   settingList={screeningSettingList}
                 />
               </div>
@@ -835,9 +840,9 @@ export default function CareerForm({
                 <span>Jia automatically endorses candidates who meet the chosen criteria.</span>
                 <CustomDropdown
                   onSelectSetting={(setting) => {
-                    setScreeningSetting(setting);
+                    setAiScreeningSetting(setting);
                   }}
-                  screeningSetting={screeningSetting}
+                  screeningSetting={aiScreeningSetting}
                   settingList={screeningSettingList}
                 />
 

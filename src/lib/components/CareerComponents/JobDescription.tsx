@@ -48,7 +48,8 @@ export default function JobDescription({
       updatedAt: Date.now(),
       questions: formData.questions,
       status: formData.status,
-      screeningSetting: formData.screeningSetting,
+      cvScreeningSetting: formData.cvScreeningSetting,
+      aiScreeningSetting: formData.aiScreeningSetting,
       requireVideo: formData.requireVideo,
       description: formData.description,
       lastEditedBy: userInfoSlice,
@@ -429,6 +430,7 @@ export default function JobDescription({
                 <div
                   style={{ height: "1px", width: "100%", background: "#E9EAEB", margin: "16px 0" }}
                 ></div>
+                {/* CV Screening Setting */}
                 <div
                   style={{
                     display: "flex",
@@ -436,18 +438,48 @@ export default function JobDescription({
                     justifyContent: "space-between",
                     alignItems: "center",
                     width: "100%",
+                    gap: 8,
                   }}
                 >
-                  <strong>Screening Setting:</strong>
+                  <strong>CV Screening:</strong>
                   {isEditing ? (
                     <ScreeningSettingButton
-                      screeningSetting={formData.screeningSetting}
+                      screeningSetting={formData.cvScreeningSetting || formData.screeningSetting}
                       onSelectSetting={(setting) =>
-                        setFormData({ ...formData, screeningSetting: setting })
+                        setFormData({ ...formData, cvScreeningSetting: setting })
                       }
                     />
                   ) : (
-                    <span style={{ textTransform: "capitalize" }}>{formData.screeningSetting}</span>
+                    <span style={{ textTransform: "capitalize" }}>
+                      {formData.cvScreeningSetting || formData.screeningSetting || "-"}
+                    </span>
+                  )}
+                </div>
+
+                {/* AI Screening Setting */}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "100%",
+                    gap: 8,
+                    marginTop: 8,
+                  }}
+                >
+                  <strong>AI Screening:</strong>
+                  {isEditing ? (
+                    <ScreeningSettingButton
+                      screeningSetting={formData.aiScreeningSetting || formData.screeningSetting}
+                      onSelectSetting={(setting) =>
+                        setFormData({ ...formData, aiScreeningSetting: setting })
+                      }
+                    />
+                  ) : (
+                    <span style={{ textTransform: "capitalize" }}>
+                      {formData.aiScreeningSetting || formData.screeningSetting || "-"}
+                    </span>
                   )}
                 </div>
                 <div
