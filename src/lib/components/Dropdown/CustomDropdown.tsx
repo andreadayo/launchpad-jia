@@ -11,7 +11,14 @@ const dropdownOptionIconMap = {
   Unpublished: "#717680",
 };
 
-export default function CustomDropdown({ value, setValue, options, icon, valuePrefix }: any) {
+export default function CustomDropdown({
+  value,
+  setValue,
+  options,
+  icon,
+  valuePrefix,
+  invalid = false,
+}: any) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
@@ -27,7 +34,7 @@ export default function CustomDropdown({ value, setValue, options, icon, valuePr
           backgroundColor: "#FFFFFF",
           borderRadius: "60px",
           padding: "5px 10px",
-          border: "1px solid #D5D7DA",
+          border: invalid ? "1px solid #ef4444" : "1px solid #D5D7DA",
           cursor: "pointer",
           color: "#414651",
           fontSize: 14,

@@ -6,8 +6,8 @@ import { errorToast, interviewQuestionCategoryMap, candidateActionToast } from "
 import InterviewQuestionModal from "./InterviewQuestionModal";
 import FullScreenLoadingAnimation from "./FullScreenLoadingAnimation";
 
-export default function (props) {
-  const { questions, setQuestions, jobTitle, description } = props;
+export default function InterviewQuestionGeneratorV2(props: any) {
+  const { questions, setQuestions, jobTitle, description, error } = props;
   const [questionGenPrompt, setQuestionGenPrompt] = useState("");
   const questionCount = 5;
   const [showQuestionModal, setShowQuestionModal] = useState("");
@@ -375,6 +375,11 @@ export default function (props) {
           </button>
         </div>
         <div className="layered-card-content">
+          {error && (
+            <div style={{ color: "#ef4444", marginTop: 8, fontSize: 13 }} data-field="questions">
+              {error}
+            </div>
+          )}
           <div className="questions-set">
             {questions.map((group, index) => (
               <div

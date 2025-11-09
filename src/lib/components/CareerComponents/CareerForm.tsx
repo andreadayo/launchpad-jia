@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { z } from "zod";
 import InterviewQuestionGeneratorV2 from "./InterviewQuestionGeneratorV2";
 import RichTextEditor from "@/lib/components/CareerComponents/RichTextEditor";
 import CustomDropdown from "@/lib/components/CareerComponents/CustomDropdown";
@@ -163,10 +164,128 @@ export default function CareerForm({
   const [cityList, setCityList] = useState([]);
   const [showSaveModal, setShowSaveModal] = useState("");
   const [isSavingCareer, setIsSavingCareer] = useState(false);
+  const [isPublishingCareer, setIsPublishingCareer] = useState(false);
   const savingCareerRef = useRef(false);
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [draftId, setDraftId] = useState<string | null>(career?._id || null);
   const steps = ["Career Info", "CV Review", "AI Interview", "Review"];
+
+  // Validation errors keyed by field name
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const clearError = (key: string) => {
+    setErrors((prev) => {
+      if (!prev || !(key in prev)) return prev;
+      const copy = { ...prev };
+      delete copy[key];
+      return copy;
+    });
+  };
+
+  const handleSetDescription = (text: string) => {
+    setDescription(text);
+    if (errors.description) clearError("description");
+  };
+
+  // Zod schemas per step
+  const step1Schema = z.object({
+    jobTitle: z.string().min(1, "This is a required field"),
+    description: z.string().min(1, "This is a required field"),
+    employmentType: z.string().min(1, "Please select an employment type"),
+    workSetup: z.string().min(1, "Please select a work arrangement"),
+    country: z.string().min(1, "Please select a country"),
+    province: z.string().min(1, "Please select a state / province"),
+    city: z.string().min(1, "Please select a city"),
+    minimumSalary: z.preprocess(
+      (val) => (val === "" || val === null || val === undefined ? null : Number(val)),
+      z.number({ invalid_type_error: "Minimum salary is required" }).nonnegative()
+    ),
+    maximumSalary: z.preprocess(
+      (val) => (val === "" || val === null || val === undefined ? null : Number(val)),
+      z.number({ invalid_type_error: "Maximum salary is required" }).nonnegative()
+    ),
+  });
+
+  // Ensure min <= max
+  const step1SchemaWithRefine = step1Schema.refine(
+    (data: any) => data.minimumSalary <= data.maximumSalary,
+    {
+      message: "Minimum salary cannot be greater than maximum salary",
+      path: ["minimumSalary"],
+    }
+  );
+
+  const step2Schema = z.object({
+    cvScreeningSetting: z.string().min(1, "Please select a CV screening setting"),
+  });
+
+  const step3Schema = z.object({
+    aiScreeningSetting: z.string().min(1, "Please select an AI screening setting"),
+    questions: z
+      .array(z.any())
+      .refine(
+        (qs) =>
+          Array.isArray(qs) &&
+          qs.some((g: any) => Array.isArray(g.questions) && g.questions.length > 0),
+        {
+          message: "Add at least one interview question",
+        }
+      ),
+  });
+
+  function buildDataForStep(step: number) {
+    switch (step) {
+      case 1:
+        return {
+          jobTitle,
+          description,
+          employmentType,
+          workSetup,
+          country,
+          province,
+          city,
+          minimumSalary,
+          maximumSalary,
+        };
+      case 2:
+        return { cvScreeningSetting };
+      case 3:
+        return { aiScreeningSetting, questions };
+      case 4:
+        return { jobTitle, description, questions };
+      default:
+        return {};
+    }
+  }
+
+  function validateStepWithZod(step: number) {
+    setErrors({});
+    let result;
+    try {
+      if (step === 1) result = step1SchemaWithRefine.safeParse(buildDataForStep(step));
+      else if (step === 2) result = step2Schema.safeParse(buildDataForStep(step));
+      else if (step === 3) result = step3Schema.safeParse(buildDataForStep(step));
+      else result = { success: true } as const;
+    } catch (e) {
+      result = { success: false, error: e } as any;
+    }
+
+    if (result && result.success) {
+      setErrors({});
+      return true;
+    }
+
+    // map zod errors to simple field messages
+    const newErrors: Record<string, string> = {};
+    const issues = (result as any).error?.issues || [];
+    for (const issue of issues) {
+      const path =
+        Array.isArray(issue.path) && issue.path.length > 0 ? String(issue.path[0]) : "questions";
+      newErrors[path] = issue.message;
+    }
+    setErrors(newErrors);
+    return false;
+  }
 
   const validateStep = (step: number) => {
     const data: CareerFormData = {
@@ -436,6 +555,26 @@ export default function CareerForm({
     }
   };
 
+  const handleSaveAndContinue = async () => {
+    // Always allow clicking the button. Validate with zod and surface field errors.
+    const ok = validateStepWithZod(currentStep);
+    if (!ok) {
+      // don't progress; errors state is set by validator
+      // scroll first error into view
+      const firstKey = Object.keys(errors || {})[0];
+      if (firstKey) {
+        const el = document.querySelector(`[data-field="${firstKey}"]`);
+        if (el) (el as HTMLElement).scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      return;
+    }
+
+    // clear errors and save+move forward
+    setErrors({});
+    const saved = await saveDraft("inactive");
+    if (saved) setCurrentStep((s) => Math.min(steps.length, s + 1));
+  };
+
   const publishNow = async () => {
     // On final step, publish the career. If we have a draftId, update it to active; otherwise create/publish.
     if (formType === "add") {
@@ -446,7 +585,7 @@ export default function CareerForm({
           const isObjectId = /^[0-9a-fA-F]{24}$/.test(String(draftId));
           if (isObjectId) (payload as any)._id = draftId;
           else (payload as any).id = draftId;
-          setIsSavingCareer(true);
+          setIsPublishingCareer(true);
           const res = await axios.post("/api/update-career", payload);
           if (res.status === 200) {
             // redirect to manage page for the career (prefer using draftId)
@@ -458,7 +597,7 @@ export default function CareerForm({
           const serverMsg = err?.response?.data?.error || err?.message || "Failed to publish draft";
           errorToast(typeof serverMsg === "string" ? serverMsg : "Failed to publish draft", 2500);
         } finally {
-          setIsSavingCareer(false);
+          setIsPublishingCareer(false);
         }
       } else {
         // no draft yet — fall back to full add flow (will redirect)
@@ -466,7 +605,12 @@ export default function CareerForm({
       }
     } else {
       // edit mode
-      updateCareer("active");
+      setIsPublishingCareer(true);
+      try {
+        await updateCareer("active");
+      } finally {
+        setIsPublishingCareer(false);
+      }
     }
   };
 
@@ -622,15 +766,15 @@ export default function CareerForm({
 
           <button
             className="button-primary"
-            disabled={!validateStep(currentStep) || isSavingCareer}
+            disabled={isSavingCareer}
             style={{
-              background: !validateStep(currentStep) || isSavingCareer ? "#D5D7DA" : "black",
+              background: isSavingCareer ? "#D5D7DA" : "black",
               color: "#fff",
               borderRadius: "60px",
               padding: "8px 16px",
             }}
             onClick={() => {
-              if (currentStep < steps.length) saveAndContinue();
+              if (currentStep < steps.length) handleSaveAndContinue();
               else publishNow();
             }}
           >
@@ -705,11 +849,19 @@ export default function CareerForm({
                     </span>
                     <span>Job Title</span>
                     <input
+                      data-field="jobTitle"
                       value={jobTitle}
-                      className="form-control"
+                      className={`form-control ${errors.jobTitle ? "is-invalid" : ""}`}
                       placeholder="Enter job title"
-                      onChange={(e) => setJobTitle(e.target.value || "")}
+                      onChange={(e) => {
+                        const v = e.target.value || "";
+                        setJobTitle(v);
+                        if (errors.jobTitle) clearError("jobTitle");
+                      }}
                     />
+                    {errors.jobTitle && (
+                      <div style={{ color: "#ef4444", marginTop: 6 }}>{errors.jobTitle}</div>
+                    )}
 
                     {/* Work Setting */}
                     <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>
@@ -720,23 +872,43 @@ export default function CareerForm({
                         style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
                       >
                         <span>Employment Type</span>
-                        <CustomDropdown
-                          onSelectSetting={(employmentType) => setEmploymentType(employmentType)}
-                          screeningSetting={employmentType}
-                          settingList={employmentTypeOptions}
-                          placeholder="Choose employment type"
-                        />
+                        <div data-field="employmentType">
+                          <CustomDropdown
+                            onSelectSetting={(employmentType) => {
+                              setEmploymentType(employmentType);
+                              if (errors.employmentType) clearError("employmentType");
+                            }}
+                            screeningSetting={employmentType}
+                            settingList={employmentTypeOptions}
+                            placeholder="Choose employment type"
+                            invalid={!!errors.employmentType}
+                          />
+                        </div>
+                        {errors.employmentType && (
+                          <div style={{ color: "#ef4444", marginTop: 6 }}>
+                            {errors.employmentType}
+                          </div>
+                        )}
                       </div>
                       <div
                         style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
                       >
                         <span>Arrangement</span>
-                        <CustomDropdown
-                          onSelectSetting={(setting) => setWorkSetup(setting)}
-                          screeningSetting={workSetup}
-                          settingList={workSetupOptions}
-                          placeholder="Choose work arrangement"
-                        />
+                        <div data-field="workSetup">
+                          <CustomDropdown
+                            onSelectSetting={(setting) => {
+                              setWorkSetup(setting);
+                              if (errors.workSetup) clearError("workSetup");
+                            }}
+                            screeningSetting={workSetup}
+                            settingList={workSetupOptions}
+                            placeholder="Choose work arrangement"
+                            invalid={!!errors.workSetup}
+                          />
+                        </div>
+                        {errors.workSetup && (
+                          <div style={{ color: "#ef4444", marginTop: 6 }}>{errors.workSetup}</div>
+                        )}
                       </div>
                     </div>
 
@@ -749,42 +921,67 @@ export default function CareerForm({
                         style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
                       >
                         <span>Country</span>
-                        <CustomDropdown
-                          onSelectSetting={(setting) => setCountry(setting)}
-                          screeningSetting={country}
-                          settingList={[]}
-                          placeholder="Select Country"
-                        />
+                        <div data-field="country">
+                          <CustomDropdown
+                            onSelectSetting={(setting) => {
+                              setCountry(setting);
+                              if (errors.country) clearError("country");
+                            }}
+                            screeningSetting={country}
+                            settingList={[]}
+                            placeholder="Select Country"
+                            invalid={!!errors.country}
+                          />
+                        </div>
+                        {errors.country && (
+                          <div style={{ color: "#ef4444", marginTop: 6 }}>{errors.country}</div>
+                        )}
                       </div>
                       <div
                         style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
                       >
                         <span>State / Province</span>
-                        <CustomDropdown
-                          onSelectSetting={(province) => {
-                            setProvince(province);
-                            const provinceObj = provinceList.find((p) => p.name === province);
-                            const cities = philippineCitiesAndProvinces.cities.filter(
-                              (city) => city.province === provinceObj.key
-                            );
-                            setCityList(cities);
-                            setCity(cities[0].name);
-                          }}
-                          screeningSetting={province}
-                          settingList={provinceList}
-                          placeholder="Select State / Province"
-                        />
+                        <div data-field="province">
+                          <CustomDropdown
+                            onSelectSetting={(province) => {
+                              setProvince(province);
+                              if (errors.province) clearError("province");
+                              const provinceObj = provinceList.find((p) => p.name === province);
+                              const cities = philippineCitiesAndProvinces.cities.filter(
+                                (city) => city.province === provinceObj.key
+                              );
+                              setCityList(cities);
+                              setCity(cities[0].name);
+                            }}
+                            screeningSetting={province}
+                            settingList={provinceList}
+                            placeholder="Select State / Province"
+                            invalid={!!errors.province}
+                          />
+                        </div>
+                        {errors.province && (
+                          <div style={{ color: "#ef4444", marginTop: 6 }}>{errors.province}</div>
+                        )}
                       </div>
                       <div
                         style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
                       >
                         <span>City</span>
-                        <CustomDropdown
-                          onSelectSetting={(city) => setCity(city)}
-                          screeningSetting={city}
-                          settingList={cityList}
-                          placeholder="Select City"
-                        />
+                        <div data-field="city">
+                          <CustomDropdown
+                            onSelectSetting={(city) => {
+                              setCity(city);
+                              if (errors.city) clearError("city");
+                            }}
+                            screeningSetting={city}
+                            settingList={cityList}
+                            placeholder="Select City"
+                            invalid={!!errors.city}
+                          />
+                        </div>
+                        {errors.city && (
+                          <div style={{ color: "#ef4444", marginTop: 6 }}>{errors.city}</div>
+                        )}
                       </div>
                     </div>
 
@@ -840,14 +1037,24 @@ export default function CareerForm({
                           </span>
                           <input
                             type="number"
-                            className="form-control"
-                            style={{ paddingLeft: "28px" }}
+                            className={`form-control ${errors.minimumSalary ? "is-invalid" : ""}`}
                             placeholder="0"
                             min={0}
                             value={minimumSalary}
-                            onChange={(e) => setMinimumSalary(e.target.value || "")}
+                            data-field="minimumSalary"
+                            onChange={(e) => {
+                              const v = e.target.value || "";
+                              setMinimumSalary(v);
+                              if (errors.minimumSalary) clearError("minimumSalary");
+                            }}
+                            style={{ paddingLeft: "28px" }}
                           />
                         </div>
+                        {errors.minimumSalary && (
+                          <div style={{ color: "#ef4444", marginTop: 6 }}>
+                            {errors.minimumSalary}
+                          </div>
+                        )}
                       </div>
                       <div
                         style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
@@ -869,12 +1076,17 @@ export default function CareerForm({
                           </span>
                           <input
                             type="number"
-                            className="form-control"
-                            style={{ paddingLeft: "28px" }}
+                            className={`form-control ${errors.maximumSalary ? "is-invalid" : ""}`}
                             placeholder="0"
                             min={0}
                             value={maximumSalary}
-                            onChange={(e) => setMaximumSalary(e.target.value || "")}
+                            data-field="maximumSalary"
+                            onChange={(e) => {
+                              const v = e.target.value || "";
+                              setMaximumSalary(v);
+                              if (errors.maximumSalary) clearError("maximumSalary");
+                            }}
+                            style={{ paddingLeft: "28px" }}
                           />
                           <span
                             style={{
@@ -890,6 +1102,11 @@ export default function CareerForm({
                             PHP
                           </span>
                         </div>
+                        {errors.maximumSalary && (
+                          <div style={{ color: "#ef4444", marginTop: 6 }}>
+                            {errors.maximumSalary}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -915,7 +1132,19 @@ export default function CareerForm({
                     </span>
                   </div>
                   <div className="layered-card-content">
-                    <RichTextEditor setText={setDescription} text={description} />
+                    <div
+                      data-field="description"
+                      style={
+                        errors.description
+                          ? { border: "1px solid #ef4444", borderRadius: 6 }
+                          : undefined
+                      }
+                    >
+                      <RichTextEditor setText={handleSetDescription} text={description} />
+                    </div>
+                    {errors.description && (
+                      <div style={{ color: "#ef4444", marginTop: 6 }}>{errors.description}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -947,11 +1176,22 @@ export default function CareerForm({
                       CV Screening
                     </span>
                     <span>Jia automatically endorses candidates who meet the chosen criteria.</span>
-                    <CustomDropdown
-                      onSelectSetting={(setting) => setCvScreeningSetting(setting)}
-                      screeningSetting={cvScreeningSetting}
-                      settingList={screeningSettingList}
-                    />
+                    <div data-field="cvScreeningSetting">
+                      <CustomDropdown
+                        onSelectSetting={(setting) => {
+                          setCvScreeningSetting(setting);
+                          if (errors.cvScreeningSetting) clearError("cvScreeningSetting");
+                        }}
+                        screeningSetting={cvScreeningSetting}
+                        settingList={screeningSettingList}
+                        invalid={!!errors.cvScreeningSetting}
+                      />
+                    </div>
+                    {errors.cvScreeningSetting && (
+                      <div style={{ color: "#ef4444", marginTop: 6 }}>
+                        {errors.cvScreeningSetting}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1007,11 +1247,22 @@ export default function CareerForm({
                       AI Interview Screening
                     </span>
                     <span>Jia automatically endorses candidates who meet the chosen criteria.</span>
-                    <CustomDropdown
-                      onSelectSetting={(setting) => setAiScreeningSetting(setting)}
-                      screeningSetting={aiScreeningSetting}
-                      settingList={screeningSettingList}
-                    />
+                    <div data-field="aiScreeningSetting">
+                      <CustomDropdown
+                        onSelectSetting={(setting) => {
+                          setAiScreeningSetting(setting);
+                          if (errors.aiScreeningSetting) clearError("aiScreeningSetting");
+                        }}
+                        screeningSetting={aiScreeningSetting}
+                        settingList={screeningSettingList}
+                        invalid={!!errors.aiScreeningSetting}
+                      />
+                    </div>
+                    {errors.aiScreeningSetting && (
+                      <div style={{ color: "#ef4444", marginTop: 6 }}>
+                        {errors.aiScreeningSetting}
+                      </div>
+                    )}
 
                     <div style={{ width: "100%", height: 1, backgroundColor: "#E9EAEB" }} />
 
@@ -1062,6 +1313,7 @@ export default function CareerForm({
                 setQuestions={(questions) => setQuestions(questions)}
                 jobTitle={jobTitle}
                 description={description}
+                error={errors.questions}
               />
             </>
           )}
@@ -1174,10 +1426,22 @@ export default function CareerForm({
       {showSaveModal && (
         <CareerActionModal action={showSaveModal} onAction={(action) => saveCareer(action)} />
       )}
-      {isSavingCareer && (
+      {(isSavingCareer || isPublishingCareer) && (
         <FullScreenLoadingAnimation
-          title={formType === "add" ? "Saving career..." : "Updating career..."}
-          subtext={`Please wait while we are ${formType === "add" ? "saving" : "updating"} the career`}
+          title={
+            isPublishingCareer
+              ? formType === "add"
+                ? "Publishing career..."
+                : "Publishing updates..."
+              : formType === "add"
+                ? "Saving career..."
+                : "Updating career..."
+          }
+          subtext={
+            isPublishingCareer
+              ? `Please wait while we are ${formType === "add" ? "publishing" : "publishing updates for"} the career`
+              : `Please wait while we are ${formType === "add" ? "saving" : "updating"} the career`
+          }
         />
       )}
       {/* Navigation handled by top controls */}

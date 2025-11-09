@@ -349,18 +349,6 @@ export default function JobDescription({
                     width: "100%",
                   }}
                 >
-                  <strong>Work Arrangement Remarks:</strong>
-                  <span>{formData.workSetupRemarks || "-"}</span>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    width: "100%",
-                  }}
-                >
                   <strong>Salary:</strong>
                   <span>{formData.salaryNegotiable ? "Negotiable" : "Fixed"}</span>
                 </div>

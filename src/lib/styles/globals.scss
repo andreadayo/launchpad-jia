@@ -227,6 +227,21 @@ td {
   }
 }
 
+.form-control.is-invalid,
+input.form-control.is-invalid,
+select.form-control.is-invalid,
+textarea.form-control.is-invalid {
+  border: 2px solid #ef4444 !important;
+  box-shadow: none !important;
+}
+.form-control.is-invalid:focus,
+input.form-control.is-invalid:focus,
+select.form-control.is-invalid:focus,
+textarea.form-control.is-invalid:focus {
+  border: 2px solid #ef4444 !important;
+  box-shadow: none !important;
+}
+
 select.form-control {
   background-color: #fff !important;
   cursor: pointer !important;
