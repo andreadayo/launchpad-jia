@@ -12,7 +12,15 @@ export async function POST(request: Request) {
 
     const { db } = await connectMongoDB();
 
-    const query: any = { _id: new ObjectId(id) };
+    // Accept either a Mongo ObjectId (24-hex) or the legacy GUID `id` field.
+    let query: any = {};
+    const isObjectId = typeof id === "string" && /^[0-9a-fA-F]{24}$/.test(id);
+    if (isObjectId) {
+      query._id = new ObjectId(id);
+    } else {
+      query.id = id; // legacy guid
+    }
+
     if (orgID) {
       query.orgID = orgID;
     }
