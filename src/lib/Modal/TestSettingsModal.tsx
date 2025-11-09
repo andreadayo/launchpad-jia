@@ -6,8 +6,7 @@ import Swal from "sweetalert2";
 import AvatarImage from "../components/AvatarImage/AvatarImage";
 
 const AVATARS = {
-  JIA_SPEAKING:
-    "https://i.pinimg.com/originals/d8/e6/eb/d8e6eb6b345ada088e2448947c483ab4.gif",
+  JIA_SPEAKING: "https://i.pinimg.com/originals/d8/e6/eb/d8e6eb6b345ada088e2448947c483ab4.gif",
   JIA_IDLE:
     "https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc4181549-399a-4f21-9512-fc751a69a560_800x600.gif",
   SOUND: "/sound.gif",
@@ -53,100 +52,95 @@ export default function TestSettingsModal({ settings }) {
           turn_detection: settings.turn_detection,
         },
       }).then((keyResponse) => {
-        navigator.mediaDevices
-          .getUserMedia({ audio: true })
-          .then(async (stream) => {
-            const recorder = new MediaRecorder(stream);
-            recorderRef.current = recorder;
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(async (stream) => {
+          const recorder = new MediaRecorder(stream);
+          recorderRef.current = recorder;
 
-            const EPHEMERAL_KEY = keyResponse.data.key.client_secret.value;
-            const pc = new RTCPeerConnection();
-            pcRef.current = pc;
+          const EPHEMERAL_KEY = keyResponse.data.key.client_secret.value;
+          const pc = new RTCPeerConnection();
+          pcRef.current = pc;
 
-            const audioEl = document.createElement("audio");
-            audioEl.autoplay = true;
-            pc.ontrack = (e) => (audioEl.srcObject = e.streams[0]);
-            pc.addTrack(stream.getTracks()[0]);
+          const audioEl = document.createElement("audio");
+          audioEl.autoplay = true;
+          pc.ontrack = (e) => (audioEl.srcObject = e.streams[0]);
+          pc.addTrack(stream.getTracks()[0]);
 
-            const dc = pc.createDataChannel("oai-events");
-            dc.addEventListener("message", (e) => {
-              const data = JSON.parse(e.data);
+          const dc = pc.createDataChannel("oai-events");
+          dc.addEventListener("message", (e) => {
+            const data = JSON.parse(e.data);
 
-              if (data.type.includes("input_audio")) {
-                setUserSpeaking(true);
-                setJiaSpeaking(false);
-              }
+            if (data.type.includes("input_audio")) {
+              setUserSpeaking(true);
+              setJiaSpeaking(false);
+            }
 
-              if (data.type.includes("output_audio")) {
-                setUserSpeaking(false);
-                setJiaSpeaking(true);
-              }
+            if (data.type.includes("output_audio")) {
+              setUserSpeaking(false);
+              setJiaSpeaking(true);
+            }
 
-              if (
-                data.type ===
-                  "conversation.item.input_audio_transcription.completed" &&
-                data?.transcript
-              ) {
-                setUserSpeaking(true);
-                setJiaSpeaking(false);
-                setMessage((prevMessages) => [
-                  ...prevMessages,
-                  {
-                    type: "user",
-                    content: data.transcript,
-                    time: Date.now(),
-                  },
-                ]);
-
-                autoScrollChat();
-              }
-
-              if (data.type === "response.done") {
-                setJiaSpeaking(true);
-                setUserSpeaking(false);
-                const newAIMessage = {
-                  type: "jia",
-                  content: data?.response?.output[0]?.content[0]?.transcript,
+            if (
+              data.type === "conversation.item.input_audio_transcription.completed" &&
+              data?.transcript
+            ) {
+              setUserSpeaking(true);
+              setJiaSpeaking(false);
+              setMessage((prevMessages) => [
+                ...prevMessages,
+                {
+                  type: "user",
+                  content: data.transcript,
                   time: Date.now(),
-                };
-
-                if (newAIMessage.content) {
-                  setMessage((prevMessages) =>
-                    [...prevMessages, newAIMessage].sort(
-                      (a, b) => a.time - b.time
-                    )
-                  );
-                }
-
-                autoScrollChat();
-              }
-            });
-
-            const offer = await pc.createOffer();
-            await pc.setLocalDescription(offer);
-
-            recorder.onstart = () => {
-              axios({
-                method: "POST",
-                url: "https://api.openai.com/v1/realtime?model=gpt-4o-mini-realtime-preview",
-                data: offer.sdp,
-                headers: {
-                  Authorization: `Bearer ${EPHEMERAL_KEY}`,
-                  "Content-Type": "application/sdp",
                 },
-              }).then(async (sdpResponse) => {
-                await pc.setRemoteDescription({
-                  type: "answer",
-                  sdp: await sdpResponse.data,
-                });
-              });
-            };
+              ]);
 
-            recorder.onstop = () => {
-              pcRef.current?.close();
-              pcRef.current = null;
-            };
+              autoScrollChat();
+            }
+
+            if (data.type === "response.done") {
+              setJiaSpeaking(true);
+              setUserSpeaking(false);
+              const newAIMessage = {
+                type: "jia",
+                content: data?.response?.output[0]?.content[0]?.transcript,
+                time: Date.now(),
+              };
+
+              if (newAIMessage.content) {
+                setMessage((prevMessages) =>
+                  [...prevMessages, newAIMessage].sort((a, b) => a.time - b.time)
+                );
+              }
+
+              autoScrollChat();
+            }
           });
+
+          const offer = await pc.createOffer();
+          await pc.setLocalDescription(offer);
+
+          recorder.onstart = () => {
+            axios({
+              method: "POST",
+              url: "https://api.openai.com/v1/realtime?model=gpt-4o-mini-realtime-preview",
+              data: offer.sdp,
+              headers: {
+                Authorization: `Bearer ${EPHEMERAL_KEY}`,
+                "Content-Type": "application/sdp",
+              },
+            }).then(async (sdpResponse) => {
+              await pc.setRemoteDescription({
+                type: "answer",
+                sdp: await sdpResponse.data,
+              });
+            });
+          };
+
+          recorder.onstop = () => {
+            pcRef.current?.close();
+            pcRef.current = null;
+          };
+        });
       });
     }
   }, [settings]);
@@ -226,15 +220,11 @@ export default function TestSettingsModal({ settings }) {
               <li
                 key={idx}
                 className={`fade-in-bottom mb-3 p-3 rounded-lg ${
-                  msg.type === "user"
-                    ? "bg-light text-dark ml-auto"
-                    : "bg-primary text-white"
+                  msg.type === "user" ? "bg-light text-dark ml-auto" : "bg-primary text-white"
                 }`}
                 style={{ maxWidth: "80%" }}
               >
-                <strong className="text-sm">
-                  {msg.type === "user" ? "You" : "Jia"}:
-                </strong>{" "}
+                <strong className="text-sm">{msg.type === "user" ? "You" : "Jia"}:</strong>{" "}
                 <span className="text-sm">{msg.content}</span>
               </li>
             ))}
@@ -252,20 +242,12 @@ export default function TestSettingsModal({ settings }) {
           }}
         >
           <i className="la la-microphone text-white la-2x"></i>
-          <span className="ml-2">
-            {isSpeaking ? "Stop Test" : "Start Test"}
-          </span>
+          <span className="ml-2">{isSpeaking ? "Stop Test" : "Start Test"}</span>
         </button>
 
         {userSpeaking && (
-          <button
-            className="btn fade-in bg-info text-white rounded-lg px-3 py-2"
-            onClick={stop}
-          >
-            <AvatarImage
-              src={AVATARS.SOUND}
-              className="avatar-sm rounded-full"
-            />
+          <button className="btn fade-in bg-info text-white rounded-lg px-3 py-2" onClick={stop}>
+            <AvatarImage src={AVATARS.SOUND} className="avatar-sm rounded-full" />
           </button>
         )}
       </div>

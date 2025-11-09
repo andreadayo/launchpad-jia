@@ -67,10 +67,7 @@ Reminders:
           new RegExp(candidateName, "g"),
           `<span style="color: #007bff;">${candidateName}</span>`
         )
-        .replace(
-          new RegExp(jobTitle, "g"),
-          `<span style="color: #007bff;">${jobTitle}</span>`
-        )
+        .replace(new RegExp(jobTitle, "g"), `<span style="color: #007bff;">${jobTitle}</span>`)
         //   .replace(
         //     new RegExp(companyName, "g"),
         //     `<span style="color: #007bff;">${companyName}</span>`
@@ -83,10 +80,7 @@ Reminders:
   };
 
   // Function to generate dynamic email content based on endorseTo and action
-  const generateEmailTemplate = (
-    endorseToValue: string,
-    actionValue: string = "endorse"
-  ) => {
+  const generateEmailTemplate = (endorseToValue: string, actionValue: string = "endorse") => {
     let companyName = "";
     if (typeof window !== "undefined" && localStorage.activeOrg) {
       try {
@@ -267,8 +261,7 @@ ${companyName}</p>`,
       },
     };
 
-    const stageTemplate =
-      templates[endorseToValue] || templates["Pending AI Interview"];
+    const stageTemplate = templates[endorseToValue] || templates["Pending AI Interview"];
     return stageTemplate[actionValue] || stageTemplate["endorse"];
   };
 
@@ -284,18 +277,12 @@ ${companyName}</p>`,
   useEffect(() => {
     const template = generateEmailTemplate(endorseTo, action);
     setCurrentEmailContent((prev) => ({
-      subject:
-        prev.subject === emailContent?.subject
-          ? template.subject
-          : prev.subject,
+      subject: prev.subject === emailContent?.subject ? template.subject : prev.subject,
       body: prev.body === emailContent?.body ? template.body : prev.body,
     }));
   }, [endorseTo, action, candidateName, jobTitle, interviewDate]);
 
-  const handleEmailContentChange = (
-    field: "subject" | "body",
-    value: string
-  ) => {
+  const handleEmailContentChange = (field: "subject" | "body", value: string) => {
     const updatedContent = {
       ...currentEmailContent,
       [field]: value,
@@ -386,9 +373,7 @@ ${companyName}</p>`,
             >
               <i
                 className={`la ${
-                  isAutomationEnabled
-                    ? "la-toggle-on jia-gradient-text"
-                    : "la-toggle-off"
+                  isAutomationEnabled ? "la-toggle-on jia-gradient-text" : "la-toggle-off"
                 }`}
                 style={{
                   fontSize: "30px",
@@ -429,9 +414,7 @@ ${companyName}</p>`,
                 >
                   Endorse from
                 </div>
-                <div
-                  style={{ fontSize: "14px", color: "#333", fontWeight: "500" }}
-                >
+                <div style={{ fontSize: "14px", color: "#333", fontWeight: "500" }}>
                   {endorseFrom}
                 </div>
               </div>
@@ -463,9 +446,7 @@ ${companyName}</p>`,
               {/* Edit Email Button */}
               <div style={{ marginLeft: "24px" }}>
                 <button
-                  className={`btn ${
-                    isEditingEmail ? "btn-primary" : "btn-outline-secondary"
-                  }`}
+                  className={`btn ${isEditingEmail ? "btn-primary" : "btn-outline-secondary"}`}
                   onClick={toggleEmailEditing}
                   disabled={isDisabled || !isAutomationEnabled}
                   style={{
@@ -474,9 +455,7 @@ ${companyName}</p>`,
                     color: isEditingEmail ? "white" : "#333",
                     borderRadius: "20px",
                     padding: "6px 16px",
-                    border: `1px solid ${
-                      isEditingEmail ? "#4169e1" : "#dee2e6"
-                    }`,
+                    border: `1px solid ${isEditingEmail ? "#4169e1" : "#dee2e6"}`,
                     backgroundColor: isEditingEmail ? "#4169e1" : "white",
                     display: "flex",
                     alignItems: "center",
@@ -485,9 +464,7 @@ ${companyName}</p>`,
                   }}
                 >
                   <i
-                    className={`la ${
-                      isEditingEmail ? "la-times" : "la-pencil"
-                    }`}
+                    className={`la ${isEditingEmail ? "la-times" : "la-pencil"}`}
                     style={{ fontSize: "12px" }}
                   ></i>
                   {isEditingEmail ? "Stop editing" : "Edit email"}
@@ -528,9 +505,7 @@ ${companyName}</p>`,
                     type="text"
                     className="form-control"
                     value={currentEmailContent.subject}
-                    onChange={(e) =>
-                      handleEmailContentChange("subject", e.target.value)
-                    }
+                    onChange={(e) => handleEmailContentChange("subject", e.target.value)}
                     disabled={isDisabled}
                     style={{
                       fontSize: "13px",
@@ -554,9 +529,7 @@ ${companyName}</p>`,
                       flexWrap: "wrap",
                     }}
                     dangerouslySetInnerHTML={{
-                      __html: highlightDynamicValues(
-                        currentEmailContent.subject
-                      ),
+                      __html: highlightDynamicValues(currentEmailContent.subject),
                     }}
                   />
                 )}
@@ -587,9 +560,7 @@ ${companyName}</p>`,
                   >
                     <CandidateRichTextEditor
                       value={currentEmailContent.body}
-                      onChange={(value) =>
-                        handleEmailContentChange("body", value)
-                      }
+                      onChange={(value) => handleEmailContentChange("body", value)}
                     />
                   </div>
                 ) : (

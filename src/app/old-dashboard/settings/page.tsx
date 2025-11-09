@@ -62,10 +62,7 @@ const Tooltip = ({ text, children }) => {
       </div>
       {show && (
         <div className="tooltip-content">
-          <div
-            className="tooltip-text"
-            dangerouslySetInnerHTML={{ __html: text }}
-          />
+          <div className="tooltip-text" dangerouslySetInnerHTML={{ __html: text }} />
         </div>
       )}
     </div>
@@ -314,8 +311,7 @@ export default function Dashboard() {
     },
     {
       value: "gpt-4o-realtime-preview-2025-06-03",
-      label:
-        "gpt-4o-realtime-preview-2025-06-03 - Improved Snapshot | June 3, 2025",
+      label: "gpt-4o-realtime-preview-2025-06-03 - Improved Snapshot | June 3, 2025",
     },
     {
       value: "gpt-4o-mini-realtime-preview",
@@ -352,13 +348,8 @@ export default function Dashboard() {
               <div className="header-body">
                 <div className="row align-items-center py-4">
                   <div className="col-lg-6 col-7">
-                    <h6 className="h2 text-white d-inline-block mb-0">
-                      Settings
-                    </h6>
-                    <nav
-                      aria-label="breadcrumb"
-                      className="d-none d-md-inline-block ml-md-4"
-                    >
+                    <h6 className="h2 text-white d-inline-block mb-0">Settings</h6>
+                    <nav aria-label="breadcrumb" className="d-none d-md-inline-block ml-md-4">
                       <ol className="breadcrumb breadcrumb-links breadcrumb-dark">
                         <li className="breadcrumb-item">
                           <a href="#">
@@ -383,15 +374,11 @@ export default function Dashboard() {
                   <SettingsLoader />
                 ) : (
                   <div className="thread-set d-flex justify-content-center">
-                    <div
-                      className="right-thread"
-                      style={{ width: "100%", maxWidth: "1000px" }}
-                    >
+                    <div className="right-thread" style={{ width: "100%", maxWidth: "1000px" }}>
                       <div className="card shadow-1">
                         <div className="card-header d-flex justify-content-center">
                           <h3 className="mb-0">
-                            <i className="la la-cubes text-primary mr-2" />{" "}
-                            General Model Settings
+                            <i className="la la-cubes text-primary mr-2" /> General Model Settings
                           </h3>
                         </div>
                         <div className="card-body flex-row">
@@ -437,8 +424,7 @@ export default function Dashboard() {
                                   <Tooltip text={TOOLTIP_TEXTS.maxTokens}>
                                     <i className="las la-info-circle text-primary mr-2"></i>
                                   </Tooltip>
-                                  Max Output Tokens:{" "}
-                                  {settings.max_response_output_tokens}
+                                  Max Output Tokens: {settings.max_response_output_tokens}
                                 </label>
                               </div>
                               <input
@@ -488,9 +474,7 @@ export default function Dashboard() {
                                 onChange={handleTurnDetectionChange}
                               >
                                 <option value="server_vad">Server VAD</option>
-                                <option value="semantic_vad">
-                                  Semantic VAD
-                                </option>
+                                <option value="semantic_vad">Semantic VAD</option>
                               </select>
                             </div>
 
@@ -505,10 +489,7 @@ export default function Dashboard() {
                                 className="form-control"
                                 value={settings?.transcription_model}
                                 onChange={(e) => {
-                                  changeSetting(
-                                    "transcriptionModel",
-                                    e.target.value
-                                  );
+                                  changeSetting("transcriptionModel", e.target.value);
                                 }}
                               >
                                 {transcriptionModels.map((model) => (
@@ -529,10 +510,7 @@ export default function Dashboard() {
                               rows={2}
                               value={settings?.transcription_prompt}
                               onChange={(e) => {
-                                changeSetting(
-                                  "transcriptionPrompt",
-                                  e.target.value
-                                );
+                                changeSetting("transcriptionPrompt", e.target.value);
                               }}
                               placeholder="Enter your Transcription input prompt here"
                             ></textarea>
@@ -543,10 +521,7 @@ export default function Dashboard() {
                           <div className="card-basebar">
                             <AvatarImage src={settings?.editor?.image} />
                             <span>{settings?.editor?.name}</span>
-                            <span>
-                              | Edited this{" "}
-                              {moment(settings?.lastEdited).fromNow()}
-                            </span>
+                            <span>| Edited this {moment(settings?.lastEdited).fromNow()}</span>
                           </div>
                         )}
                       </div>
@@ -575,13 +550,10 @@ export default function Dashboard() {
 
                   {settings?.traits_prompt?.lastEdited && (
                     <div className="card-basebar">
-                      <AvatarImage
-                        src={settings?.traits_prompt?.editor?.image}
-                      />
+                      <AvatarImage src={settings?.traits_prompt?.editor?.image} />
                       <span>{settings?.traits_prompt?.editor?.name}</span>
                       <span>
-                        | Edited this{" "}
-                        {moment(settings?.traits_prompt?.lastEdited).fromNow()}
+                        | Edited this {moment(settings?.traits_prompt?.lastEdited).fromNow()}
                       </span>
                     </div>
                   )}
@@ -608,13 +580,10 @@ export default function Dashboard() {
 
                   {settings?.summary_prompt?.lastEdited && (
                     <div className="card-basebar">
-                      <AvatarImage
-                        src={settings?.summary_prompt?.editor?.image}
-                      />
+                      <AvatarImage src={settings?.summary_prompt?.editor?.image} />
                       <span>{settings?.summary_prompt?.editor?.name}</span>
                       <span>
-                        | Edited this{" "}
-                        {moment(settings?.summary_prompt?.lastEdited).fromNow()}
+                        | Edited this {moment(settings?.summary_prompt?.lastEdited).fromNow()}
                       </span>
                     </div>
                   )}
@@ -641,15 +610,10 @@ export default function Dashboard() {
 
                   {settings?.analysis_prompt?.lastEdited && (
                     <div className="card-basebar">
-                      <AvatarImage
-                        src={settings?.analysis_prompt?.editor?.image}
-                      />
+                      <AvatarImage src={settings?.analysis_prompt?.editor?.image} />
                       <span>{settings?.analysis_prompt?.editor?.name}</span>
                       <span>
-                        | Edited this{" "}
-                        {moment(
-                          settings?.analysis_prompt?.lastEdited
-                        ).fromNow()}
+                        | Edited this {moment(settings?.analysis_prompt?.lastEdited).fromNow()}
                       </span>
                     </div>
                   )}
@@ -676,15 +640,10 @@ export default function Dashboard() {
 
                   {settings?.question_gen_prompt?.lastEdited && (
                     <div className="card-basebar">
-                      <AvatarImage
-                        src={settings?.question_gen_prompt?.editor?.image}
-                      />
+                      <AvatarImage src={settings?.question_gen_prompt?.editor?.image} />
                       <span>{settings?.question_gen_prompt?.editor?.name}</span>
                       <span>
-                        | Edited this{" "}
-                        {moment(
-                          settings?.question_gen_prompt?.lastEdited
-                        ).fromNow()}
+                        | Edited this {moment(settings?.question_gen_prompt?.lastEdited).fromNow()}
                       </span>
                     </div>
                   )}
@@ -711,15 +670,10 @@ export default function Dashboard() {
 
                   {settings?.cv_screening_prompt?.lastEdited && (
                     <div className="card-basebar">
-                      <AvatarImage
-                        src={settings?.cv_screening_prompt?.editor?.image}
-                      />
+                      <AvatarImage src={settings?.cv_screening_prompt?.editor?.image} />
                       <span>{settings?.question_gen_prompt?.editor?.name}</span>
                       <span>
-                        | Edited this{" "}
-                        {moment(
-                          settings?.cv_screening_prompt?.lastEdited
-                        ).fromNow()}
+                        | Edited this {moment(settings?.cv_screening_prompt?.lastEdited).fromNow()}
                       </span>
                     </div>
                   )}
@@ -731,8 +685,7 @@ export default function Dashboard() {
                   <div className="card shadow-1">
                     <div className="card-header d-flex justify-content-center">
                       <h3 className="mb-0">
-                        <i className="la la-edit text-primary mr-2" /> Settings
-                        Toolbar
+                        <i className="la la-edit text-primary mr-2" /> Settings Toolbar
                       </h3>
                     </div>
 
@@ -742,8 +695,7 @@ export default function Dashboard() {
                         onClick={handleSaveChanges}
                         // disabled={disableSave}
                       >
-                        <i className="la la-square text-success"></i> Save
-                        Changes
+                        <i className="la la-square text-success"></i> Save Changes
                       </button>
                     </div>
                   </div>

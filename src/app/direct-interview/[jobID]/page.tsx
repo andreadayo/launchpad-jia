@@ -63,9 +63,7 @@ export default function () {
       }).then((res) => {
         if (res.isConfirmed) {
           `${
-            window.location.origin.includes("localhost")
-              ? "/job-portal"
-              : `https://www.hellojia.ai`
+            window.location.origin.includes("localhost") ? "/job-portal" : `https://www.hellojia.ai`
           }`;
         }
       });
@@ -76,9 +74,7 @@ export default function () {
     Swal.fire({
       icon: "info",
       title: "Preparing Interview...",
-      text: `Hello ${
-        user.name.split(" ")[0]
-      }, We are currently preparing your interview for ${
+      text: `Hello ${user.name.split(" ")[0]}, We are currently preparing your interview for ${
         jobDetails.jobTitle
       }, Please wait for a few moments.... \n Thank you.`,
       allowOutsideClick: false,
@@ -137,9 +133,7 @@ export default function () {
       Swal.fire({
         icon: "success",
         title: "Redirecting to Interview",
-        text: `Hello ${
-          user.name.split(" ")[0]
-        }, We will now redirect you to your interview ${
+        text: `Hello ${user.name.split(" ")[0]}, We will now redirect you to your interview ${
           jobDetails.jobTitle
         }, \n Thank you.`,
         allowOutsideClick: false,

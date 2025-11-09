@@ -10,7 +10,9 @@ async function initFirebaseAdmin() {
   let parsed;
   try {
     if (process.env.FIREBASE_SERVICE_ACCOUNT_B64 && !process.env.FIREBASE_SERVICE_ACCOUNT) {
-      const decoded = Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_B64, "base64").toString("utf8");
+      const decoded = Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_B64, "base64").toString(
+        "utf8"
+      );
       parsed = JSON.parse(decoded);
     } else {
       parsed = JSON.parse(svc as string);
@@ -23,7 +25,10 @@ async function initFirebaseAdmin() {
   admin.initializeApp({
     credential: admin.credential.cert(parsed as any),
     // If you set a bucket via env, use it; otherwise Firebase will use default
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET || process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || `${parsed.project_id}.appspot.com`,
+    storageBucket:
+      process.env.FIREBASE_STORAGE_BUCKET ||
+      process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
+      `${parsed.project_id}.appspot.com`,
   });
 
   return admin;
@@ -76,6 +81,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ url: publicUrl, path: destPath });
   } catch (error) {
     console.error("Upload error:", error);
-    return NextResponse.json({ error: (error as any)?.message || "Upload failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: (error as any)?.message || "Upload failed" },
+      { status: 500 }
+    );
   }
 }

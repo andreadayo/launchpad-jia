@@ -37,9 +37,7 @@ export default function MeetingTimer({ isStarted }: MeetingTimerProps) {
         .toString()
         .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     }
-    return `${minutes.toString().padStart(2, "0")}:${secs
-      .toString()
-      .padStart(2, "0")}`;
+    return `${minutes.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
   return (

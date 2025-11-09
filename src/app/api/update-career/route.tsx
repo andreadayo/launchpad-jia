@@ -9,10 +9,7 @@ export async function POST(request: Request) {
 
     // Validate required fields
     if (!_id) {
-      return NextResponse.json(
-        { error: "Job Object ID is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Job Object ID is required" }, { status: 400 });
     }
 
     const { db } = await connectMongoDB();
@@ -25,9 +22,7 @@ export async function POST(request: Request) {
       ...dataUpdates,
     };
 
-    await db
-      .collection("careers")
-      .updateOne({ _id: new ObjectId(_id) }, { $set: career });
+    await db.collection("careers").updateOne({ _id: new ObjectId(_id) }, { $set: career });
 
     return NextResponse.json({
       message: "Career updated successfully",
@@ -35,9 +30,6 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Error adding career:", error);
-    return NextResponse.json(
-      { error: "Failed to add career" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to add career" }, { status: 500 });
   }
 }

@@ -23,9 +23,9 @@ export async function POST(req: Request) {
     return new Response(await speechResponse.arrayBuffer());
   } catch (error) {
     console.error("Text-to-speech error:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to generate speech" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: "Failed to generate speech" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }

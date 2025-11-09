@@ -11,8 +11,7 @@ const palette = {
   cardBg: "#FFF", // white card background
   accentPurple: "#5e39d6", // keep accent purple
   accentBlue: "#4f04b9f0", // keep accent blue
-  gradientCard:
-    "linear-gradient(180deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0) 100%)", // subtle card gradient for light mode
+  gradientCard: "linear-gradient(180deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0) 100%)", // subtle card gradient for light mode
   buttonBg: "#18122B", // dark button background
   buttonText: "#FFF", // white button text
   borderLight: "#ECECEC", // light border
@@ -111,12 +110,10 @@ export default function HomePage() {
           animation: complexFadeIn 1.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
         }
         .fade-in-logos {
-          animation: slideInLeft 1.2s 0.4s cubic-bezier(0.39, 0.575, 0.565, 1)
-            both;
+          animation: slideInLeft 1.2s 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
         }
         .fade-in-features {
-          animation: bounceInUp 1.2s 0.8s cubic-bezier(0.39, 0.575, 0.565, 1)
-            both;
+          animation: bounceInUp 1.2s 0.8s cubic-bezier(0.39, 0.575, 0.565, 1) both;
         }
         .btn-main {
           background: linear-gradient(90deg, #5e39d6 0%, #4f04b9f0 100%);
@@ -220,12 +217,7 @@ export default function HomePage() {
               alignItems: "center",
             }}
           >
-            <Image
-              src="/jia-logo-transparent.png"
-              alt="Jia Logo"
-              width={80}
-              height={50}
-            />
+            <Image src="/jia-logo-transparent.png" alt="Jia Logo" width={80} height={50} />
 
             {/* Desktop Menu */}
             <div
@@ -437,11 +429,10 @@ export default function HomePage() {
                 lineHeight: 1.6,
               }}
             >
-              JIA is your personal AI-powered job interviewer. Simulate real
-              interview scenarios, receive instant feedback on your answers, and
-              build the confidence you need to succeed. Practice anytime,
-              improve your skills, and get ready to ace your next interview with
-              JIA.
+              JIA is your personal AI-powered job interviewer. Simulate real interview scenarios,
+              receive instant feedback on your answers, and build the confidence you need to
+              succeed. Practice anytime, improve your skills, and get ready to ace your next
+              interview with JIA.
             </p>
             <div style={{ display: "flex", gap: 16, marginTop: 16 }}>
               <a href="/login" className="btn-main pop-in-btn">
@@ -554,9 +545,8 @@ export default function HomePage() {
                 lineHeight: 1.6,
               }}
             >
-              Transform your hiring process with AI-powered interviews that save
-              time, reduce bias, and help you identify top talent with
-              confidence.
+              Transform your hiring process with AI-powered interviews that save time, reduce bias,
+              and help you identify top talent with confidence.
             </p>
           </div>
           <div
@@ -610,10 +600,9 @@ export default function HomePage() {
                   lineHeight: 1.6,
                 }}
               >
-                Get detailed interview transcripts with AI-powered scoring,
-                comprehensive candidate assessments on cultural alignment, and
-                deep insights into technical competencies and soft skills. Make
-                data-driven hiring decisions with confidence.
+                Get detailed interview transcripts with AI-powered scoring, comprehensive candidate
+                assessments on cultural alignment, and deep insights into technical competencies and
+                soft skills. Make data-driven hiring decisions with confidence.
               </p>
             </div>
             {/* Value Proposition 2 */}
@@ -656,11 +645,10 @@ export default function HomePage() {
                   lineHeight: 1.6,
                 }}
               >
-                Eliminate scheduling hassles with our automated interview
-                system. Candidates can self-schedule and complete interviews
-                24/7, streamlining your recruitment pipeline and reducing
-                time-to-hire. No more back-and-forth emails or calendar
-                coordination needed.
+                Eliminate scheduling hassles with our automated interview system. Candidates can
+                self-schedule and complete interviews 24/7, streamlining your recruitment pipeline
+                and reducing time-to-hire. No more back-and-forth emails or calendar coordination
+                needed.
               </p>
             </div>
           </div>
@@ -716,10 +704,9 @@ export default function HomePage() {
                   lineHeight: 1.6,
                 }}
               >
-                Reduce recruitment costs and save valuable time by automating
-                interviews. Your hiring team can focus on high-value activities
-                while JIA handles screening, resulting in scaling your hiring
-                process without scaling your recruitment team.
+                Reduce recruitment costs and save valuable time by automating interviews. Your
+                hiring team can focus on high-value activities while JIA handles screening,
+                resulting in scaling your hiring process without scaling your recruitment team.
               </p>
             </div>
             {/* Value Proposition 4 */}
@@ -762,10 +749,9 @@ export default function HomePage() {
                   lineHeight: 1.6,
                 }}
               >
-                Ensure a fair and consistent candidate evaluation with our
-                standardized AI-powered interview process. Every candidate
-                receives the same core questions and is evaluated using
-                objective scoring criteria.
+                Ensure a fair and consistent candidate evaluation with our standardized AI-powered
+                interview process. Every candidate receives the same core questions and is evaluated
+                using objective scoring criteria.
               </p>
             </div>
           </div>
@@ -1095,8 +1081,7 @@ export default function HomePage() {
                   margin: 0,
                 }}
               >
-                Get AI insights including job-fit score, strengths, and
-                recommendations
+                Get AI insights including job-fit score, strengths, and recommendations
               </p>
             </div>
           </div>
@@ -1189,8 +1174,7 @@ export default function HomePage() {
                   margin: 0,
                 }}
               >
-                View the available job posts and apply to the ones that you are
-                interested in.
+                View the available job posts and apply to the ones that you are interested in.
               </p>
             </div>
             <div
@@ -1380,16 +1364,11 @@ export default function HomePage() {
                 margin: 0,
               }}
             >
-              Unlock the power of data with our cutting-edge analytics product.
-              Get instant insights with our user-friendly Analytics Dashboard,
-              and take advantage of our innovative digital credit tokens to
-              reward your customers and incentivize engagement.
+              Unlock the power of data with our cutting-edge analytics product. Get instant insights
+              with our user-friendly Analytics Dashboard, and take advantage of our innovative
+              digital credit tokens to reward your customers and incentivize engagement.
             </p>
-            <a
-              href="/login"
-              className="btn-main pop-in-btn"
-              style={{ marginTop: 16 }}
-            >
+            <a href="/login" className="btn-main pop-in-btn" style={{ marginTop: 16 }}>
               Try the app
             </a>
           </div>
@@ -1425,9 +1404,7 @@ export default function HomePage() {
                 flex: 1,
               }}
             >
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 16 }}
-              >
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 <span
                   style={{
                     fontWeight: 500,
@@ -1437,9 +1414,7 @@ export default function HomePage() {
                 >
                   Contact
                 </span>
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 6 }}
-                >
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                   <span
                     style={{
                       fontWeight: 300,
@@ -1454,9 +1429,7 @@ export default function HomePage() {
                   </span>
                 </div>
               </div>
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 16 }}
-              >
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 <span
                   style={{
                     fontWeight: 500,
@@ -1474,8 +1447,7 @@ export default function HomePage() {
                     lineHeight: 1.5,
                   }}
                 >
-                  Join the most talented software development company in the
-                  country today.
+                  Join the most talented software development company in the country today.
                 </span>
               </div>
               <span
@@ -1501,9 +1473,7 @@ export default function HomePage() {
                 flex: 1,
               }}
             >
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: 16 }}
-              >
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 <span
                   style={{
                     fontWeight: 500,
@@ -1532,9 +1502,7 @@ export default function HomePage() {
                   Contact Us
                 </span>
               </div>
-              <div
-                style={{ display: "none", flexDirection: "column", gap: 16 }}
-              >
+              <div style={{ display: "none", flexDirection: "column", gap: 16 }}>
                 <span
                   style={{
                     fontWeight: 500,
@@ -1544,9 +1512,7 @@ export default function HomePage() {
                 >
                   Social
                 </span>
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 6 }}
-                >
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                   <span
                     style={{
                       fontWeight: 300,
@@ -1589,12 +1555,7 @@ export default function HomePage() {
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <Image
-                  src="/jia-logo-transparent.png"
-                  alt="Jia Logo"
-                  width={80}
-                  height={50}
-                />
+                <Image src="/jia-logo-transparent.png" alt="Jia Logo" width={80} height={50} />
               </div>
             </div>
           </div>

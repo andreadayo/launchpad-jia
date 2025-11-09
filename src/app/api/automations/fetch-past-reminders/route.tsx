@@ -25,27 +25,17 @@ export async function POST(request: Request) {
       const lastReminderDate = new Date(interview.lastAutoReminder);
       const now = new Date();
       const timeSinceReminder = now.getTime() - lastReminderDate.getTime();
-      const daysSinceReminder = Math.floor(
-        timeSinceReminder / (1000 * 60 * 60 * 24)
-      );
-      const hoursSinceReminder = Math.floor(
-        timeSinceReminder / (1000 * 60 * 60)
-      );
+      const daysSinceReminder = Math.floor(timeSinceReminder / (1000 * 60 * 60 * 24));
+      const hoursSinceReminder = Math.floor(timeSinceReminder / (1000 * 60 * 60));
       const minutesSinceReminder = Math.floor(timeSinceReminder / (1000 * 60));
 
       let timeSinceText = "";
       if (daysSinceReminder > 0) {
-        timeSinceText = `${daysSinceReminder} day${
-          daysSinceReminder > 1 ? "s" : ""
-        } ago`;
+        timeSinceText = `${daysSinceReminder} day${daysSinceReminder > 1 ? "s" : ""} ago`;
       } else if (hoursSinceReminder > 0) {
-        timeSinceText = `${hoursSinceReminder} hour${
-          hoursSinceReminder > 1 ? "s" : ""
-        } ago`;
+        timeSinceText = `${hoursSinceReminder} hour${hoursSinceReminder > 1 ? "s" : ""} ago`;
       } else if (minutesSinceReminder > 0) {
-        timeSinceText = `${minutesSinceReminder} minute${
-          minutesSinceReminder > 1 ? "s" : ""
-        } ago`;
+        timeSinceText = `${minutesSinceReminder} minute${minutesSinceReminder > 1 ? "s" : ""} ago`;
       } else {
         timeSinceText = "Just now";
       }

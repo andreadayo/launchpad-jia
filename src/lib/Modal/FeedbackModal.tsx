@@ -125,11 +125,7 @@ export default function FeedbackModal({
                   marginBottom: "0px",
                 }}
               >
-                <img
-                  src="/star-icon.png"
-                  alt="star"
-                  style={{ width: "60px", height: "60px" }}
-                />
+                <img src="/star-icon.png" alt="star" style={{ width: "60px", height: "60px" }} />
               </div>
             </div>
 
@@ -158,8 +154,8 @@ export default function FeedbackModal({
                 fontWeight: 400,
               }}
             >
-              Your insights will help Jia improve and continue delivering the
-              best possible experience. Take a moment to share your thoughts.
+              Your insights will help Jia improve and continue delivering the best possible
+              experience. Take a moment to share your thoughts.
             </p>
 
             {/* Star Rating */}
@@ -244,9 +240,7 @@ export default function FeedbackModal({
               onClick={handleSubmit}
               disabled={rating === 0 || submitting}
             >
-              <span className="m-auto">
-                {submitting ? "Submitting..." : "Submit"}
-              </span>
+              <span className="m-auto">{submitting ? "Submitting..." : "Submit"}</span>
             </button>
           </div>
         </div>

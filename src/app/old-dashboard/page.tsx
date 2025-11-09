@@ -46,13 +46,8 @@ export default function () {
               <div className="header-body">
                 <div className="row align-items-center py-4">
                   <div className="col-lg-6 col-7">
-                    <h6 className="h2 text-white d-inline-block mb-0">
-                      Dashboard
-                    </h6>
-                    <nav
-                      aria-label="breadcrumb"
-                      className="d-none d-md-inline-block ml-md-4"
-                    >
+                    <h6 className="h2 text-white d-inline-block mb-0">Dashboard</h6>
+                    <nav aria-label="breadcrumb" className="d-none d-md-inline-block ml-md-4">
                       <ol className="breadcrumb breadcrumb-links breadcrumb-dark">
                         <li className="breadcrumb-item">
                           <a href="#">
@@ -79,10 +74,7 @@ export default function () {
                       key={`loading-${loadingKey}-${index}`}
                     >
                       {/* Skeleton Loader */}
-                      <div
-                        className="skeleton-bar blink-2 mt-2"
-                        style={{ width: "60%" }}
-                      />
+                      <div className="skeleton-bar blink-2 mt-2" style={{ width: "60%" }} />
                       <div
                         className="skeleton-bar blink-2 ml-auto mt-3"
                         style={{ width: "40%", height: 32 }}

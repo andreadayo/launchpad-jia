@@ -59,11 +59,11 @@ export default function RetakeInterviewRequest({ data }) {
               toStage: "Pending AI Interview",
               action: "Endorsed",
               updatedBy: {
-                  image: user?.image,
-                  name: user?.name,
-                  email: user?.email,
+                image: user?.image,
+                name: user?.name,
+                email: user?.email,
               },
-          },
+            },
           });
 
           Swal.fire({
@@ -115,37 +115,29 @@ export default function RetakeInterviewRequest({ data }) {
         <div className="card shadow-1">
           <div className="card-header">
             <h3 className="mb-0 mr-auto">
-              <i className="la la-file-text text-primary mr-2" /> [Important]
-              Retake Interview Request
+              <i className="la la-file-text text-primary mr-2" /> [Important] Retake Interview
+              Request
             </h3>
           </div>
           <div className="card-body">
             <h2>
-              <i className="la la-exclamation-circle text-primary" /> The
-              applicant has requested a retake of the interview.
+              <i className="la la-exclamation-circle text-primary" /> The applicant has requested a
+              retake of the interview.
             </h2>
             <strong>Reason: {data?.retakeRequest?.reason}</strong>
             <strong>
               Request submitted on:{" "}
-              {moment(data?.retakeRequest?.createdAt).format(
-                "MMM D, YYYY | hh:mm:ss A"
-              )}
+              {moment(data?.retakeRequest?.createdAt).format("MMM D, YYYY | hh:mm:ss A")}
             </strong>
           </div>
 
           {user && (
             <div className="card-basebar">
               <div className="btn-set ml-auto">
-                <button
-                  className="btn btn-primary"
-                  onClick={() => processRequest("approve")}
-                >
+                <button className="btn btn-primary" onClick={() => processRequest("approve")}>
                   <i className="la la-check" /> Approve
                 </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => processRequest("reject")}
-                >
+                <button className="btn btn-danger" onClick={() => processRequest("reject")}>
                   <i className="la la-times" /> Reject
                 </button>
               </div>

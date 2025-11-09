@@ -1,8 +1,6 @@
 import { OpenAI } from "openai";
 
-const messages: any = [
-  { role: "system", content: "You are a helpful assistant." },
-];
+const messages: any = [{ role: "system", content: "You are a helpful assistant." }];
 
 export async function POST(req: Request) {
   const { text } = await req.json();

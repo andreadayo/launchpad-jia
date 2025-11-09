@@ -39,7 +39,14 @@ export default function FeedbackDrawer({ open, onClose, feedback }) {
           borderBottomLeftRadius: 18,
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: "1.5rem",
+          }}
+        >
           <h3
             style={{
               color: "#5e39d6",
@@ -75,12 +82,8 @@ export default function FeedbackDrawer({ open, onClose, feedback }) {
             borderBottom: "1.5px solid #eee",
           }}
         >
-          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>
-            Name
-          </div>
-          <div style={{ fontWeight: 700, color: "#222", fontSize: 18 }}>
-            {intervieweeName}
-          </div>
+          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>Name</div>
+          <div style={{ fontWeight: 700, color: "#222", fontSize: 18 }}>{intervieweeName}</div>
         </div>
         <div
           style={{
@@ -89,12 +92,8 @@ export default function FeedbackDrawer({ open, onClose, feedback }) {
             borderBottom: "1.5px solid #eee",
           }}
         >
-          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>
-            Interview ID
-          </div>
-          <div style={{ fontWeight: 600, color: "#333" }}>
-            {interviewID || "Not specified"}
-          </div>
+          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>Interview ID</div>
+          <div style={{ fontWeight: 600, color: "#333" }}>{interviewID || "Not specified"}</div>
         </div>
         <div
           style={{
@@ -103,9 +102,7 @@ export default function FeedbackDrawer({ open, onClose, feedback }) {
             borderBottom: "1.5px solid #eee",
           }}
         >
-          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>
-            Email
-          </div>
+          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>Email</div>
           <div style={{ fontWeight: 600, color: "#333" }}>
             {feedback?.interviewDetails?.email || "-"}
           </div>
@@ -117,9 +114,7 @@ export default function FeedbackDrawer({ open, onClose, feedback }) {
             borderBottom: "1.5px solid #eee",
           }}
         >
-          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>
-            Position
-          </div>
+          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>Position</div>
           <div style={{ fontWeight: 600, color: "#333" }}>
             {feedback?.interviewDetails?.jobTitle || "-"}
           </div>
@@ -131,18 +126,31 @@ export default function FeedbackDrawer({ open, onClose, feedback }) {
             borderBottom: "1.5px solid #eee",
           }}
         >
-          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>
-            Rating
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 32 }}>
+          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>Rating</div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minHeight: 32,
+            }}
+          >
             {feedback?.rating != null ? (
-              <div style={{ fontSize: '2rem', color: '#FFD600', letterSpacing: '0.18em', display: 'flex', gap: '0.25em' }}>
+              <div
+                style={{
+                  fontSize: "2rem",
+                  color: "#FFD600",
+                  letterSpacing: "0.18em",
+                  display: "flex",
+                  gap: "0.25em",
+                }}
+              >
                 {[1, 2, 3, 4, 5].map((i) => (
                   <span
                     key={i}
                     style={{
-                      color: i <= feedback.rating ? '#FFD600' : '#ddd',
-                      transition: 'color 0.2s',
+                      color: i <= feedback.rating ? "#FFD600" : "#ddd",
+                      transition: "color 0.2s",
                       marginRight: i < 5 ? 8 : 0,
                     }}
                   >
@@ -151,7 +159,7 @@ export default function FeedbackDrawer({ open, onClose, feedback }) {
                 ))}
               </div>
             ) : (
-              <span style={{ color: '#aaa', fontSize: '1.2rem' }}>-</span>
+              <span style={{ color: "#aaa", fontSize: "1.2rem" }}>-</span>
             )}
           </div>
         </div>
@@ -162,9 +170,7 @@ export default function FeedbackDrawer({ open, onClose, feedback }) {
             borderBottom: "1.5px solid #eee",
           }}
         >
-          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>
-            Comment
-          </div>
+          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>Comment</div>
           <div
             style={{
               background: "#f7f7fa",
@@ -190,13 +196,9 @@ export default function FeedbackDrawer({ open, onClose, feedback }) {
           </div>
         </div>
         <div style={{ marginBottom: "0.5rem" }}>
-          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>
-            Date
-          </div>
+          <div style={{ fontSize: 15, color: "#888", marginBottom: 2 }}>Date</div>
           <div style={{ fontWeight: 600, color: "#333" }}>
-            {feedback?.createdAt
-              ? moment(feedback.createdAt).format("MMMM DD, YYYY")
-              : "-"}
+            {feedback?.createdAt ? moment(feedback.createdAt).format("MMMM DD, YYYY") : "-"}
           </div>
         </div>
         {interviewID && (

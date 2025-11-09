@@ -22,9 +22,7 @@ export async function POST(request: NextRequest) {
 
     // Fetch interview data
     const { db } = await connectMongoDB();
-    const interview = await db
-      .collection("interviews")
-      .findOne({ _id: new ObjectId(interviewId) });
+    const interview = await db.collection("interviews").findOne({ _id: new ObjectId(interviewId) });
 
     if (!interview) {
       return NextResponse.json(
@@ -122,10 +120,7 @@ export async function POST(request: NextRequest) {
       // Update lastAutoReminder in database
       await db
         .collection("interviews")
-        .updateOne(
-          { _id: new ObjectId(interviewId) },
-          { $set: { lastAutoReminder: new Date() } }
-        );
+        .updateOne({ _id: new ObjectId(interviewId) }, { $set: { lastAutoReminder: new Date() } });
 
       return NextResponse.json({
         success: true,

@@ -1,6 +1,5 @@
 .fade-in-bottom {
-  -webkit-animation: fade-in-bottom 0.7s cubic-bezier(0.39, 0.575, 0.565, 1)
-    both;
+  -webkit-animation: fade-in-bottom 0.7s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation: fade-in-bottom 0.7s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 }
 
@@ -72,8 +71,7 @@
 }
 
 .slide-in-right {
-  -webkit-animation: slide-in-right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-    both;
+  -webkit-animation: slide-in-right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: slide-in-right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
@@ -103,8 +101,7 @@
 }
 
 .slide-in-left {
-  -webkit-animation: slide-in-left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-    both;
+  -webkit-animation: slide-in-left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: slide-in-left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
@@ -313,8 +310,7 @@
 }
 
 .fade-out-bck-flip {
-  -webkit-animation: fade-out-bck-flip 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-    both;
+  -webkit-animation: fade-out-bck-flip 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: fade-out-bck-flip 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
@@ -348,8 +344,7 @@
 }
 
 .slide-out-top {
-  -webkit-animation: slide-out-top 1.3s cubic-bezier(0.55, 0.085, 0.68, 0.53)
-    both;
+  -webkit-animation: slide-out-top 1.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
   animation: slide-out-top 1.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
 }
 

@@ -174,23 +174,18 @@ export default function CareersTable() {
                         <th scope="row">
                           <div className="media align-items-center">
                             <div className="media-body">
-                              <h3 className="name mb-0 text-sm">
-                                {item.jobTitle}
-                              </h3>
+                              <h3 className="name mb-0 text-sm">{item.jobTitle}</h3>
                             </div>
                           </div>
                         </th>
                         <td>
                           <strong
                             style={{
-                              color:
-                                item.status === "active" ? "#5bb573" : "salmon",
+                              color: item.status === "active" ? "#5bb573" : "salmon",
                             }}
                           >
                             <i className={`la la-square`}></i>{" "}
-                            <span className="status text-uppercase">
-                              {item.status}
-                            </span>
+                            <span className="status text-uppercase">{item.status}</span>
                           </strong>
                         </td>
                         <td>

@@ -41,10 +41,7 @@ export default function () {
         let bValue = b[sortConfig.key];
 
         // Handle special cases
-        if (
-          sortConfig.key === "createdAt" ||
-          sortConfig.key === "completedAt"
-        ) {
+        if (sortConfig.key === "createdAt" || sortConfig.key === "completedAt") {
           // For dates, convert to timestamps for comparison
           aValue = aValue ? new Date(aValue).getTime() : 0;
           bValue = bValue ? new Date(bValue).getTime() : 0;
@@ -104,9 +101,7 @@ export default function () {
         }
 
         if (parsedActiveOrg.role == "hiring_manager") {
-          const filteredData = res.data.filter((data) =>
-            parsedActiveOrg.careers.includes(data.id)
-          );
+          const filteredData = res.data.filter((data) => parsedActiveOrg.careers.includes(data.id));
 
           setData(filteredData);
         }
@@ -126,10 +121,7 @@ export default function () {
 
   return (
     <div className="row">
-      <button
-        className="datafetch-btn d-none"
-        onClick={fetchAllInterviews}
-      ></button>
+      <button className="datafetch-btn d-none" onClick={fetchAllInterviews}></button>
       <div className="col">
         <div className="card shadow-1">
           <div className="card-header border-0">
@@ -253,9 +245,7 @@ export default function () {
                   ) : (
                     filteredData.map((item) => (
                       <tr
-                        className={`${
-                          item.status === "Action Required" ? "bg-action" : ""
-                        }`}
+                        className={`${item.status === "Action Required" ? "bg-action" : ""}`}
                         key={item._id}
                         onClick={() => {
                           window.location.href = `/dashboard/interviews/manage/${item.interviewID}`;
@@ -264,15 +254,10 @@ export default function () {
                         <th scope="row" className="user-cell">
                           <div className="media align-items-center">
                             <a href="#" className="avatar rounded-circle mr-3">
-                              <AvatarImage
-                                alt="Project avatar"
-                                src={item.image}
-                              />
+                              <AvatarImage alt="Project avatar" src={item.image} />
                             </a>
                             <div className="media-body">
-                              <span className="name mb-0 text-sm">
-                                {item.name}
-                              </span>
+                              <span className="name mb-0 text-sm">{item.name}</span>
                             </div>
                           </div>
                         </th>
@@ -282,14 +267,8 @@ export default function () {
 
                         <td>
                           <span className="tag-text">
-                            <i
-                              className={`la la-square  ${getStatusBadge(
-                                item.status
-                              )}`}
-                            ></i>{" "}
-                            <strong className="status text-uppercase ">
-                              {item.status}
-                            </strong>
+                            <i className={`la la-square  ${getStatusBadge(item.status)}`}></i>{" "}
+                            <strong className="status text-uppercase ">{item.status}</strong>
                           </span>
                         </td>
 
@@ -308,14 +287,8 @@ export default function () {
                           </span>
                         </td>
                         <td>{moment(item.createdAt).format("MMM D, YYYY")}</td>
-                        <td
-                          title={moment(item.completedAt).format(
-                            "MMMM D, YYYY - hh:mm:ss A"
-                          )}
-                        >
-                          {item.completedAt && (
-                            <>{moment(item.completedAt).fromNow()}</>
-                          )}
+                        <td title={moment(item.completedAt).format("MMMM D, YYYY - hh:mm:ss A")}>
+                          {item.completedAt && <>{moment(item.completedAt).fromNow()}</>}
 
                           {!item.completedAt && <>N/A</>}
                         </td>

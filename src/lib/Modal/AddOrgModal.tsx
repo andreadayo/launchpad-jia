@@ -217,10 +217,7 @@ export default function AddOrgModal({ onClose }: { onClose: () => void }) {
                         color: TEXT_COLOR,
                         transition: "border 0.2s, background 0.2s",
                         minWidth: 120,
-                        boxShadow:
-                          tier === t.value
-                            ? `0 2px 8px ${BRAND_BLUE}22`
-                            : undefined,
+                        boxShadow: tier === t.value ? `0 2px 8px ${BRAND_BLUE}22` : undefined,
                       }}
                     >
                       <input
@@ -248,8 +245,7 @@ export default function AddOrgModal({ onClose }: { onClose: () => void }) {
                       gap: 4,
                     }}
                   >
-                    <span style={{ fontSize: 18, lineHeight: 1 }}>&#9888;</span>{" "}
-                    Select a tier
+                    <span style={{ fontSize: 18, lineHeight: 1 }}>&#9888;</span> Select a tier
                   </div>
                 )}
               </div>
@@ -294,19 +290,12 @@ export default function AddOrgModal({ onClose }: { onClose: () => void }) {
                   padding: "0.5em 2em",
                   boxShadow: `0 2px 8px ${BRAND_BLUE}22`,
                   opacity: orgName.trim() && tier && !loading ? 1 : 0.6,
-                  cursor:
-                    orgName.trim() && tier && !loading
-                      ? "pointer"
-                      : "not-allowed",
+                  cursor: orgName.trim() && tier && !loading ? "pointer" : "not-allowed",
                 }}
               >
                 {loading ? "Adding..." : "Add Organization"}
               </button>
-              {error && (
-                <div style={{ color: "#f5365c", marginTop: 8, fontSize: 14 }}>
-                  {error}
-                </div>
-              )}
+              {error && <div style={{ color: "#f5365c", marginTop: 8, fontSize: 14 }}>{error}</div>}
             </div>
           </form>
         </div>

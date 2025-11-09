@@ -1,12 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import {
-  CORE_API_URL,
-  errorToast,
-  guid,
-  htmlToPlainText,
-  successToast,
-} from "@/lib/Utils";
+import { CORE_API_URL, errorToast, guid, htmlToPlainText, successToast } from "@/lib/Utils";
 import Swal from "sweetalert2";
 
 export default function CVScreeningTestAgent(props) {
@@ -63,9 +57,7 @@ export default function CVScreeningTestAgent(props) {
       icon2: "la la-square text-info",
     });
 
-    let corellateStatusBtn: any = document.querySelector(
-      "#correlate-status-btn"
-    );
+    let corellateStatusBtn: any = document.querySelector("#correlate-status-btn");
 
     axios
       .post("/api/screen-cv", {
@@ -150,10 +142,7 @@ export default function CVScreeningTestAgent(props) {
         setTimeout(() => {
           setAgentError("");
           screenCV(cvData);
-          successToast(
-            "Retrying CV Screening for " + cvData.applicantName,
-            900
-          );
+          successToast("Retrying CV Screening for " + cvData.applicantName, 900);
         }, 4000);
       });
   }
@@ -234,9 +223,7 @@ export default function CVScreeningTestAgent(props) {
           return res.data.result;
         });
 
-      let parsedOutput = JSON.parse(
-        codeOutput.replace("```json", "").replace("```", "")
-      );
+      let parsedOutput = JSON.parse(codeOutput.replace("```json", "").replace("```", ""));
 
       setProgress(78);
 
@@ -321,11 +308,7 @@ export default function CVScreeningTestAgent(props) {
   }
 
   return (
-    <div
-      className={`card shadow-1 cv-tester-agent  ${
-        agentError ? "bg-salmon agent-error" : ""
-      }`}
-    >
+    <div className={`card shadow-1 cv-tester-agent  ${agentError ? "bg-salmon agent-error" : ""}`}>
       <div className="card-header">
         <i className="la la-bars text-primary mr-2" />
         <strong>Applicant CV File</strong>
@@ -340,9 +323,7 @@ export default function CVScreeningTestAgent(props) {
           >
             <i
               className={`la ${
-                processing
-                  ? "la-circle-notch spin text-primary"
-                  : "text-info la-square"
+                processing ? "la-circle-notch spin text-primary" : "text-info la-square"
               }`}
             />{" "}
             {processing ? "Processing..." : "Analyze"}
@@ -364,20 +345,20 @@ export default function CVScreeningTestAgent(props) {
 
         <div className="tr-time mt--2 mb-2 fade-in-bottom">
           <small>
-            <i className={`la ${step1.icon1}`} />{" "}
-            <i className={`la ${step1.icon2}`} /> Step1: {step1.name}
+            <i className={`la ${step1.icon1}`} /> <i className={`la ${step1.icon2}`} /> Step1:{" "}
+            {step1.name}
           </small>
 
           <div className="line-div"></div>
           <small title={"Amout of time from the last message"}>
-            <i className={`la ${step2.icon1}`} />{" "}
-            <i className={`la ${step2.icon2}`} /> Step 2: {step2.name}
+            <i className={`la ${step2.icon1}`} /> <i className={`la ${step2.icon2}`} /> Step 2:{" "}
+            {step2.name}
           </small>
 
           <div className="line-div"></div>
           <small title={"Amout of time from the last message"}>
-            <i className={`la ${step3.icon1}`} />{" "}
-            <i className={`la ${step3.icon2}`} /> Step 3: {step3.name}
+            <i className={`la ${step3.icon1}`} /> <i className={`la ${step3.icon2}`} /> Step 3:{" "}
+            {step3.name}
           </small>
         </div>
 
@@ -390,8 +371,8 @@ export default function CVScreeningTestAgent(props) {
               </h3>
               <small className="mt--2">
                 <i className="la la-envelope mr-2 ml-2 la la-chevron-circle-right text-primary" />
-                {digitalCV.jobPosition} | {digitalCV.applicantEmail} |{" "}
-                {digitalCV.yearsOfExperience} years of experience.
+                {digitalCV.jobPosition} | {digitalCV.applicantEmail} | {digitalCV.yearsOfExperience}{" "}
+                years of experience.
               </small>
             </>
           </>
@@ -436,8 +417,7 @@ export default function CVScreeningTestAgent(props) {
               >
                 <small className="ax-tag">
                   <strong>
-                    <i className="la la-first-order text-primary" /> AI CV
-                    Screening Result
+                    <i className="la la-first-order text-primary" /> AI CV Screening Result
                   </strong>
                 </small>
                 <h2 className="mb-0">
@@ -445,17 +425,13 @@ export default function CVScreeningTestAgent(props) {
                 </h2>
               </div>
             </div>
-            <span
-              dangerouslySetInnerHTML={{ __html: results.cvScreeningReason }}
-            />
+            <span dangerouslySetInnerHTML={{ __html: results.cvScreeningReason }} />
 
             <textarea
               className="form-control cv-screen-csv"
               style={{ display: "none" }}
               value={`${
-                digitalCV.applicantName
-                  ? digitalCV.applicantName.replace(/,/g, " ")
-                  : fileItem.name
+                digitalCV.applicantName ? digitalCV.applicantName.replace(/,/g, " ") : fileItem.name
               },${
                 digitalCV.applicantEmail ? digitalCV.applicantEmail : "N/A"
               },${results.cvStatus},${htmlToPlainText(

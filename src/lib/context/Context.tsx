@@ -59,9 +59,7 @@ export default function ({ children }) {
         <main>
           {isHydrated && (
             <>
-              {modalType && (
-                <Modal modalType={modalType} setModalType={setModalType} />
-              )}
+              {modalType && <Modal modalType={modalType} setModalType={setModalType} />}
               <Navbar />
               {children}
             </>

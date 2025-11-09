@@ -62,10 +62,7 @@ export default function ({ loaderType, loaderData }) {
         <div
           className={styles.date}
           style={{
-            width: `${getWidthPercentage(
-              loaderData.columnDetails[4].width,
-              tableWidth
-            )}%`,
+            width: `${getWidthPercentage(loaderData.columnDetails[4].width, tableWidth)}%`,
           }}
         >
           <span />

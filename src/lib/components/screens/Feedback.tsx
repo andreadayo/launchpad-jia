@@ -67,8 +67,7 @@ export default function () {
         // Both ellipses needed
         pages.push(1);
         pages.push("...");
-        for (let i = leftSiblingIndex; i <= rightSiblingIndex; i++)
-          pages.push(i);
+        for (let i = leftSiblingIndex; i <= rightSiblingIndex; i++) pages.push(i);
         pages.push("...");
         pages.push(totalPages);
       } else {
@@ -112,21 +111,15 @@ export default function () {
     }
 
     if (rating && rating !== ratingList[0]) {
-      filteredData = filteredData.filter(
-        (item) => String(item.rating) === rating
-      );
+      filteredData = filteredData.filter((item) => String(item.rating) === rating);
     }
 
     if (sort === sortList[0]) {
-      filteredData.sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-      );
+      filteredData.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     }
 
     if (sort === sortList[1]) {
-      filteredData.sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-      );
+      filteredData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     }
 
     setFilteredFeedbackData(filteredData);
@@ -138,9 +131,7 @@ export default function () {
       const headers = columnDetails.map((col) => col.name).join(",") + "\n";
       const rows = filteredFeedbackData.map((obj) =>
         columnDetails
-          .map(
-            (col) => obj[col.name.toLowerCase().replaceAll(" ", "_")] || "N/A"
-          )
+          .map((col) => obj[col.name.toLowerCase().replaceAll(" ", "_")] || "N/A")
           .join(",")
       );
       const csvContent = headers + rows.join("\n");
@@ -196,8 +187,7 @@ export default function () {
 
         if (result.length > 0) {
           const sortedResult = result.sort(
-            (a, b) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           );
 
           const data = sortedResult.map((item) => ({
@@ -265,25 +255,17 @@ export default function () {
         <div className={styles.tableHeader}>
           <span className={styles.title}>Feedbacks</span>
           <span className={styles.count}>{filteredFeedbackData?.length}</span>
-          <button
-            onBlur={() => handleDropdown(null)}
-            onClick={() => handleDropdown("rating")}
-          >
+          <button onBlur={() => handleDropdown(null)} onClick={() => handleDropdown("rating")}>
             <img alt="star" src="/icons/star.svg" />
             {rating}
           </button>
-          <button
-            onBlur={() => handleDropdown(null)}
-            onClick={() => handleDropdown("sort")}
-          >
+          <button onBlur={() => handleDropdown(null)} onClick={() => handleDropdown("sort")}>
             <img alt="sort" src="/icons/sort.svg" />
             Sort By: {sort} First
           </button>
 
           {viewDropdown != null && (
-            <div
-              className={`${styles.dropdownContainer} ${styles[viewDropdown]}`}
-            >
+            <div className={`${styles.dropdownContainer} ${styles[viewDropdown]}`}>
               {viewDropdown == "rating" &&
                 ratingList.map((item, index) => (
                   <span
@@ -293,9 +275,7 @@ export default function () {
                     onMouseDown={(e) => e.preventDefault()}
                   >
                     {index == 0 ? item : `${item} star`}
-                    {rating == item && (
-                      <img alt="check" src="/icons/checkV4.svg" />
-                    )}
+                    {rating == item && <img alt="check" src="/icons/checkV4.svg" />}
                   </span>
                 ))}
 
@@ -308,9 +288,7 @@ export default function () {
                     onMouseDown={(e) => e.preventDefault()}
                   >
                     {item} First
-                    {sort == item && (
-                      <img alt="check" src="/icons/checkV4.svg" />
-                    )}
+                    {sort == item && <img alt="check" src="/icons/checkV4.svg" />}
                   </span>
                 ))}
             </div>
@@ -322,10 +300,7 @@ export default function () {
             <span
               key={index}
               style={{
-                width: `${getWidthPercentage(
-                  item.width,
-                  FIGMA_DIMENSIONS.TABLE.WIDTH
-                )}%`,
+                width: `${getWidthPercentage(item.width, FIGMA_DIMENSIONS.TABLE.WIDTH)}%`,
               }}
             >
               {item.name}
@@ -334,12 +309,7 @@ export default function () {
         </div>
 
         <div className={styles.tableContents}>
-          {loading && (
-            <Loader
-              loaderType={"feedback"}
-              loaderData={{ length: 10, columnDetails }}
-            />
-          )}
+          {loading && <Loader loaderType={"feedback"} loaderData={{ length: 10, columnDetails }} />}
 
           {!loading && filteredFeedbackData.length == 0 && (
             <div className={styles.emptyState}>
@@ -354,10 +324,7 @@ export default function () {
           {!loading &&
             filteredFeedbackData.length > 0 &&
             filteredFeedbackData
-              .slice(
-                (currentPage - 1) * itemsPerPage,
-                currentPage * itemsPerPage
-              )
+              .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
               .map((data, index) => (
                 <div
                   className={styles.contentContainer}
@@ -367,10 +334,7 @@ export default function () {
                   <div
                     className={styles.userContainer}
                     style={{
-                      width: `${getWidthPercentage(
-                        columnDetails[0].width,
-                        tableWidth
-                      )}%`,
+                      width: `${getWidthPercentage(columnDetails[0].width, tableWidth)}%`,
                     }}
                     onClick={() => {
                       setSelectedCandidate(data);
@@ -386,10 +350,7 @@ export default function () {
                   <span
                     className={styles.position}
                     style={{
-                      width: `${getWidthPercentage(
-                        columnDetails[1].width,
-                        tableWidth
-                      )}%`,
+                      width: `${getWidthPercentage(columnDetails[1].width, tableWidth)}%`,
                     }}
                   >
                     {data?.position_applied}
@@ -397,10 +358,7 @@ export default function () {
                   <div
                     className={styles.ratingContainer}
                     style={{
-                      width: `${getWidthPercentage(
-                        columnDetails[2].width,
-                        tableWidth
-                      )}%`,
+                      width: `${getWidthPercentage(columnDetails[2].width, tableWidth)}%`,
                     }}
                   >
                     {Array.from({ length: 5 }).map((_, index) => (
@@ -408,9 +366,7 @@ export default function () {
                         key={index}
                         alt="star-rating"
                         src={`/icons/${
-                          index < parseInt(data?.rating)
-                            ? "star-filled"
-                            : "star-empty"
+                          index < parseInt(data?.rating) ? "star-filled" : "star-empty"
                         }.svg`}
                       />
                     ))}
@@ -418,10 +374,7 @@ export default function () {
                   <span
                     className={styles.feedback}
                     style={{
-                      width: `${getWidthPercentage(
-                        columnDetails[3].width,
-                        tableWidth
-                      )}%`,
+                      width: `${getWidthPercentage(columnDetails[3].width, tableWidth)}%`,
                     }}
                   >
                     {data?.feedback || "-"}
@@ -429,10 +382,7 @@ export default function () {
                   <span
                     className={styles.date}
                     style={{
-                      width: `${getWidthPercentage(
-                        columnDetails[4].width,
-                        tableWidth
-                      )}%`,
+                      width: `${getWidthPercentage(columnDetails[4].width, tableWidth)}%`,
                     }}
                   >
                     {data?.date}
@@ -447,10 +397,7 @@ export default function () {
             disabled={currentPage === 1}
             className={currentPage === 1 ? styles.disabled : ""}
           >
-            <img
-              alt="arrow"
-              src={`/icons/arrow${currentPage === 1 ? "-disabled" : ""}.svg`}
-            />
+            <img alt="arrow" src={`/icons/arrow${currentPage === 1 ? "-disabled" : ""}.svg`} />
             Previous
           </button>
 
@@ -474,18 +421,14 @@ export default function () {
           </div>
 
           <button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
             className={currentPage === totalPages ? styles.disabled : ""}
           >
             Next
             <img
               alt="arrow"
-              src={`/icons/arrow${
-                currentPage === totalPages ? "-disabled" : ""
-              }.svg`}
+              src={`/icons/arrow${currentPage === totalPages ? "-disabled" : ""}.svg`}
             />
           </button>
         </div>

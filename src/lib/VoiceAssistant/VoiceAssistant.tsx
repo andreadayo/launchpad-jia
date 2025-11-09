@@ -75,11 +75,7 @@ export default function () {
   return (
     <div>
       {!isLoading && (
-        <button
-          className="btn btn-default"
-          onClick={start}
-          disabled={isRecording}
-        >
+        <button className="btn btn-default" onClick={start} disabled={isRecording}>
           Start
         </button>
       )}

@@ -1,32 +1,32 @@
 // Service Worker for handling background uploads
-self.addEventListener('install', (event) => {
-    self.skipWaiting();
-  });
-  
-self.addEventListener('activate', (event) => {
+self.addEventListener("install", (event) => {
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", (event) => {
   event.waitUntil(clients.claim());
 });
-  
-self.addEventListener('message', async (event) => {
-  if (event.data.type === 'UPLOAD_RECORDING') {
+
+self.addEventListener("message", async (event) => {
+  if (event.data.type === "UPLOAD_RECORDING") {
     const { recording, presignedUrl, interviewId } = event.data;
     const messagePort = event.ports[0];
     try {
       // Upload the recording
       const uploadResponse = await fetch(presignedUrl, {
-        method: 'PUT',
+        method: "PUT",
         body: recording,
         headers: {
-          'Content-Type': recording.type,
-        }
+          "Content-Type": recording.type,
+        },
       });
 
       if (uploadResponse.ok) {
         // Update interview status using fetch instead of axios
         const updateResponse = await fetch("/api/update-interview", {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             data: {
@@ -36,27 +36,27 @@ self.addEventListener('message', async (event) => {
               },
             },
             uid: interviewId,
-          })
+          }),
         });
 
         if (!updateResponse.ok) {
-          throw new Error('Failed to update interview status');
+          throw new Error("Failed to update interview status");
         }
 
         messagePort.postMessage({
-          type: 'UPLOAD_COMPLETE',
+          type: "UPLOAD_COMPLETE",
           interviewId,
-          success: true
+          success: true,
         });
       } else {
-        throw new Error('Upload failed');
+        throw new Error("Upload failed");
       }
     } catch (error) {
       // Notify the client of failed upload
       messagePort.postMessage({
-        type: 'UPLOAD_ERROR',
+        type: "UPLOAD_ERROR",
         interviewId,
-        error: error.message
+        error: error.message,
       });
     }
   }

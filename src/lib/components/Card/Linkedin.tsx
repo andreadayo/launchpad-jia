@@ -61,10 +61,7 @@ export default function () {
     } catch (error) {
       console.error("LinkedIn sync error:", error);
       Swal.close();
-      errorToast(
-        "Failed to sync with LinkedIn. Please try again later.",
-        "top-center"
-      );
+      errorToast("Failed to sync with LinkedIn. Please try again later.", "top-center");
     } finally {
       setIsLoading(false);
     }
@@ -80,8 +77,8 @@ export default function () {
       </div>
       <div className="notice fade-in mb-1">
         <span>
-          <i className="la la-info-circle text-primary"></i> Enter your LinkedIn
-          profile URL to sync your professional information into your CV.
+          <i className="la la-info-circle text-primary"></i> Enter your LinkedIn profile URL to sync
+          your professional information into your CV.
         </span>
       </div>
       <div className="mb-3">
@@ -120,8 +117,7 @@ export default function () {
       {isSynced && (
         <div className="notice fade-in mt-2" style={{ color: "#5bb573" }}>
           <span>
-            <i className="la la-check-circle"></i> Successfully synced with
-            LinkedIn
+            <i className="la la-check-circle"></i> Successfully synced with LinkedIn
           </span>
         </div>
       )}

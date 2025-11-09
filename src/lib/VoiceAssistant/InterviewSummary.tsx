@@ -46,9 +46,7 @@ export default function InterviewSummary({
     let intSummary = "";
 
     trData.forEach((msg) => {
-      intSummary += `${msg.type === "jia" ? "interviewer" : "applicant"}: ${
-        msg.content
-      }\n`;
+      intSummary += `${msg.type === "jia" ? "interviewer" : "applicant"}: ${msg.content}\n`;
     });
 
     let llmPrompt = `
@@ -92,9 +90,7 @@ export default function InterviewSummary({
 
   return (
     <div
-      className={`meeting-interface ${
-        currentScreen === "summary" ? "d-flex" : "d-none"
-      }`}
+      className={`meeting-interface ${currentScreen === "summary" ? "d-flex" : "d-none"}`}
       id="interview-summary-container"
       style={{
         overflowY: "scroll",

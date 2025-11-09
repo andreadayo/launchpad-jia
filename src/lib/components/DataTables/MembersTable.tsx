@@ -182,10 +182,7 @@ export default function MembersTable() {
                           </div>
                         </td>
                         <td className="adaptive-cell">
-                          <span
-                            className="text-truncate d-block"
-                            style={{ maxWidth: 180 }}
-                          >
+                          <span className="text-truncate d-block" style={{ maxWidth: 180 }}>
                             {item.email || "Not specified"}
                           </span>
                         </td>
@@ -207,9 +204,7 @@ export default function MembersTable() {
                         <td className="adaptive-cell">
                           <span
                             className={`badge ${
-                              item.status === "joined"
-                                ? "badge-success"
-                                : "badge-secondary"
+                              item.status === "joined" ? "badge-success" : "badge-secondary"
                             }`}
                             style={{ textTransform: "capitalize" }}
                           >
@@ -241,9 +236,7 @@ export default function MembersTable() {
           </div>
         </div>
       </div>
-      {showInviteModal && (
-        <InviteMemberModal onClose={() => setShowInviteModal(false)} />
-      )}
+      {showInviteModal && <InviteMemberModal onClose={() => setShowInviteModal(false)} />}
       {showEditModal && selectedMember && (
         <EditMemberModal
           onClose={() => {

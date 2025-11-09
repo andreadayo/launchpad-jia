@@ -29,9 +29,7 @@ export const VoiceTextToSpeech = ({
 }: VoiceTextToSpeechProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(
-    null
-  );
+  const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     if (text && !isLoading && !isReady) {

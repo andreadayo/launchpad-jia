@@ -18,36 +18,25 @@ interface EditMemberModalProps {
   };
 }
 
-export default function EditMemberModal({
-  onClose,
-  memberData,
-}: EditMemberModalProps) {
+export default function EditMemberModal({ onClose, memberData }: EditMemberModalProps) {
   const { orgID } = useAppContext();
   const [role, setRole] = useState<"admin" | "hiring_manager" | null>(null);
-  const [selectedCareers, setSelectedCareers] = useState<
-    { id: string; jobTitle: string }[]
-  >([]);
+  const [selectedCareers, setSelectedCareers] = useState<{ id: string; jobTitle: string }[]>([]);
   const [careerSearch, setCareerSearch] = useState("");
   const [careersLoading, setCareersLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [careers, setCareers] = useState<{ id: string; jobTitle: string }[]>(
-    []
-  );
+  const [careers, setCareers] = useState<{ id: string; jobTitle: string }[]>([]);
 
   // Filter careers based on search
   const filteredCareers = careers.filter((career) =>
     career.jobTitle.toLowerCase().includes(careerSearch.toLowerCase())
   );
 
-  const handleCareerChange = (
-    career: { id: string; jobTitle: string } | "All Careers"
-  ) => {
+  const handleCareerChange = (career: { id: string; jobTitle: string } | "All Careers") => {
     if (career === "All Careers") {
-      setSelectedCareers(
-        selectedCareers.length === careers.length ? [] : [...careers]
-      );
+      setSelectedCareers(selectedCareers.length === careers.length ? [] : [...careers]);
     } else {
       setSelectedCareers((prev) =>
         prev.some((c) => c.id === career.id)
@@ -103,10 +92,7 @@ export default function EditMemberModal({
         email: memberData.email,
         orgID: orgID,
         role: role,
-        careers:
-          role === "hiring_manager"
-            ? selectedCareers.map((c) => c.id)
-            : undefined,
+        careers: role === "hiring_manager" ? selectedCareers.map((c) => c.id) : undefined,
       });
       Swal.fire({
         title: "Member updated successfully",
@@ -362,22 +348,16 @@ export default function EditMemberModal({
                                 borderRadius: 4,
                               }}
                               onMouseOver={(e) =>
-                                (e.currentTarget.style.backgroundColor =
-                                  "#f8f9fa")
+                                (e.currentTarget.style.backgroundColor = "#f8f9fa")
                               }
                               onMouseOut={(e) =>
-                                (e.currentTarget.style.backgroundColor =
-                                  "transparent")
+                                (e.currentTarget.style.backgroundColor = "transparent")
                               }
                             >
                               <input
                                 type="checkbox"
-                                checked={
-                                  selectedCareers.length === careers.length
-                                }
-                                onChange={() =>
-                                  handleCareerChange("All Careers")
-                                }
+                                checked={selectedCareers.length === careers.length}
+                                onChange={() => handleCareerChange("All Careers")}
                                 style={{ cursor: "pointer" }}
                               />
                               All Careers
@@ -397,19 +377,15 @@ export default function EditMemberModal({
                                   borderRadius: 4,
                                 }}
                                 onMouseOver={(e) =>
-                                  (e.currentTarget.style.backgroundColor =
-                                    "#f8f9fa")
+                                  (e.currentTarget.style.backgroundColor = "#f8f9fa")
                                 }
                                 onMouseOut={(e) =>
-                                  (e.currentTarget.style.backgroundColor =
-                                    "transparent")
+                                  (e.currentTarget.style.backgroundColor = "transparent")
                                 }
                               >
                                 <input
                                   type="checkbox"
-                                  checked={selectedCareers.some(
-                                    (c) => c.id === career.id
-                                  )}
+                                  checked={selectedCareers.some((c) => c.id === career.id)}
                                   onChange={() => handleCareerChange(career)}
                                   style={{ cursor: "pointer" }}
                                 />
@@ -436,9 +412,7 @@ export default function EditMemberModal({
                   </div>
                 )}
                 {error && (
-                  <div style={{ color: "salmon", marginTop: 6, fontSize: 14 }}>
-                    {error}
-                  </div>
+                  <div style={{ color: "salmon", marginTop: 6, fontSize: 14 }}>{error}</div>
                 )}
               </div>
             </div>

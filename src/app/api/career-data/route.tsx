@@ -7,10 +7,7 @@ export async function POST(request: Request) {
     const { id, orgID } = await request.json();
 
     if (!id) {
-      return NextResponse.json(
-        { error: "Career ID is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Career ID is required" }, { status: 400 });
     }
 
     const { db } = await connectMongoDB();
@@ -29,9 +26,6 @@ export async function POST(request: Request) {
     return NextResponse.json(career);
   } catch (error) {
     console.error("Error fetching career:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch career data" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch career data" }, { status: 500 });
   }
 }

@@ -70,11 +70,7 @@ export default function Layout({ children }) {
       let pathSplit = pathname.split("/");
 
       let activeMenu = null;
-      const applicantLinkSet = [
-        ...navItems,
-        ...footerNavItems,
-        ...superAdminNavItems,
-      ];
+      const applicantLinkSet = [...navItems, ...footerNavItems, ...superAdminNavItems];
 
       if (pathSplit.length <= 3) {
         activeMenu = applicantLinkSet.find((x) => x.href === pathname);
@@ -87,9 +83,7 @@ export default function Layout({ children }) {
 
       if (!activeMenu) {
         // Default to careers
-        activeMenu = applicantLinkSet.find(
-          (x) => x.href === "/recruiter-dashboard/careers"
-        );
+        activeMenu = applicantLinkSet.find((x) => x.href === "/recruiter-dashboard/careers");
       }
 
       setActiveLink(activeMenu.label);

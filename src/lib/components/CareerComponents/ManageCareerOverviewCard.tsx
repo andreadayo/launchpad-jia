@@ -1,15 +1,7 @@
 import { successToast } from "@/lib/Utils";
 
 export default function ManageCareerOverviewCard(props: any) {
-  const {
-    jobTitle,
-    description,
-    location,
-    workSetup,
-    workSetupRemarks,
-    jobID,
-    orgID,
-  } = props;
+  const { jobTitle, description, location, workSetup, workSetupRemarks, jobID, orgID } = props;
 
   return (
     <div className="card shadow-1">
@@ -35,10 +27,7 @@ export default function ManageCareerOverviewCard(props: any) {
                 navigator.clipboard.writeText(
                   `https://hellojia.ai/applicant/job-openings/${jobID}`
                 );
-                successToast(
-                  "Public Job Link Copied to Clipboard",
-                  "top-center"
-                );
+                successToast("Public Job Link Copied to Clipboard", "top-center");
               }}
             >
               <i className="la la-link mr-1 text-info"></i> Copy Public Job Link
@@ -52,14 +41,10 @@ export default function ManageCareerOverviewCard(props: any) {
                 navigator.clipboard.writeText(
                   `https://hellojia.ai/whitecloak/job-openings/${jobID}`
                 );
-                successToast(
-                  "WC Careers AI | Public Job Link Copied to Clipboard",
-                  "top-center"
-                );
+                successToast("WC Careers AI | Public Job Link Copied to Clipboard", "top-center");
               }}
             >
-              <i className="la la-link mr-1 text-info"></i> WC Careers AI | Copy
-              Public Job Link
+              <i className="la la-link mr-1 text-info"></i> WC Careers AI | Copy Public Job Link
             </button>
           )}
         </div>

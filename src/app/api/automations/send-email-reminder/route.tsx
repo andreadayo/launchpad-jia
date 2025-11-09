@@ -13,8 +13,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error:
-            "Missing required parameters: to, subject, and message are required",
+          error: "Missing required parameters: to, subject, and message are required",
         },
         { status: 400 }
       );
@@ -46,10 +45,7 @@ export async function POST(request: NextRequest) {
           const { db } = await connectMongoDB();
           await db
             .collection("interviews")
-            .updateOne(
-              { _id: new ObjectId(_id) },
-              { $set: { lastAutoReminder: new Date() } }
-            );
+            .updateOne({ _id: new ObjectId(_id) }, { $set: { lastAutoReminder: new Date() } });
         } catch (dbError) {
           console.error("Error updating lastAutoReminder:", dbError);
           // Don't fail the email sending if DB update fails

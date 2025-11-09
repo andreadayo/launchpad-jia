@@ -52,8 +52,7 @@ export default function Dashboard() {
       questions: [],
     },
   ]);
-  const [screeningSetting, setScreeningSetting] =
-    useState("Good Fit and above");
+  const [screeningSetting, setScreeningSetting] = useState("Good Fit and above");
   const [requireVideo, setRequireVideo] = useState(true);
 
   async function addCareer() {
@@ -120,13 +119,8 @@ export default function Dashboard() {
               <div className="header-body">
                 <div className="row align-items-center py-4">
                   <div className="col-lg-6 col-7">
-                    <h6 className="h2 text-white d-inline-block mb-0">
-                      Add New Career
-                    </h6>
-                    <nav
-                      aria-label="breadcrumb"
-                      className="d-none d-md-inline-block ml-md-4"
-                    >
+                    <h6 className="h2 text-white d-inline-block mb-0">Add New Career</h6>
+                    <nav aria-label="breadcrumb" className="d-none d-md-inline-block ml-md-4">
                       <ol className="breadcrumb breadcrumb-links breadcrumb-dark">
                         <li className="breadcrumb-item">
                           <a href="#">
@@ -157,8 +151,7 @@ export default function Dashboard() {
                 <div className="card shadow-1">
                   <div className="card-header">
                     <h3 className="mb-0 mr-auto">
-                      <i className="la la-list text-primary mr-2" /> Career
-                      Information
+                      <i className="la la-list text-primary mr-2" /> Career Information
                     </h3>
                   </div>
 
@@ -226,8 +219,7 @@ export default function Dashboard() {
                 <div className="card shadow-1">
                   <div className="card-header">
                     <h3 className="mb-0 mr-auto">
-                      <i className="la la-edit text-primary mr-2" /> Editor
-                      Toolkit
+                      <i className="la la-edit text-primary mr-2" /> Editor Toolkit
                     </h3>
 
                     <i className="la la-bars text-primary mr-2" />
@@ -244,10 +236,7 @@ export default function Dashboard() {
                       description &&
                       location &&
                       workSetup &&
-                      questions.reduce(
-                        (acc, group) => acc + group.questions.length,
-                        0
-                      ) > 0 && (
+                      questions.reduce((acc, group) => acc + group.questions.length, 0) > 0 && (
                         <button
                           className="btn btn-success fade-in-bottom"
                           onClick={() => {

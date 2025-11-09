@@ -15,9 +15,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(interviews);
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch interviews" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch interviews" }, { status: 500 });
   }
 }

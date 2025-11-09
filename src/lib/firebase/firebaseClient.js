@@ -111,9 +111,7 @@ export async function signInWithGoogle(type) {
 
       // handle direct interview link redirects
       if (window.location.search.includes("?directInterviewID")) {
-        let directInterviewID = window.location.search.split(
-          "?directInterviewID="
-        )[1];
+        let directInterviewID = window.location.search.split("?directInterviewID=")[1];
 
         if (directInterviewID) {
           window.location.href = `/direct-interview/${directInterviewID}`;
@@ -177,9 +175,7 @@ export async function signInWithGoogle(type) {
         localStorage.role = "admin";
         const activeOrg = localStorage.activeOrg;
 
-        localStorage.activeOrg = activeOrg
-          ? activeOrg
-          : JSON.stringify(orgData.data[0]);
+        localStorage.activeOrg = activeOrg ? activeOrg : JSON.stringify(orgData.data[0]);
         localStorage.orgList = JSON.stringify(orgData.data);
 
         const parsedActiveOrg = JSON.parse(localStorage.activeOrg);
@@ -214,9 +210,7 @@ export function signInWithMicrosoft() {
         .post("/api/auth", {
           name: profile.email.split("@")[0],
           email: profile.email,
-          image: `https://api.dicebear.com/8.x/shapes/svg?seed=${
-            profile.email.split("@")[0]
-          }`,
+          image: `https://api.dicebear.com/8.x/shapes/svg?seed=${profile.email.split("@")[0]}`,
         })
         .then((res) => {
           if (res.data.error) {

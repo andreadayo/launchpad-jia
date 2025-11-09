@@ -36,19 +36,11 @@ export async function POST(req: Request) {
     }
 
     // Update member
-    await db
-      .collection("members")
-      .updateOne({ email, orgID }, { $set: updateData });
+    await db.collection("members").updateOne({ email, orgID }, { $set: updateData });
 
-    return NextResponse.json(
-      { message: "Member updated successfully" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Member updated successfully" }, { status: 200 });
   } catch (error) {
     console.error("Error updating member:", error);
-    return NextResponse.json(
-      { error: "Failed to update member" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to update member" }, { status: 500 });
   }
 }

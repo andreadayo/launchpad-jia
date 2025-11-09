@@ -56,10 +56,7 @@ class PageErrorBoundary extends Component<Props, State> {
               <i className="las la-exclamation-circle"></i>
             </div>
             <h3>Page Error</h3>
-            <p>
-              This page encountered an error. Please try refreshing or
-              navigating back.
-            </p>
+            <p>This page encountered an error. Please try refreshing or navigating back.</p>
 
             <div className="page-error-actions">
               <button onClick={this.handleRetry} className="page-retry-btn">

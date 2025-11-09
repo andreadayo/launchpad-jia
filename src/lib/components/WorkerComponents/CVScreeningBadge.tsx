@@ -55,15 +55,9 @@ export default function CVScreeningBadge(props) {
     <>
       {interviewData && (
         <>
-          <button
-            className="redo-cv-screening d-none"
-            onClick={screenCV}
-          ></button>
+          <button className="redo-cv-screening d-none" onClick={screenCV}></button>
 
-          <Tooltip
-            className="cv-screening-tooltip fade-in"
-            id="cv-screening-tooltip"
-          />
+          <Tooltip className="cv-screening-tooltip fade-in" id="cv-screening-tooltip" />
 
           <a
             data-tooltip-id="cv-screening-tooltip"
@@ -84,8 +78,7 @@ export default function CVScreeningBadge(props) {
             {!interviewData.cvStatus && processing && (
               <div className={`worker-badge state-processing`}>
                 <span>
-                  <i className="la la-circle-notch spin text-primary" />{" "}
-                  Screening In Progress...
+                  <i className="la la-circle-notch spin text-primary" /> Screening In Progress...
                 </span>
               </div>
             )}

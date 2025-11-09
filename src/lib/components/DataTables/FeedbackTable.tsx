@@ -37,9 +37,7 @@ export default function FeedbackTable() {
         }
 
         if (parsedActiveOrg.role == "hiring_manager") {
-          const filteredData = res.data.filter((data) =>
-            parsedActiveOrg.careers.includes(data.id)
-          );
+          const filteredData = res.data.filter((data) => parsedActiveOrg.careers.includes(data.id));
 
           setData(filteredData);
         }
@@ -112,20 +110,12 @@ export default function FeedbackTable() {
                           style={{ minHeight: "100px" }}
                         >
                           <span style={{ color: "#d1d5db" }}>
-                            <i
-                              className="la la-inbox"
-                              style={{ fontSize: 48 }}
-                            ></i>
+                            <i className="la la-inbox" style={{ fontSize: 48 }}></i>
                           </span>
-                          <div
-                            className="mt-2 mb-1 font-weight-bold"
-                            style={{ color: "#6c757d" }}
-                          >
+                          <div className="mt-2 mb-1 font-weight-bold" style={{ color: "#6c757d" }}>
                             No feedback yet
                           </div>
-                          <div className="text-muted">
-                            Feedback submissions will appear here.
-                          </div>
+                          <div className="text-muted">Feedback submissions will appear here.</div>
                         </div>
                       </td>
                     </tr>
@@ -157,9 +147,7 @@ export default function FeedbackTable() {
                               : "-"}
                           </td>
                           <td>
-                            {item.createdAt
-                              ? moment(item.createdAt).format("MMMM DD, YYYY")
-                              : "-"}
+                            {item.createdAt ? moment(item.createdAt).format("MMMM DD, YYYY") : "-"}
                           </td>
                           <td style={{ textAlign: "right" }}>
                             {interviewID && (
@@ -174,8 +162,7 @@ export default function FeedbackTable() {
                                   fontWeight: 600,
                                   fontSize: 16,
                                   boxShadow: "0 2px 8px #5e39d633",
-                                  transition:
-                                    "background 0.18s, box-shadow 0.18s",
+                                  transition: "background 0.18s, box-shadow 0.18s",
                                   display: "flex",
                                   alignItems: "center",
                                   gap: 8,
@@ -186,12 +173,8 @@ export default function FeedbackTable() {
                                   e.stopPropagation();
                                   window.location.href = `/dashboard/interviews/manage/${interviewID}`;
                                 }}
-                                onMouseOver={(e) =>
-                                  (e.currentTarget.style.background = "#4629b6")
-                                }
-                                onMouseOut={(e) =>
-                                  (e.currentTarget.style.background = "#5e39d6")
-                                }
+                                onMouseOver={(e) => (e.currentTarget.style.background = "#4629b6")}
+                                onMouseOut={(e) => (e.currentTarget.style.background = "#5e39d6")}
                               >
                                 <span
                                   style={{

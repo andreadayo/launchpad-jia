@@ -62,9 +62,7 @@ export default function () {
 
     if (sessionStorage.getItem("hasChanges") == "true") {
       Promise.resolve(
-        window.confirm(
-          "You have unsaved changes. Are you sure you want to leave this page?"
-        )
+        window.confirm("You have unsaved changes. Are you sure you want to leave this page?")
       ).then((confirmed) => {
         if (confirmed) {
           if (route == "/whitecloak") {
@@ -125,11 +123,7 @@ export default function () {
     <nav className={styles.navbar}>
       <img alt="wc-careers" src="/icons/wc-careers.svg" onClick={handleClick} />
 
-      <div
-        className={`webView ${styles.linkContainer} ${
-          user == null ? "" : styles.login
-        }`}
-      >
+      <div className={`webView ${styles.linkContainer} ${user == null ? "" : styles.login}`}>
         {user == null ? (
           <>
             <a
@@ -174,21 +168,13 @@ export default function () {
       <img
         alt="dropdown"
         className={`mobileView ${styles.user}`}
-        src={`${
-          viewDropdown
-            ? "/icons/x.svg"
-            : user != null
-            ? user.image
-            : "/icons/menu.svg"
-        }`}
+        src={`${viewDropdown ? "/icons/x.svg" : user != null ? user.image : "/icons/menu.svg"}`}
         onClick={toggleDropdown}
       />
 
       {viewDropdown && (
         <div
-          className={`mobileView ${styles.dropdownContainer} ${
-            user == null ? "" : styles.login
-          }`}
+          className={`mobileView ${styles.dropdownContainer} ${user == null ? "" : styles.login}`}
         >
           {user == null ? (
             <>
@@ -214,9 +200,9 @@ export default function () {
                       activeLink === link.text
                         ? styles.active
                         : pathname.includes("/whitecloak/job-openings/") &&
-                          link.text == "Job Openings"
-                        ? styles.active
-                        : ""
+                            link.text == "Job Openings"
+                          ? styles.active
+                          : ""
                     }
                     onClick={() => link.function(link.text)}
                   >

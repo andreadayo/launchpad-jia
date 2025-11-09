@@ -37,18 +37,14 @@ export async function POST(request: Request) {
     const lastTranscript = transcripts[transcripts.length - 1];
 
     // Calculate duration in minutes
-    const deltaDuration =
-      (lastTranscript.time - firstTranscript.time) / (1000 * 60);
+    const deltaDuration = (lastTranscript.time - firstTranscript.time) / (1000 * 60);
 
     console.log(`Interview Duration: ${deltaDuration} minutes`);
 
     // Update the interview document with the calculated duration
     await db
       .collection("interviews")
-      .updateOne(
-        { interviewID: interviewID },
-        { $set: { interviewDuration: deltaDuration } }
-      );
+      .updateOne({ interviewID: interviewID }, { $set: { interviewDuration: deltaDuration } });
   }
 
   return NextResponse.json({

@@ -51,14 +51,7 @@ export default function () {
     {
       name: "Experience Level",
       value: [],
-      list: [
-        "Internship",
-        "Entry-level",
-        "Associate",
-        "Mid-Senior Level",
-        "Director",
-        "Executive",
-      ],
+      list: ["Internship", "Entry-level", "Associate", "Mid-Senior Level", "Director", "Executive"],
       dropdownWidth: 177,
     },
     {
@@ -158,10 +151,7 @@ export default function () {
     const updatedButtons = [...buttons];
     updatedButtons[indexButton].value = [];
 
-    updateQueryParams(
-      updatedButtons[indexButton].name.toLowerCase().replace(" ", ""),
-      ""
-    );
+    updateQueryParams(updatedButtons[indexButton].name.toLowerCase().replace(" ", ""), "");
 
     setButtons(updatedButtons);
     // setCurrentPage(1);
@@ -186,10 +176,7 @@ export default function () {
     if (filterElement && buttonElement) {
       let offset = 16;
 
-      if (
-        pathname == pathConstants.dashboardJobOpenings &&
-        deviceWidth >= 768
-      ) {
+      if (pathname == pathConstants.dashboardJobOpenings && deviceWidth >= 768) {
         offset = 272;
       }
 
@@ -250,21 +237,14 @@ export default function () {
 
       updatedButtons[indexButton].value = currentValues;
     } else {
-      if (
-        !(
-          indexButton == 1 &&
-          buttons[1].list[buttons[1].list.length - 1] == item
-        )
-      ) {
+      if (!(indexButton == 1 && buttons[1].list[buttons[1].list.length - 1] == item)) {
         setDropdownIndex(null);
         updatedButtons[indexButton].value = [item];
       }
     }
 
     if (indexButton == 1) {
-      if (
-        buttons[indexButton].list[buttons[indexButton].list.length - 1] == item
-      ) {
+      if (buttons[indexButton].list[buttons[indexButton].list.length - 1] == item) {
         setModalType("location");
       } else {
         setSearchInputs((prev) => ({ ...prev, [indexButton]: "" }));
@@ -371,22 +351,17 @@ export default function () {
 
     if (filters[buttons[0].name][0] == buttons[0].list[0]) {
       filteredCareers.sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
     }
 
     if (filters[buttons[0].name][0] == buttons[0].list[1]) {
       filteredCareers.sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       );
     }
 
-    if (
-      filters[buttons[2].name].length > 0 &&
-      filters[buttons[2].name][0] != buttons[2].list[0]
-    ) {
+    if (filters[buttons[2].name].length > 0 && filters[buttons[2].name][0] != buttons[2].list[0]) {
       const now = new Date().getTime();
       const datePosted = filters[buttons[2].name][0];
       const datePostedFilters = buttons[2].list;
@@ -421,8 +396,7 @@ export default function () {
       filteredCareers = filteredCareers.filter((career) => {
         return filters[buttons[5].name].some(
           (setup) =>
-            career.workSetup &&
-            career.workSetup.toLowerCase().includes(setup.toLowerCase())
+            career.workSetup && career.workSetup.toLowerCase().includes(setup.toLowerCase())
         );
       });
     }
@@ -461,9 +435,7 @@ export default function () {
     })
       .then((res) => {
         const result = res.data;
-        const organization: any = [
-          ...new Set(result.map((item) => item.organization.name)),
-        ];
+        const organization: any = [...new Set(result.map((item) => item.organization.name))];
         const updatedButtons = [...buttons];
         updatedButtons[4].list = organization;
 
@@ -543,9 +515,7 @@ export default function () {
   return (
     <div
       className={`${styles.jobOpeningsContainer} ${
-        pathname == pathConstants.dashboardJobOpenings && deviceWidth > 768
-          ? styles.dashboard
-          : ""
+        pathname == pathConstants.dashboardJobOpenings && deviceWidth > 768 ? styles.dashboard : ""
       }`}
     >
       <div className={styles.filterContainer} ref={filterContainerRef}>
@@ -559,9 +529,7 @@ export default function () {
             style={{ display: [1, 3].includes(indexBtn) ? "none" : "" }}
           >
             <button
-              className={`${
-                indexBtn > 0 && button.value.length > 0 ? "" : "secondaryBtn"
-              }`}
+              className={`${indexBtn > 0 && button.value.length > 0 ? "" : "secondaryBtn"}`}
               disabled={loading}
               onClick={() => handleDropdownIndex(indexBtn)}
             >
@@ -569,18 +537,14 @@ export default function () {
 
               <span>
                 {indexBtn == 0 && "Sort By: "}
-                {button.value.length > 0
-                  ? button.value.join(", ")
-                  : button.name}
+                {button.value.length > 0 ? button.value.join(", ") : button.name}
               </span>
 
               {indexBtn > 0 && (
                 <img
                   alt=""
                   className={`${
-                    button.value.length == 0 &&
-                    dropdownIndex == indexBtn &&
-                    indexBtn > 0
+                    button.value.length == 0 && dropdownIndex == indexBtn && indexBtn > 0
                       ? styles.rotate
                       : ""
                   }`}
@@ -614,18 +578,14 @@ export default function () {
                     <input
                       placeholder={button.placeholder}
                       value={searchInputs[indexBtn] || ""}
-                      onBlur={(e) =>
-                        (e.target.placeholder = button.placeholder)
-                      }
+                      onBlur={(e) => (e.target.placeholder = button.placeholder)}
                       onChange={(e) =>
                         setSearchInputs((prev) => ({
                           ...prev,
                           [indexBtn]: e.target.value,
                         }))
                       }
-                      onFocus={(e) =>
-                        ((e.target as HTMLInputElement).placeholder = "")
-                      }
+                      onFocus={(e) => ((e.target as HTMLInputElement).placeholder = "")}
                     />
                   </div>
                 )}
@@ -665,14 +625,10 @@ export default function () {
               </span>{" "}
               {buttons[1].value[0] ? `in ${buttons[1].value[0]}` : ""}{" "}
               <span className={styles.bold}>
-                {buttons[4].value.length > 0
-                  ? `at ${buttons[4].value.join(", ")}`
-                  : ""}
+                {buttons[4].value.length > 0 ? `at ${buttons[4].value.join(", ")}` : ""}
               </span>
             </span>
-            <span className={styles.resultNumber}>
-              {filteredCareers.length} jobs found
-            </span>
+            <span className={styles.resultNumber}>{filteredCareers.length} jobs found</span>
           </>
         ) : (
           <span className={styles.loading}></span>
@@ -681,9 +637,7 @@ export default function () {
 
       <div className={styles.jobResultContainer}>
         <div className={styles.jobCardContainer} ref={defaultRef}>
-          {loading && (
-            <Loader loaderType={"career"} loaderData={{ length: 10 }} />
-          )}
+          {loading && <Loader loaderType={"career"} loaderData={{ length: 10 }} />}
 
           {filteredCareers.length == 0 && !loading && (
             <span className={styles.emptyCards}>No jobs found</span>
@@ -696,21 +650,12 @@ export default function () {
               .map((career, index) => (
                 <div
                   className={`${styles.gradientContainer} ${
-                    selectedCareer && selectedCareer.id == career.id
-                      ? styles.active
-                      : ""
+                    selectedCareer && selectedCareer.id == career.id ? styles.active : ""
                   }`}
                   key={index}
-                  ref={
-                    selectedCareer && selectedCareer.id == career.id
-                      ? cardRef
-                      : null
-                  }
+                  ref={selectedCareer && selectedCareer.id == career.id ? cardRef : null}
                 >
-                  <div
-                    className={styles.cardContainer}
-                    onClick={() => handleCard(career)}
-                  >
+                  <div className={styles.cardContainer} onClick={() => handleCard(career)}>
                     <div className={styles.companyDetails}>
                       {career.organization && career.jobTitle && (
                         <>
@@ -719,14 +664,10 @@ export default function () {
                           )}
 
                           <div className={styles.textContainer}>
-                            <span className={styles.jobTitle}>
-                              {career.jobTitle}
-                            </span>
+                            <span className={styles.jobTitle}>{career.jobTitle}</span>
 
                             {career.organization.name && (
-                              <span className={styles.companyName}>
-                                {career.organization.name}
-                              </span>
+                              <span className={styles.companyName}>{career.organization.name}</span>
                             )}
                           </div>
                         </>
@@ -802,9 +743,7 @@ export default function () {
                     alt=""
                     src={assetConstants.externalLink}
                     onClick={() =>
-                      handleRedirection(
-                        `${pathConstants.jobOpenings}/${selectedCareer._id}`
-                      )
+                      handleRedirection(`${pathConstants.jobOpenings}/${selectedCareer._id}`)
                     }
                     onContextMenu={(e) => e.preventDefault()}
                   />
@@ -827,12 +766,9 @@ export default function () {
                 </div>
               )}
 
-              {selectedCareer.organization &&
-                selectedCareer.organization.name && (
-                  <span className={styles.companyName}>
-                    {selectedCareer.organization.name}
-                  </span>
-                )}
+              {selectedCareer.organization && selectedCareer.organization.name && (
+                <span className={styles.companyName}>{selectedCareer.organization.name}</span>
+              )}
 
               {selectedCareer.location && (
                 <span className={`${styles.details} ${styles.withMargin}`}>
@@ -854,17 +790,13 @@ export default function () {
                 </div>
               )}
 
-              {interviews.some(
-                (interview) => interview.id == selectedCareer.id
-              ) ? (
+              {interviews.some((interview) => interview.id == selectedCareer.id) ? (
                 <div className={styles.appliedContainer}>
                   <span className={styles.applied}>
                     <img alt="" src={assetConstants.checkV4} />
                     Applied{" "}
                     {processDate(
-                      interviews.find(
-                        (interview) => interview.id == selectedCareer.id
-                      ).createdAt
+                      interviews.find((interview) => interview.id == selectedCareer.id).createdAt
                     )}
                   </span>
 
@@ -877,11 +809,7 @@ export default function () {
                   </span>
                 </div>
               ) : (
-                <button
-                  className={styles.btnApply}
-                  name="btn-apply"
-                  onClick={handleApply}
-                >
+                <button className={styles.btnApply} name="btn-apply" onClick={handleApply}>
                   Apply Now
                 </button>
               )}
@@ -916,32 +844,22 @@ export default function () {
                       )}
 
                       {selectedCareer.location && (
-                        <span className={styles.details}>
-                          {selectedCareer.location}
-                        </span>
+                        <span className={styles.details}>{selectedCareer.location}</span>
                       )}
 
-                      {selectedCareer.organization.name.includes(
-                        "White Cloak"
-                      ) && (
+                      {selectedCareer.organization.name.includes("White Cloak") && (
                         <>
-                          <span
-                            className={`${styles.details} ${styles.withMargin}`}
-                          >
-                            Founded in 2014, White Cloak continues to be the
-                            innovation partner of choice for many major
-                            corporations, leveraging technology to take its
-                            client’s business to the next level. This technical
-                            superiority and commitment to our clients have
-                            brought numerous recognition and awards to White
-                            Cloak.
+                          <span className={`${styles.details} ${styles.withMargin}`}>
+                            Founded in 2014, White Cloak continues to be the innovation partner of
+                            choice for many major corporations, leveraging technology to take its
+                            client’s business to the next level. This technical superiority and
+                            commitment to our clients have brought numerous recognition and awards
+                            to White Cloak.
                           </span>
 
                           <button
                             className="secondaryBtn"
-                            onClick={() =>
-                              handleRedirection(pathConstants.whitecloak)
-                            }
+                            onClick={() => handleRedirection(pathConstants.whitecloak)}
                           >
                             Learn More
                             <img alt="" src={assetConstants.arrowV3} />

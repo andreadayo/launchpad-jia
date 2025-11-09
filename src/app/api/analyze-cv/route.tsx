@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import connectMongoDB from "@/lib/mongoDB/mongoDB";
 import OpenAI from "openai";
 
-/** 
+/**
  * This API is used to only analyze the CV of a candidate without auto-promoting the candidate stage.
-*/
+ */
 export async function POST(request: Request) {
   const { interviewID, userEmail } = await request.json();
   const { db } = await connectMongoDB();
@@ -40,8 +40,7 @@ export async function POST(request: Request) {
       },
     }
   );
-  const cvScreeningPromptText =
-    cvScreeningPromptData?.cv_screening_prompt?.prompt;
+  const cvScreeningPromptText = cvScreeningPromptData?.cv_screening_prompt?.prompt;
 
   let parsedCV = "";
 
@@ -118,7 +117,7 @@ export async function POST(request: Request) {
     cvScreeningReason: result.reason,
     confidence: result.confidence,
     jobFitScore: result.jobFitScore,
-  }
+  };
 
   if (result.result === "Good Fit") {
     update.stateClass = "state-good";
@@ -130,11 +129,16 @@ export async function POST(request: Request) {
     update.cvSettingResult = "Passed";
   }
 
-  if (result.result === "No Fit" || result.result === "Bad Fit" || result.result === "Ineligible CV" || result.result === "Insufficient Data") {
+  if (
+    result.result === "No Fit" ||
+    result.result === "Bad Fit" ||
+    result.result === "Ineligible CV" ||
+    result.result === "Insufficient Data"
+  ) {
     update.stateClass = "state-rejected";
     update.cvSettingResult = "Failed";
   }
-  
+
   if (interviewData.screeningSetting === "Only Strong Fit") {
     if (result.result === "Strong Fit") {
       update.stateClass = "state-accepted";
@@ -155,9 +159,7 @@ export async function POST(request: Request) {
     }
   }
 
-  await db
-  .collection("interviews")
-  .updateOne({ interviewID: interviewID }, { $set: update });
+  await db.collection("interviews").updateOne({ interviewID: interviewID }, { $set: update });
 
   return NextResponse.json({
     message: "CV Analysis Completed",

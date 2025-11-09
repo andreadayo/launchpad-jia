@@ -54,9 +54,7 @@ export default function () {
   ];
 
   function handleSearch() {
-    const jobSearchPath = `${pathname}${
-      search && search.trim() ? `?search=${search.trim()}` : ""
-    }`;
+    const jobSearchPath = `${pathname}${search && search.trim() ? `?search=${search.trim()}` : ""}`;
 
     handleRedirection(jobSearchPath);
   }
@@ -75,9 +73,7 @@ export default function () {
 
     if (hasChanges == "true") {
       Promise.resolve(
-        window.confirm(
-          "You have unsaved changes. Are you sure you want to leave this page?"
-        )
+        window.confirm("You have unsaved changes. Are you sure you want to leave this page?")
       ).then((confirmed) => {
         if (confirmed) {
           if (path == pathConstants.home) {
@@ -97,11 +93,7 @@ export default function () {
   }
 
   useEffect(() => {
-    if (
-      pathname.includes("/job-openings") &&
-      querySearch &&
-      querySearch.trim()
-    ) {
+    if (pathname.includes("/job-openings") && querySearch && querySearch.trim()) {
       setSearch(querySearch.trim());
     } else {
       setSearch("");
@@ -116,8 +108,7 @@ export default function () {
     <nav
       className={`${styles.navbarContainer} ${
         pathname == pathConstants.home ||
-        (window.location.origin.includes("localhost") &&
-          pathname.includes("job-portal"))
+        (window.location.origin.includes("localhost") && pathname.includes("job-portal"))
           ? styles.home
           : ""
       }`}
@@ -129,9 +120,7 @@ export default function () {
         onClick={() =>
           handleRedirection(
             `${
-              window.location.origin.includes("localhost")
-                ? "/job-portal"
-                : pathConstants.employee
+              window.location.origin.includes("localhost") ? "/job-portal" : pathConstants.employee
             }`
           )
         }
@@ -139,8 +128,7 @@ export default function () {
       />
 
       {(pathname == pathConstants.home ||
-        (window.location.origin.includes("localhost") &&
-          pathname.includes("job-portal"))) && (
+        (window.location.origin.includes("localhost") && pathname.includes("job-portal"))) && (
         <div className={`webView ${styles.linkContainer}`}>
           {links.slice(0, 2).map((item, index) => (
             <span key={index} onClick={() => handleRedirection(item.href)}>
@@ -150,9 +138,7 @@ export default function () {
         </div>
       )}
 
-      {[pathConstants.jobOpenings, pathConstants.dashboardJobOpenings].includes(
-        pathname
-      ) && (
+      {[pathConstants.jobOpenings, pathConstants.dashboardJobOpenings].includes(pathname) && (
         <div className={`webView ${styles.searchContainer}`}>
           <img alt="" src={assetConstants.search} />
           <input
@@ -174,9 +160,7 @@ export default function () {
       {user ? (
         <div className={`webView ${styles.userItems}`}>
           {pathname == pathConstants.uploadCV ? (
-            <span onClick={() => handleRedirection(pathConstants.dashboard)}>
-              Dashboard
-            </span>
+            <span onClick={() => handleRedirection(pathConstants.dashboard)}>Dashboard</span>
           ) : (
             <></>
             // <img alt="" src={assetConstants.bell} />
@@ -194,15 +178,11 @@ export default function () {
           <button className="secondaryBtn" onClick={handleSignIn}>
             Sign In
           </button>
-          <span onClick={() => handleRedirection(pathConstants.employer)}>
-            For Employers
-          </span>
+          <span onClick={() => handleRedirection(pathConstants.employer)}>For Employers</span>
         </div>
       )}
 
-      {[pathConstants.jobOpenings, pathConstants.dashboardJobOpenings].includes(
-        pathname
-      ) && (
+      {[pathConstants.jobOpenings, pathConstants.dashboardJobOpenings].includes(pathname) && (
         <img
           alt=""
           className={`mobileView ${styles.menu}`}
@@ -225,8 +205,8 @@ export default function () {
           user == null && dropdown == false
             ? assetConstants.menu
             : user != null && dropdown == false
-            ? user.image
-            : assetConstants.x
+              ? user.image
+              : assetConstants.x
         }`}
         onClick={() => {
           if (viewSearch) {

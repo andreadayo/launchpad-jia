@@ -32,11 +32,7 @@ export default function ({ children }) {
       <head>
         {/* Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin=""
-        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
           rel="stylesheet"
@@ -46,11 +42,7 @@ export default function ({ children }) {
           rel="preload"
           as="style"
         />
-        <link
-          href="https://fonts.cdnfonts.com/css/satoshi"
-          rel="preload"
-          as="style"
-        />
+        <link href="https://fonts.cdnfonts.com/css/satoshi" rel="preload" as="style" />
         <link href="https://fonts.cdnfonts.com/css/satoshi" rel="stylesheet" />
         {/* Fonts */}
 

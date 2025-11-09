@@ -62,8 +62,8 @@ export default function ({ modalType, setModalType }) {
             image: user?.image,
             name: user?.name,
             email: user?.email,
-          }
-        }
+          },
+        },
       };
 
       if (selectedReason == radioButtonText[3].text) {
@@ -164,19 +164,12 @@ export default function ({ modalType, setModalType }) {
     <div className={styles.modal}>
       {modalType == modal[0] && (
         <div className={`${styles.modalContainer} ${styles[modalType]}`}>
-          <img
-            alt="x"
-            className={styles.xIcon}
-            src="/icons/x.svg"
-            onClick={handleClose}
-          />
+          <img alt="x" className={styles.xIcon} src="/icons/x.svg" onClick={handleClose} />
           <div className={styles.topIcon}>
             <img alt="top-icon" src="/icons/zap.svg" />
           </div>
           <span className={styles.title}>Let’s get you set up!</span>
-          <span className={styles.body}>
-            Sign in to save jobs and apply with one click
-          </span>
+          <span className={styles.body}>Sign in to save jobs and apply with one click</span>
           <button onClick={handleButtonClick}>
             <img alt="google" src="/icons/google.svg" />
             Continue with Google
@@ -192,19 +185,12 @@ export default function ({ modalType, setModalType }) {
 
       {modalType == modal[1] && (
         <div className={`${styles.modalContainer} ${styles[modalType]}`}>
-          <img
-            alt="x"
-            className={styles.xIcon}
-            src="/icons/x.svg"
-            onClick={handleClose}
-          />
+          <img alt="x" className={styles.xIcon} src="/icons/x.svg" onClick={handleClose} />
           <div className={styles.topIcon}>
             <img alt="top-icon" src="/icons/zap.svg" />
           </div>
           <span className={styles.title}>Welcome!</span>
-          <span className={styles.body}>
-            You are now one step closer to your dream job.
-          </span>
+          <span className={styles.body}>You are now one step closer to your dream job.</span>
           <span className={styles.body}>
             Get started by managing your CV to apply to jobs faster.
           </span>
@@ -224,12 +210,7 @@ export default function ({ modalType, setModalType }) {
 
       {modalType == modal[2] && interviewData && (
         <div className={`${styles.modalContainer} ${styles[modalType]}`}>
-          <img
-            alt="x"
-            className={styles.xIcon}
-            src="/icons/x.svg"
-            onClick={handleClose}
-          />
+          <img alt="x" className={styles.xIcon} src="/icons/x.svg" onClick={handleClose} />
           <div className={styles.topIcon}>
             <img alt="top-icon" src="/icons/checkV2.svg" />
           </div>
@@ -245,19 +226,12 @@ export default function ({ modalType, setModalType }) {
 
       {modalType == modal[4] && (
         <div className={`${styles.modalContainer} ${styles[modalType]}`}>
-          <img
-            alt="x"
-            className={styles.xIcon}
-            src="/icons/x.svg"
-            onClick={handleClose}
-          />
+          <img alt="x" className={styles.xIcon} src="/icons/x.svg" onClick={handleClose} />
           <div className={styles.topIcon}>
             <img alt="top-icon" src="/icons/file-check.svg" />
           </div>
           <span className={styles.title}>CV Updated Successfully</span>
-          <span className={styles.body}>
-            You’re one step closer to your next role.
-          </span>
+          <span className={styles.body}>You’re one step closer to your next role.</span>
           <button
             className={styles.browseBtn}
             onClick={() => {
@@ -278,19 +252,14 @@ export default function ({ modalType, setModalType }) {
 
       {modalType == modal[5] && (
         <div className={`${styles.modalContainer} ${styles[modalType]}`}>
-          <img
-            alt="x"
-            className={styles.xIcon}
-            src="/icons/x.svg"
-            onClick={handleClose}
-          />
+          <img alt="x" className={styles.xIcon} src="/icons/x.svg" onClick={handleClose} />
           <div className={styles.topIcon}>
             <img alt="top-icon" src="/icons/rotate-ccw.svg" />
           </div>
           <span className={styles.title}>Request to Retake</span>
           <span className={styles.body}>
-            If something went wrong or you would like another chance to take
-            your AI interview, kindly let us know why.
+            If something went wrong or you would like another chance to take your AI interview,
+            kindly let us know why.
           </span>
           <textarea
             maxLength={300}
@@ -306,9 +275,7 @@ export default function ({ modalType, setModalType }) {
           />
           <span className={styles.bottomText}>Max 300 characters</span>
           <button
-            className={`${styles.retakeBtn} ${
-              textValue?.trim() ? "" : styles.disabled
-            }`}
+            className={`${styles.retakeBtn} ${textValue?.trim() ? "" : styles.disabled}`}
             disabled={!textValue?.trim()}
             onClick={manageInterview}
           >
@@ -319,22 +286,13 @@ export default function ({ modalType, setModalType }) {
 
       {modalType == modal[6] && interviewData && (
         <div className={`${styles.modalContainer} ${styles[modalType]}`}>
-          <img
-            alt="x"
-            className={styles.xIcon}
-            src="/icons/x.svg"
-            onClick={handleClose}
-          />
+          <img alt="x" className={styles.xIcon} src="/icons/x.svg" onClick={handleClose} />
           <div className={styles.topIcon}>
             <img alt="top-icon" src="/icons/xV2.svg" />
           </div>
           <span className={styles.title}>Cancel Application?</span>
-          <span className={styles.body}>
-            You’re about to cancel your application for
-          </span>
-          <span className={`${styles.body} ${styles.role}`}>
-            {interviewData?.jobTitle}.
-          </span>
+          <span className={styles.body}>You’re about to cancel your application for</span>
+          <span className={`${styles.body} ${styles.role}`}>{interviewData?.jobTitle}.</span>
           <br />
           <span className={styles.body}>Please tell us why:</span>
           <form>
@@ -377,17 +335,13 @@ export default function ({ modalType, setModalType }) {
             <button onClick={handleClose}>Go Back</button>
             <button
               className={`${styles.cancel} ${
-                selectedReason &&
-                (selectedReason !== radioButtonText[3].text ||
-                  textValue?.trim())
+                selectedReason && (selectedReason !== radioButtonText[3].text || textValue?.trim())
                   ? ""
                   : styles.disabled
               }`}
               disabled={
                 !selectedReason ||
-                (selectedReason &&
-                  selectedReason == radioButtonText[3].text &&
-                  !textValue?.trim())
+                (selectedReason && selectedReason == radioButtonText[3].text && !textValue?.trim())
               }
               onClick={manageInterview}
             >
@@ -399,26 +353,19 @@ export default function ({ modalType, setModalType }) {
 
       {modalType == modal[7] && (
         <div className={`${styles.modalContainer} ${styles[modalType]}`}>
-          <img
-            alt="x"
-            className={styles.xIcon}
-            src="/icons/x.svg"
-            onClick={handleClose}
-          />
+          <img alt="x" className={styles.xIcon} src="/icons/x.svg" onClick={handleClose} />
           <div className={styles.topIcon}>
             <img alt="top-icon" src="/icons/xV2.svg" />
           </div>
           <span className={styles.title}>Application Cancelled</span>
 
           <span className={styles.body}>
-            Your application for{" "}
-            <span className={styles.role}>Software Engineer - Java</span> has
+            Your application for <span className={styles.role}>Software Engineer - Java</span> has
             been cancelled.
           </span>
           <br />
           <span className={styles.body}>
-            If your plans change, we’d be glad to see your application again in
-            the future.
+            If your plans change, we’d be glad to see your application again in the future.
           </span>
 
           <div className={styles.buttonContainer}>

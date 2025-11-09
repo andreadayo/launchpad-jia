@@ -110,8 +110,8 @@ export default function () {
                     <h2>{job.jobTitle}</h2>
                     {job.workSetup && (
                       <small>
-                        <i className="la la-map-marker"></i> {job.location} |{" "}
-                        {job.workSetup} {job.workSetupRemarks}
+                        <i className="la la-map-marker"></i> {job.location} | {job.workSetup}{" "}
+                        {job.workSetupRemarks}
                       </small>
                     )}
                     <small>

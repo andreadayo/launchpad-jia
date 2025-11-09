@@ -212,9 +212,7 @@ export default function ({ modalType, setModalType }) {
       sessionStorage.clear();
 
       window.location.href = `${
-        window.location.origin.includes("localhost")
-          ? "/job-portal"
-          : pathConstants.employee
+        window.location.origin.includes("localhost") ? "/job-portal" : pathConstants.employee
       }`;
     };
   }
@@ -274,8 +272,7 @@ export default function ({ modalType, setModalType }) {
           <img alt="" className={styles.logo} src={assetConstants.crosshair} />
           <span className={styles.title}>See results closer to you?</span>
           <span className={styles.description}>
-            To get the closest and most relevant results, let Jia use your
-            device’s exact location.
+            To get the closest and most relevant results, let Jia use your device’s exact location.
           </span>
           <button onClick={handleButtonClick}>
             <img alt="" src={assetConstants.crosshairV2} />
@@ -289,17 +286,10 @@ export default function ({ modalType, setModalType }) {
 
       {modalType == modalList[1] && (
         <div className={`${styles.modalContent} ${styles[modalType]}`}>
-          <img
-            alt="x"
-            className={styles.xIcon}
-            src={assetConstants.x}
-            onClick={handleClose}
-          />
+          <img alt="x" className={styles.xIcon} src={assetConstants.x} onClick={handleClose} />
           <img alt="logo" src={assetConstants.jiaLogo} />
           <span className={styles.title}>Let’s get you set up!</span>
-          <span className={styles.description}>
-            Sign in to save jobs and apply with one click
-          </span>
+          <span className={styles.description}>Sign in to save jobs and apply with one click</span>
           <button className="secondaryBtn" onClick={handleButtonClick}>
             <img alt="google" src={assetConstants.google} />
             Continue with Google
@@ -322,11 +312,7 @@ export default function ({ modalType, setModalType }) {
 
       {modalType == modalList[3] && applicationData && (
         <div className={`${styles.modalContent} ${styles[modalType]}`}>
-          <img
-            alt="logo"
-            className={styles.logo}
-            src={assetConstants.checkV2}
-          />
+          <img alt="logo" className={styles.logo} src={assetConstants.checkV2} />
           <span className={styles.title}>Success!</span>
           <span className={styles.description}>You have applied for the</span>
           <span className={styles.description}>
@@ -358,9 +344,7 @@ export default function ({ modalType, setModalType }) {
 
           {!radioValue && (
             <>
-              <span className={styles.description}>
-                Why are you reporting this?
-              </span>
+              <span className={styles.description}>Why are you reporting this?</span>
               <fieldset>
                 {checkList[modalType].map((item, index) => (
                   <label key={index}>
@@ -419,17 +403,12 @@ export default function ({ modalType, setModalType }) {
 
       {modalType == modalList[6] && (
         <div className={`${styles.modalContent} ${styles[modalType]}`}>
-          <img
-            alt="x"
-            className={styles.xIcon}
-            src={assetConstants.x}
-            onClick={handleClose}
-          />
+          <img alt="x" className={styles.xIcon} src={assetConstants.x} onClick={handleClose} />
           <img alt="logo" src={assetConstants.jiaLogo} />
           <span className={styles.title}>Welcome!</span>
           <span className={styles.description}>
-            You are now one step closer to your dream job. Get started by
-            managing your CV to apply to jobs faster.
+            You are now one step closer to your dream job. Get started by managing your CV to apply
+            to jobs faster.
           </span>
           <button className="secondaryBtn" onClick={handleButtonClick}>
             Manage CV
@@ -445,8 +424,8 @@ export default function ({ modalType, setModalType }) {
           <img alt="" className={styles.logo} src={assetConstants.rotateV2} />
           <span className={styles.title}>Request to Retake</span>
           <span className={styles.description}>
-            If something went wrong or you would like another chance to take
-            your AI interview, let us know why.
+            If something went wrong or you would like another chance to take your AI interview, let
+            us know why.
           </span>
           <textarea
             placeholder="Tell us what happened..."
@@ -458,10 +437,7 @@ export default function ({ modalType, setModalType }) {
             <button className="secondaryBtn" onClick={handleClose}>
               Cancel
             </button>
-            <button
-              className={inputValue.trim() ? "" : "disabled"}
-              onClick={handleButtonClick}
-            >
+            <button className={inputValue.trim() ? "" : "disabled"} onClick={handleButtonClick}>
               Submit
             </button>
           </div>
@@ -473,8 +449,8 @@ export default function ({ modalType, setModalType }) {
           <img alt="" className={styles.logo} src={assetConstants.trash} />
           <span className={styles.title}>Cancel Application</span>
           <span className={styles.description}>
-            Are you sure you want to cancel your application for this role? ? If
-            so, please tell us why.
+            Are you sure you want to cancel your application for this role? ? If so, please tell us
+            why.
           </span>
 
           <fieldset>
@@ -494,9 +470,7 @@ export default function ({ modalType, setModalType }) {
           {radioValue == checkList[modalType][3] && (
             <textarea
               placeholder="Tell us what happened..."
-              onBlur={(e) =>
-                (e.target.placeholder = "Tell us what happened...")
-              }
+              onBlur={(e) => (e.target.placeholder = "Tell us what happened...")}
               onChange={(e) => setInputValue(e.target.value)}
               onClick={(e) => ((e.target as HTMLInputElement).placeholder = "")}
             />
@@ -532,12 +506,9 @@ export default function ({ modalType, setModalType }) {
                 </div>
               )}
 
-              {applicationData.organization &&
-                applicationData.organization.name && (
-                  <span className={styles.companyName}>
-                    {applicationData.organization.name}
-                  </span>
-                )}
+              {applicationData.organization && applicationData.organization.name && (
+                <span className={styles.companyName}>{applicationData.organization.name}</span>
+              )}
 
               {applicationData.location && (
                 <span className={`${styles.details} ${styles.withMargin}`}>
@@ -636,9 +607,7 @@ export default function ({ modalType, setModalType }) {
           <img alt="" className={styles.logo} src={assetConstants.logoutV3} />
           <span className={styles.title}>Log Out Confirmation</span>
 
-          <span className={styles.description}>
-            Are you sure you want to log out?
-          </span>
+          <span className={styles.description}>Are you sure you want to log out?</span>
 
           <div className={styles.bottomContainer}>
             <button className="secondaryBtn" onClick={handleClose}>

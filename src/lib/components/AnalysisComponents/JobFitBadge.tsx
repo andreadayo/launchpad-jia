@@ -17,8 +17,7 @@ export default function (props) {
               >
                 <small className="ax-tag">
                   <strong>
-                    <i className="la la-first-order text-primary" /> AI
-                    Assessment
+                    <i className="la la-first-order text-primary" /> AI Assessment
                   </strong>
                 </small>
                 <h2>

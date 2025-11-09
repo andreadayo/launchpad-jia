@@ -5,20 +5,17 @@ Jia is a web application built with Next.js that appears to provide interview as
 ## Tech Stack
 
 - **Frontend**:
-
   - Next.js 15.x (with App Router)
   - React 19.x
   - SASS for styling
   - TypeScript
 
 - **Backend**:
-
   - Next.js API Routes (serverless functions)
   - MongoDB for database
   - Firebase for authentication and storage
 
 - **APIs & Services**:
-
   - OpenAI API integration
   - Socket.io for real-time communication
 
@@ -172,7 +169,6 @@ jia-web-app/
 3. Import your Git repository.
 
 4. Configure project:
-
    - Set the framework preset to "Next.js"
    - Configure the environment variables (copy from your `.env` file)
    - Add any additional build settings if needed

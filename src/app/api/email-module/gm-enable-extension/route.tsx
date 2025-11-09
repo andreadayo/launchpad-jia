@@ -38,10 +38,7 @@ export async function POST(request: NextRequest) {
     const scope = ["openid", "email", "profile", "https://mail.google.com/"];
 
     if (!clientId) {
-      return NextResponse.json(
-        { error: "Google OAuth client ID not configured" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Google OAuth client ID not configured" }, { status: 500 });
     }
 
     // Create state parameter for security
@@ -71,8 +68,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error: "Internal server error",
-        details:
-          process.env.NODE_ENV === "development" ? error.message : undefined,
+        details: process.env.NODE_ENV === "development" ? error.message : undefined,
       },
       { status: 500 }
     );

@@ -7,25 +7,17 @@ export async function POST(request: Request) {
     const { jobId } = await request.json();
 
     if (!jobId) {
-      return NextResponse.json(
-        { error: "Job ID is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Job ID is required" }, { status: 400 });
     }
 
     const { db } = await connectMongoDB();
 
-    const job = await db
-      .collection("careers")
-      .findOne({ _id: new ObjectId(jobId) });
+    const job = await db.collection("careers").findOne({ _id: new ObjectId(jobId) });
     if (!job) {
       return NextResponse.json({ error: "Job not found" }, { status: 404 });
     }
     return NextResponse.json(job);
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch job details" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch job details" }, { status: 500 });
   }
 }

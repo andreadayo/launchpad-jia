@@ -7,10 +7,7 @@ export async function POST(request: Request) {
 
     // Validate required fields
     if (!name || !email) {
-      return NextResponse.json(
-        { error: "Name and email are required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Name and email are required" }, { status: 400 });
     }
 
     const { db } = await connectMongoDB();
@@ -30,9 +27,7 @@ export async function POST(request: Request) {
 
       return NextResponse.json(admin);
     } else {
-      const applicant = await db
-        .collection("applicants")
-        .findOne({ email: email });
+      const applicant = await db.collection("applicants").findOne({ email: email });
 
       if (applicant) {
         return NextResponse.json(applicant);
@@ -55,9 +50,6 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Authentication error:", error);
-    return NextResponse.json(
-      { error: "Failed to authenticate user" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to authenticate user" }, { status: 500 });
   }
 }

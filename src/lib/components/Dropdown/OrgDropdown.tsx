@@ -147,9 +147,7 @@ export default function OrgDropdown({ onAddOrg }: { onAddOrg?: () => void }) {
               {/* Show tier badge for selected org */}
               {selectedOrg.tier && (
                 <span
-                  className={`badge mt-1 ${
-                    tierColorMap[selectedOrg.tier] || "badge-secondary"
-                  }`}
+                  className={`badge mt-1 ${tierColorMap[selectedOrg.tier] || "badge-secondary"}`}
                   style={{ textTransform: "capitalize" }}
                 >
                   {selectedOrg.tier}
@@ -160,9 +158,7 @@ export default function OrgDropdown({ onAddOrg }: { onAddOrg?: () => void }) {
         )}
       </button>
       <div
-        className={`dropdown-menu mt-1 org-dropdown-anim${
-          dropdownOpen ? " show" : ""
-        }`}
+        className={`dropdown-menu mt-1 org-dropdown-anim${dropdownOpen ? " show" : ""}`}
         style={{
           minWidth: 200,
           borderRadius: 10,
@@ -187,9 +183,7 @@ export default function OrgDropdown({ onAddOrg }: { onAddOrg?: () => void }) {
               <button
                 key={org._id}
                 className={`dropdown-item d-flex align-items-center${
-                  selectedOrg._id === org._id
-                    ? " bg-primary text-white active-org"
-                    : ""
+                  selectedOrg._id === org._id ? " bg-primary text-white active-org" : ""
                 }`}
                 style={{
                   gap: 10,
@@ -220,12 +214,8 @@ export default function OrgDropdown({ onAddOrg }: { onAddOrg?: () => void }) {
                     {org.name}
                   </span>
                   <span
-                    className={`badge mt-1 ${
-                      tierColorMap[org.tier] || "badge-secondary"
-                    }${
-                      selectedOrg._id === org._id
-                        ? " bg-white text-primary"
-                        : ""
+                    className={`badge mt-1 ${tierColorMap[org.tier] || "badge-secondary"}${
+                      selectedOrg._id === org._id ? " bg-white text-primary" : ""
                     }`}
                     style={{ textTransform: "capitalize" }}
                   >

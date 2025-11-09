@@ -2,8 +2,7 @@ export default function InterviewGuide() {
   const guide = [
     {
       title: "Find a quiet place.",
-      description:
-        "for the best experience, try to find a quiet place to speak.",
+      description: "for the best experience, try to find a quiet place to speak.",
       image: "/assets/quiet.jpeg",
     },
     {
@@ -23,8 +22,7 @@ export default function InterviewGuide() {
     <div className="interview-guide">
       <h2 className="fade-in-bottom dl-2">Guides and Reminders</h2>
       <p className="fade-in-bottom">
-        This is a guide for the interview. Follow these steps to get the best
-        experience.
+        This is a guide for the interview. Follow these steps to get the best experience.
       </p>
 
       <div className="step-set">

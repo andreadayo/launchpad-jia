@@ -44,20 +44,14 @@ export default function ScreeningSettingDropdown(props) {
           >
             <span>
               <i
-                className={
-                  settingList.find(
-                    (setting) => setting.name === screeningSetting
-                  )?.icon
-                }
+                className={settingList.find((setting) => setting.name === screeningSetting)?.icon}
               ></i>{" "}
               {screeningSetting}
             </span>
             <i className="la la-angle-down ml-10"></i>
           </button>
           <div
-            className={`dropdown-menu w-100 mt-1 org-dropdown-anim${
-              dropdownOpen ? " show" : ""
-            }`}
+            className={`dropdown-menu w-100 mt-1 org-dropdown-anim${dropdownOpen ? " show" : ""}`}
             style={{
               padding: "10px",
             }}
@@ -66,9 +60,7 @@ export default function ScreeningSettingDropdown(props) {
               <div style={{ borderBottom: "1px solid #ddd" }} key={index}>
                 <button
                   className={`dropdown-item d-flex align-items-center${
-                    screeningSetting === setting.name
-                      ? " bg-primary text-white active-org"
-                      : ""
+                    screeningSetting === setting.name ? " bg-primary text-white active-org" : ""
                   }`}
                   style={{
                     minWidth: 220,

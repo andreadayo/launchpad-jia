@@ -31,7 +31,8 @@
     }
 
     &.right {
-      background: linear-gradient(#1e1e1ff6, #22337fe7),
+      background:
+        linear-gradient(#1e1e1ff6, #22337fe7),
         url("https://images.pexels.com/photos/4253268/pexels-photo-4253268.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
       background-size: cover;
       background-position: center;
@@ -71,7 +72,8 @@
   width: 100%;
   display: grid;
 
-  background: linear-gradient(#fff, #f6f8f9b5),
+  background:
+    linear-gradient(#fff, #f6f8f9b5),
     url("https://images.pexels.com/photos/7078384/pexels-photo-7078384.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2");
   background-size: cover;
   background-position: center;

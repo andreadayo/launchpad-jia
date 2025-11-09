@@ -35,10 +35,7 @@ export async function POST(request: Request) {
     // Update career lastActivityAt to current date
     await db
       .collection("careers")
-      .updateOne(
-        { id: interviewData.id },
-        { $set: { lastActivityAt: new Date() } }
-      );
+      .updateOne({ id: interviewData.id }, { $set: { lastActivityAt: new Date() } });
   }
 
   // await sendEmail({

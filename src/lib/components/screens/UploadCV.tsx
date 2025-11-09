@@ -202,9 +202,7 @@ export default function () {
       return false;
     }
 
-    const allEmpty = Object.values(userCV).every(
-      (value: any) => value.trim() == ""
-    );
+    const allEmpty = Object.values(userCV).every((value: any) => value.trim() == "");
 
     if (allEmpty) {
       alert("No details to be save.");
@@ -220,10 +218,7 @@ export default function () {
       parsedDigitalCV = JSON.parse(digitalCV);
 
       if (parsedDigitalCV.errorRemarks) {
-        alert(
-          "Please fix the errors in the CV first.\n\n" +
-            parsedDigitalCV.errorRemarks
-        );
+        alert("Please fix the errors in the CV first.\n\n" + parsedDigitalCV.errorRemarks);
         return false;
       }
     }
@@ -259,10 +254,7 @@ export default function () {
         data,
       })
         .then(() => {
-          localStorage.setItem(
-            "userCV",
-            JSON.stringify({ ...data, ...data.cvData })
-          );
+          localStorage.setItem("userCV", JSON.stringify({ ...data, ...data.cvData }));
         })
         .catch((err) => {
           alert("Error saving CV. Please try again.");
@@ -328,8 +320,7 @@ export default function () {
             const formattedCV = {};
 
             cvSections.forEach((section, index) => {
-              formattedCV[section] =
-                parsedUserCV.digitalCV[index].content.trim();
+              formattedCV[section] = parsedUserCV.digitalCV[index].content.trim();
             });
 
             setDigitalCV(result);
@@ -364,9 +355,7 @@ export default function () {
               <span className={styles.tag}>You're applying for</span>
               <span className={styles.title}>{interview.jobTitle}</span>
               {interview.organization && interview.organization.name && (
-                <span className={styles.name}>
-                  {interview.organization.name}
-                </span>
+                <span className={styles.name}>{interview.organization.name}</span>
               )}
               <span className={styles.description} onClick={handleModal}>
                 View job description
@@ -380,22 +369,10 @@ export default function () {
                 <div className={styles.stepBar} key={index}>
                   <img
                     alt=""
-                    src={
-                      assetConstants[
-                        processState(index, true)
-                          .toLowerCase()
-                          .replace(" ", "_")
-                      ]
-                    }
+                    src={assetConstants[processState(index, true).toLowerCase().replace(" ", "_")]}
                   />
                   {index < step.length - 1 && (
-                    <hr
-                      className={
-                        styles[
-                          processState(index).toLowerCase().replace(" ", "_")
-                        ]
-                      }
-                    />
+                    <hr className={styles[processState(index).toLowerCase().replace(" ", "_")]} />
                   )}
                 </div>
               ))}
@@ -405,9 +382,7 @@ export default function () {
               {step.map((item, index) => (
                 <span
                   className={`${styles.stepDetails} ${
-                    styles[
-                      processState(index, true).toLowerCase().replace(" ", "_")
-                    ]
+                    styles[processState(index, true).toLowerCase().replace(" ", "_")]
                   }`}
                   key={index}
                 >
@@ -429,9 +404,8 @@ export default function () {
                     <img alt="" src={assetConstants.uploadV2} />
                     <button onClick={handleUploadCV}>Upload CV</button>
                     <span>
-                      Choose or drag and drop a file here. Our AI tools will
-                      automatically pre-fill your CV and also check how well it
-                      matches the role.
+                      Choose or drag and drop a file here. Our AI tools will automatically pre-fill
+                      your CV and also check how well it matches the role.
                     </span>
                   </div>
                   <input
@@ -452,8 +426,7 @@ export default function () {
                       Review Current CV
                     </button>
                     <span>
-                      Already uploaded a CV? Take a moment to review your
-                      details before we proceed.
+                      Already uploaded a CV? Take a moment to review your details before we proceed.
                     </span>
                   </div>
                 </div>
@@ -499,9 +472,7 @@ export default function () {
                         <div className={styles.editIcon}>
                           <img
                             alt=""
-                            src={
-                              file ? assetConstants.xV2 : assetConstants.save
-                            }
+                            src={file ? assetConstants.xV2 : assetConstants.save}
                             onClick={file ? handleRemoveFile : handleUploadCV}
                             onContextMenu={(e) => e.preventDefault()}
                           />
@@ -524,8 +495,8 @@ export default function () {
                         ) : (
                           <span className={styles.fileTitle}>
                             <img alt="" src={assetConstants.fileV2} />
-                            You can also upload your CV and let our AI
-                            automatically fill in your profile information.
+                            You can also upload your CV and let our AI automatically fill in your
+                            profile information.
                           </span>
                         )}
                       </div>
@@ -541,16 +512,8 @@ export default function () {
                           <div className={styles.editIcon}>
                             <img
                               alt=""
-                              src={
-                                editingCV == section
-                                  ? assetConstants.save
-                                  : assetConstants.edit
-                              }
-                              onClick={() =>
-                                handleEditCV(
-                                  editingCV == section ? null : section
-                                )
-                              }
+                              src={editingCV == section ? assetConstants.save : assetConstants.edit}
+                              onClick={() => handleEditCV(editingCV == section ? null : section)}
                               onContextMenu={(e) => e.preventDefault()}
                             />
                           </div>
@@ -561,12 +524,9 @@ export default function () {
                             <textarea
                               id={section}
                               placeholder="Upload your CV to auto-fill this section."
-                              value={
-                                userCV && userCV[section] ? userCV[section] : ""
-                              }
+                              value={userCV && userCV[section] ? userCV[section] : ""}
                               onBlur={(e) => {
-                                e.target.placeholder =
-                                  "Upload your CV to auto-fill this section.";
+                                e.target.placeholder = "Upload your CV to auto-fill this section.";
                               }}
                               onChange={(e) => {
                                 setUserCV({
@@ -582,17 +542,13 @@ export default function () {
                           ) : (
                             <span
                               className={`${styles.sectionDetails} ${
-                                userCV &&
-                                userCV[section] &&
-                                userCV[section].trim()
+                                userCV && userCV[section] && userCV[section].trim()
                                   ? styles.withDetails
                                   : ""
                               }`}
                             >
                               <Markdown>
-                                {userCV &&
-                                userCV[section] &&
-                                userCV[section].trim()
+                                {userCV && userCV[section] && userCV[section].trim()
                                   ? userCV[section].trim()
                                   : "Upload your CV to auto-fill this section."}
                               </Markdown>
@@ -626,48 +582,34 @@ export default function () {
               {screeningResult.applicationStatus == "Dropped" ? (
                 <>
                   <img alt="" src={assetConstants.userRejected} />
-                  <span className={styles.title}>
-                    This role may not be the best match.
-                  </span>
+                  <span className={styles.title}>This role may not be the best match.</span>
                   <span className={styles.description}>
-                    Based on your CV, it looks like this position might not be
-                    the right fit at the moment.
+                    Based on your CV, it looks like this position might not be the right fit at the
+                    moment.
                   </span>
                   <br />
                   <span className={styles.description}>
-                    Review your screening results and see recommended next
-                    steps.
+                    Review your screening results and see recommended next steps.
                   </span>
                   <div className={styles.buttonContainer}>
-                    <button onClick={() => handleRedirection("dashboard")}>
-                      View Dashboard
-                    </button>
+                    <button onClick={() => handleRedirection("dashboard")}>View Dashboard</button>
                   </div>
                 </>
               ) : screeningResult.status == "For AI Interview" ? (
                 <>
                   <img alt="" src={assetConstants.checkV3} />
-                  <span className={styles.title}>
-                    Hooray! You’re a strong fit for this role.
-                  </span>
-                  <span className={styles.description}>
-                    Jia thinks you might be a great match.
-                  </span>
+                  <span className={styles.title}>Hooray! You’re a strong fit for this role.</span>
+                  <span className={styles.description}>Jia thinks you might be a great match.</span>
                   <br />
                   <span className={`${styles.description} ${styles.bold}`}>
                     Ready to take the next step?
                   </span>
-                  <span className={styles.description}>
-                    You may start your AI interview now.
-                  </span>
+                  <span className={styles.description}>You may start your AI interview now.</span>
                   <div className={styles.buttonContainer}>
                     <button onClick={() => handleRedirection("interview")}>
                       Start AI Interview
                     </button>
-                    <button
-                      className="secondaryBtn"
-                      onClick={() => handleRedirection("dashboard")}
-                    >
+                    <button className="secondaryBtn" onClick={() => handleRedirection("dashboard")}>
                       View Dashboard
                     </button>
                   </div>
@@ -682,9 +624,7 @@ export default function () {
                     We’ll be in touch soon with updates about your application.
                   </span>
                   <div className={styles.buttonContainer}>
-                    <button onClick={() => handleRedirection("dashboard")}>
-                      View Dashboard
-                    </button>
+                    <button onClick={() => handleRedirection("dashboard")}>View Dashboard</button>
                   </div>
                 </>
               )}

@@ -40,13 +40,9 @@ export default function EmailAutomation() {
 
   // State variables
   const [data, setData] = useState<AutomationData[]>([]);
-  const [pastRemindersData, setPastRemindersData] = useState<
-    PastReminderData[]
-  >([]);
+  const [pastRemindersData, setPastRemindersData] = useState<PastReminderData[]>([]);
   const [filteredData, setFilteredData] = useState<AutomationData[]>([]);
-  const [filteredPastData, setFilteredPastData] = useState<PastReminderData[]>(
-    []
-  );
+  const [filteredPastData, setFilteredPastData] = useState<PastReminderData[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [pastSearchQuery, setPastSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -55,13 +51,10 @@ export default function EmailAutomation() {
   const [isAutomationRunning, setIsAutomationRunning] = useState(false);
   const [processedRows, setProcessedRows] = useState<Set<string>>(new Set());
   const [errorRows, setErrorRows] = useState<Set<string>>(new Set());
-  const [sendingIndividual, setSendingIndividual] = useState<Set<string>>(
-    new Set()
-  );
+  const [sendingIndividual, setSendingIndividual] = useState<Set<string>>(new Set());
   const [fuse, setFuse] = useState<Fuse<AutomationData> | null>(null);
   const [pastFuse, setPastFuse] = useState<Fuse<PastReminderData> | null>(null);
-  const [selectedInterview, setSelectedInterview] =
-    useState<PastReminderData | null>(null);
+  const [selectedInterview, setSelectedInterview] = useState<PastReminderData | null>(null);
   const [showModal, setShowModal] = useState(false);
 
   // Step 1: Fetch data on load
@@ -341,15 +334,12 @@ export default function EmailAutomation() {
       if (emailContent && emailSubject) {
         try {
           // Send email with _id parameter
-          const response = await axios.post(
-            "/api/automations/send-email-reminder",
-            {
-              to: item.email,
-              subject: emailSubject,
-              message: emailContent,
-              _id: item._id,
-            }
-          );
+          const response = await axios.post("/api/automations/send-email-reminder", {
+            to: item.email,
+            subject: emailSubject,
+            message: emailContent,
+            _id: item._id,
+          });
 
           if (response.data.success) {
             // Success - mark as processed with green background
@@ -411,11 +401,7 @@ export default function EmailAutomation() {
 
   return (
     <>
-      <HeaderBar
-        activeLink="Email Automation [Beta]"
-        currentPage="Overview"
-        icon="la la-cubes"
-      />
+      <HeaderBar activeLink="Email Automation [Beta]" currentPage="Overview" icon="la la-cubes" />
       <div className="container-fluid mt--7" style={{ paddingTop: "6rem" }}>
         <div className="row">
           <div className="col">
@@ -427,43 +413,27 @@ export default function EmailAutomation() {
                 marginBottom: "35px",
               }}
             >
-              <h1
-                style={{ fontSize: "24px", fontWeight: 550, color: "#111827" }}
-              >
+              <h1 style={{ fontSize: "24px", fontWeight: 550, color: "#111827" }}>
                 Email Automation [Beta]
               </h1>
-              <span
-                style={{ fontSize: "16px", color: "#717680", fontWeight: 500 }}
-              >
-                Global Implementation of Automated Email Reminders for
-                Applicants for (WhiteCloak Org Only).
+              <span style={{ fontSize: "16px", color: "#717680", fontWeight: 500 }}>
+                Global Implementation of Automated Email Reminders for Applicants for (WhiteCloak
+                Org Only).
               </span>
             </div>
 
             {/* Tabs */}
             <div className="row mb-4">
               <div className="col">
-                <div
-                  className="d-flex"
-                  style={{ borderBottom: "2px solid #e9ecef" }}
-                >
+                <div className="d-flex" style={{ borderBottom: "2px solid #e9ecef" }}>
                   <div
-                    className={`px-4 py-3 ${
-                      tab === "pending" ? "active-tab" : ""
-                    }`}
-                    onClick={() =>
-                      router.push(
-                        `/recruiter-dashboard/email-automation?tab=pending`
-                      )
-                    }
+                    className={`px-4 py-3 ${tab === "pending" ? "active-tab" : ""}`}
+                    onClick={() => router.push(`/recruiter-dashboard/email-automation?tab=pending`)}
                     style={{
                       cursor: "pointer",
                       backgroundColor: "white",
                       flexShrink: 0,
-                      borderBottom:
-                        tab === "pending"
-                          ? "5px solid #000"
-                          : "2px solid transparent",
+                      borderBottom: tab === "pending" ? "5px solid #000" : "2px solid transparent",
                       fontWeight: tab === "pending" ? "600" : "400",
                       color: tab === "pending" ? "#000" : "#6c757d",
                       transition: "all 0.2s ease",
@@ -472,22 +442,13 @@ export default function EmailAutomation() {
                     Pending Reminders
                   </div>
                   <div
-                    className={`px-4 py-3 ${
-                      tab === "past" ? "active-tab" : ""
-                    }`}
-                    onClick={() =>
-                      router.push(
-                        `/recruiter-dashboard/email-automation?tab=past`
-                      )
-                    }
+                    className={`px-4 py-3 ${tab === "past" ? "active-tab" : ""}`}
+                    onClick={() => router.push(`/recruiter-dashboard/email-automation?tab=past`)}
                     style={{
                       cursor: "pointer",
                       backgroundColor: "white",
                       flexShrink: 0,
-                      borderBottom:
-                        tab === "past"
-                          ? "5px solid #000"
-                          : "2px solid transparent",
+                      borderBottom: tab === "past" ? "5px solid #000" : "2px solid transparent",
                       fontWeight: tab === "past" ? "600" : "400",
                       color: tab === "past" ? "#000" : "#6c757d",
                       transition: "all 0.2s ease",
@@ -543,8 +504,7 @@ export default function EmailAutomation() {
                               marginBottom: "0px",
                             }}
                           >
-                            Automation Progress:{" "}
-                            {Math.round(automationProgress)}%
+                            Automation Progress: {Math.round(automationProgress)}%
                           </h2>
                           <div className="progress">
                             <div
@@ -568,9 +528,7 @@ export default function EmailAutomation() {
                     <button
                       className="btn"
                       onClick={runAutomation}
-                      disabled={
-                        isAutomationRunning || filteredData.length === 0
-                      }
+                      disabled={isAutomationRunning || filteredData.length === 0}
                       style={{
                         backgroundColor: "#000",
                         borderColor: "#000",
@@ -621,92 +579,41 @@ export default function EmailAutomation() {
                             <table className="table table-hover">
                               <thead>
                                 <tr>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Email
-                                  </th>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Name
-                                  </th>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Job Title
-                                  </th>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Status
-                                  </th>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Reminder Type
-                                  </th>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Last Reminder
-                                  </th>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Action
-                                  </th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Email</th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Name</th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Job Title</th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Status</th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Reminder Type</th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Last Reminder</th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Action</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {filteredData.map((item) => (
-                                  <tr
-                                    key={item._id}
-                                    className={getRowBackgroundColor(item._id)}
-                                  >
-                                    <td
-                                      style={{ fontWeight: 500, color: "#000" }}
-                                    >
-                                      {item.email}
-                                    </td>
-                                    <td
-                                      style={{ fontWeight: 500, color: "#000" }}
-                                    >
+                                  <tr key={item._id} className={getRowBackgroundColor(item._id)}>
+                                    <td style={{ fontWeight: 500, color: "#000" }}>{item.email}</td>
+                                    <td style={{ fontWeight: 500, color: "#000" }}>
                                       {item.name || "-"}
                                     </td>
-                                    <td
-                                      style={{ fontWeight: 500, color: "#000" }}
-                                    >
+                                    <td style={{ fontWeight: 500, color: "#000" }}>
                                       {item.jobTitle}
                                     </td>
                                     <td>
-                                      <span className="badge badge-warning">
-                                        {item.status}
-                                      </span>
+                                      <span className="badge badge-warning">{item.status}</span>
                                     </td>
-                                    <td
-                                      style={{ fontWeight: 500, color: "#000" }}
-                                    >
+                                    <td style={{ fontWeight: 500, color: "#000" }}>
                                       {item.reminderType}
                                     </td>
-                                    <td
-                                      style={{ fontWeight: 500, color: "#000" }}
-                                    >
+                                    <td style={{ fontWeight: 500, color: "#000" }}>
                                       {item.lastAutoReminder
-                                        ? moment(
-                                            item.lastAutoReminder
-                                          ).fromNow()
+                                        ? moment(item.lastAutoReminder).fromNow()
                                         : "Never"}
                                     </td>
                                     <td>
                                       <button
                                         className="btn btn-sm btn-outline-primary"
-                                        onClick={() =>
-                                          sendIndividualReminder(item._id)
-                                        }
-                                        disabled={sendingIndividual.has(
-                                          item._id
-                                        )}
+                                        onClick={() => sendIndividualReminder(item._id)}
+                                        disabled={sendingIndividual.has(item._id)}
                                         style={{ fontSize: "12px" }}
                                       >
                                         {sendingIndividual.has(item._id) ? (
@@ -761,8 +668,7 @@ export default function EmailAutomation() {
                   </div>
                   <div className="col-md-6 d-flex align-items-center">
                     <span className="text-muted">
-                      {filteredPastData.length} of {pastRemindersData.length}{" "}
-                      records
+                      {filteredPastData.length} of {pastRemindersData.length} records
                     </span>
                   </div>
                 </div>
@@ -784,50 +690,20 @@ export default function EmailAutomation() {
                           </div>
                         ) : filteredPastData.length === 0 ? (
                           <div className="text-center py-4">
-                            <p className="text-muted">
-                              No past reminders found
-                            </p>
+                            <p className="text-muted">No past reminders found</p>
                           </div>
                         ) : (
                           <div className="table-responsive">
                             <table className="table table-hover">
                               <thead>
                                 <tr>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Email
-                                  </th>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Name
-                                  </th>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Job Title
-                                  </th>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Status
-                                  </th>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Last Reminder
-                                  </th>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Time Since
-                                  </th>
-                                  <th
-                                    style={{ fontWeight: 500, color: "#000" }}
-                                  >
-                                    Actions
-                                  </th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Email</th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Name</th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Job Title</th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Status</th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Last Reminder</th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Time Since</th>
+                                  <th style={{ fontWeight: 500, color: "#000" }}>Actions</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -839,9 +715,7 @@ export default function EmailAutomation() {
                                         color: "#000",
                                         cursor: "pointer",
                                       }}
-                                      onClick={() =>
-                                        copyToClipboard(item.email)
-                                      }
+                                      onClick={() => copyToClipboard(item.email)}
                                       title="Click to copy email"
                                     >
                                       {item.email}
@@ -852,45 +726,29 @@ export default function EmailAutomation() {
                                         color: "#000",
                                         cursor: "pointer",
                                       }}
-                                      onClick={() =>
-                                        copyToClipboard(item.name || "")
-                                      }
+                                      onClick={() => copyToClipboard(item.name || "")}
                                       title="Click to copy name"
                                     >
                                       {item.name || "-"}
                                     </td>
-                                    <td
-                                      style={{ fontWeight: 500, color: "#000" }}
-                                    >
+                                    <td style={{ fontWeight: 500, color: "#000" }}>
                                       {item.jobTitle}
                                     </td>
                                     <td>
-                                      <span className="badge badge-warning">
-                                        {item.status}
-                                      </span>
+                                      <span className="badge badge-warning">{item.status}</span>
                                     </td>
-                                    <td
-                                      style={{ fontWeight: 500, color: "#000" }}
-                                    >
-                                      {moment(item.lastAutoReminder).format(
-                                        "MMM DD, YYYY HH:mm"
-                                      )}
+                                    <td style={{ fontWeight: 500, color: "#000" }}>
+                                      {moment(item.lastAutoReminder).format("MMM DD, YYYY HH:mm")}
                                     </td>
-                                    <td
-                                      style={{ fontWeight: 500, color: "#000" }}
-                                    >
+                                    <td style={{ fontWeight: 500, color: "#000" }}>
                                       {item.timeSinceReminder}
                                     </td>
                                     <td>
                                       <div className="btn-group" role="group">
                                         <button
                                           className="btn btn-sm btn-outline-primary mr-2"
-                                          onClick={() =>
-                                            sendIndividualReminder(item._id)
-                                          }
-                                          disabled={sendingIndividual.has(
-                                            item._id
-                                          )}
+                                          onClick={() => sendIndividualReminder(item._id)}
+                                          disabled={sendingIndividual.has(item._id)}
                                           style={{ fontSize: "12px" }}
                                         >
                                           {sendingIndividual.has(item._id) ? (
@@ -908,9 +766,7 @@ export default function EmailAutomation() {
                                         </button>
                                         <button
                                           className="btn btn-sm btn-outline-info"
-                                          onClick={() =>
-                                            showInterviewDetails(item)
-                                          }
+                                          onClick={() => showInterviewDetails(item)}
                                           style={{ fontSize: "12px" }}
                                         >
                                           <i className="la la-expand"></i>
@@ -935,11 +791,7 @@ export default function EmailAutomation() {
 
       {/* Interview Details Modal */}
       {showModal && selectedInterview && (
-        <div
-          className="modal fade show"
-          style={{ display: "block" }}
-          tabIndex={-1}
-        >
+        <div className="modal fade show" style={{ display: "block" }} tabIndex={-1}>
           <div className="modal-dialog modal-lg">
             <div className="modal-content" style={{ maxHeight: "90vh" }}>
               <div className="modal-header">
@@ -955,10 +807,7 @@ export default function EmailAutomation() {
                 <div className="d-flex flex-column" style={{ gap: "20px" }}>
                   {/* Basic Information Section */}
                   <div>
-                    <h6
-                      className="mb-3"
-                      style={{ fontWeight: 600, color: "#333" }}
-                    >
+                    <h6 className="mb-3" style={{ fontWeight: 600, color: "#333" }}>
                       Basic Information
                     </h6>
                     <div className="d-flex flex-column" style={{ gap: "12px" }}>
@@ -1015,9 +864,7 @@ export default function EmailAutomation() {
                           Status:
                         </span>
                         <span style={{ flex: 1 }}>
-                          <span className="badge badge-warning">
-                            {selectedInterview.status}
-                          </span>
+                          <span className="badge badge-warning">{selectedInterview.status}</span>
                         </span>
                       </div>
                       <div className="d-flex justify-content-between align-items-start">
@@ -1055,10 +902,7 @@ export default function EmailAutomation() {
 
                   {/* Additional Information Section */}
                   <div>
-                    <h6
-                      className="mb-3"
-                      style={{ fontWeight: 600, color: "#333" }}
-                    >
+                    <h6 className="mb-3" style={{ fontWeight: 600, color: "#333" }}>
                       Additional Information
                     </h6>
                     <div className="d-flex flex-column" style={{ gap: "12px" }}>
@@ -1082,9 +926,7 @@ export default function EmailAutomation() {
                         // Skip functions and complex objects
                         if (
                           typeof value === "function" ||
-                          (typeof value === "object" &&
-                            value !== null &&
-                            !Array.isArray(value))
+                          (typeof value === "object" && value !== null && !Array.isArray(value))
                         ) {
                           return null;
                         }
@@ -1092,10 +934,10 @@ export default function EmailAutomation() {
                         const displayValue = Array.isArray(value)
                           ? value.join(", ")
                           : typeof value === "boolean"
-                          ? value
-                            ? "Yes"
-                            : "No"
-                          : String(value || "N/A");
+                            ? value
+                              ? "Yes"
+                              : "No"
+                            : String(value || "N/A");
 
                         return (
                           <div
@@ -1111,9 +953,7 @@ export default function EmailAutomation() {
                             >
                               {key}:
                             </span>
-                            <span style={{ flex: 1, wordBreak: "break-word" }}>
-                              {displayValue}
-                            </span>
+                            <span style={{ flex: 1, wordBreak: "break-word" }}>{displayValue}</span>
                           </div>
                         );
                       })}
@@ -1122,11 +962,7 @@ export default function EmailAutomation() {
                 </div>
               </div>
               <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={closeModal}
-                >
+                <button type="button" className="btn btn-secondary" onClick={closeModal}>
                   Close
                 </button>
               </div>
@@ -1136,9 +972,7 @@ export default function EmailAutomation() {
       )}
 
       {/* Modal Backdrop */}
-      {showModal && (
-        <div className="modal-backdrop fade show" onClick={closeModal}></div>
-      )}
+      {showModal && <div className="modal-backdrop fade show" onClick={closeModal}></div>}
     </>
   );
 }

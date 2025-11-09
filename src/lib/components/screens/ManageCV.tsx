@@ -59,9 +59,7 @@ export default function () {
 
   function handleEditCV(section) {
     if (file && !userCV) {
-      alert(
-        "Please upload and submit your file to build your CV before editing."
-      );
+      alert("Please upload and submit your file to build your CV before editing.");
     } else {
       setEditingCV(section);
 
@@ -129,8 +127,7 @@ export default function () {
       const formattedCV = {};
 
       cvSections.forEach((section, index) => {
-        formattedCV[section] =
-          parsedUserCV.digitalCV[index].content.trim() || "";
+        formattedCV[section] = parsedUserCV.digitalCV[index].content.trim() || "";
       });
 
       setDigitalCV(storedCV);
@@ -156,9 +153,7 @@ export default function () {
       return false;
     }
 
-    const allEmpty = Object.values(userCV).every(
-      (value: any) => value.trim() == ""
-    );
+    const allEmpty = Object.values(userCV).every((value: any) => value.trim() == "");
 
     if (allEmpty) {
       alert("No details to be save.");
@@ -176,10 +171,7 @@ export default function () {
       parsedDigitalCV = JSON.parse(digitalCV);
 
       if (parsedDigitalCV.errorRemarks) {
-        alert(
-          "Please fix the errors in the CV first.\n\n" +
-            parsedDigitalCV.errorRemarks
-        );
+        alert("Please fix the errors in the CV first.\n\n" + parsedDigitalCV.errorRemarks);
         return false;
       }
     }
@@ -210,10 +202,7 @@ export default function () {
       .then(() => {
         setHasChanges(false);
         setToasterType("manageCV");
-        localStorage.setItem(
-          "userCV",
-          JSON.stringify({ ...data, ...data.cvData })
-        );
+        localStorage.setItem("userCV", JSON.stringify({ ...data, ...data.cvData }));
       })
       .catch((err) => {
         alert("Error saving CV. Please try again.");
@@ -251,8 +240,7 @@ export default function () {
             const formattedCV = {};
 
             cvSections.forEach((section, index) => {
-              formattedCV[section] =
-                parsedUserCV.digitalCV[index].content.trim();
+              formattedCV[section] = parsedUserCV.digitalCV[index].content.trim();
             });
 
             setDigitalCV(result);
@@ -315,9 +303,7 @@ export default function () {
               {!loading && (
                 <>
                   <div
-                    className={`${styles.fileUpload} ${
-                      file ? styles.uploaded : ""
-                    }`}
+                    className={`${styles.fileUpload} ${file ? styles.uploaded : ""}`}
                     onClick={handleClick}
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
@@ -364,9 +350,7 @@ export default function () {
                       <span className={styles.cvExtract}>
                         Extracting information from your CV...
                       </span>
-                      <span className={styles.building}>
-                        Jia is building your profile...
-                      </span>
+                      <span className={styles.building}>Jia is building your profile...</span>
                     </>
                   )}
                 </div>
@@ -375,8 +359,7 @@ export default function () {
               {!buildingCV && !userCV && !loading && (
                 <>
                   <span className={styles.uploadDetails}>
-                    Upload your CV and let our AI automatically fill in your
-                    profile information.
+                    Upload your CV and let our AI automatically fill in your profile information.
                   </span>
                   <button
                     className={file ? "" : "disabled"}
@@ -420,14 +403,8 @@ export default function () {
                   <div className={styles.editIcon}>
                     <img
                       alt=""
-                      src={
-                        editingCV == section
-                          ? assetConstants.save
-                          : assetConstants.edit
-                      }
-                      onClick={() =>
-                        handleEditCV(editingCV == section ? null : section)
-                      }
+                      src={editingCV == section ? assetConstants.save : assetConstants.edit}
+                      onClick={() => handleEditCV(editingCV == section ? null : section)}
                       onContextMenu={(e) => e.preventDefault()}
                     />
                   </div>
@@ -440,8 +417,7 @@ export default function () {
                       placeholder="Upload your CV to auto-fill this section."
                       value={userCV && userCV[section] ? userCV[section] : ""}
                       onBlur={(e) =>
-                        (e.target.placeholder =
-                          "Upload your CV to auto-fill this section.")
+                        (e.target.placeholder = "Upload your CV to auto-fill this section.")
                       }
                       onChange={(e) => {
                         setUserCV({
@@ -450,9 +426,7 @@ export default function () {
                         });
                         setHasChanges(true);
                       }}
-                      onClick={(e) =>
-                        ((e.target as HTMLInputElement).placeholder = "")
-                      }
+                      onClick={(e) => ((e.target as HTMLInputElement).placeholder = "")}
                       onFocus={(e) => (e.target.placeholder = "")}
                     />
                   ) : (

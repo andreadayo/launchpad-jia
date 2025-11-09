@@ -73,9 +73,7 @@ export default function ({ children }) {
 
     if (sessionStorage.getItem("hasChanges") == "true") {
       Promise.resolve(
-        window.confirm(
-          "You have unsaved changes. Are you sure you want to leave this page?"
-        )
+        window.confirm("You have unsaved changes. Are you sure you want to leave this page?")
       ).then((confirmed) => {
         if (confirmed) {
           if (route == "/whitecloak") {
@@ -130,7 +128,7 @@ export default function ({ children }) {
       // ).type;
 
       // if (!userCV || navType == "reload") {
-        fetchUserCV();
+      fetchUserCV();
       // }
     }
   }, []);

@@ -85,9 +85,7 @@ export default function () {
                   className="fade-in dl-3"
                 />
 
-                <span className="text-grey fade-in dl-4">
-                  Powered by White Cloak Technologies
-                </span>
+                <span className="text-grey fade-in dl-4">Powered by White Cloak Technologies</span>
               </div>
             </a>
           </div>
@@ -122,10 +120,7 @@ export default function () {
 
           <div className="step-set">
             {steps.map((step, index) => (
-              <div
-                key={step.number}
-                className={`step fade-in-bottom dl-${(index + 1) * 2}`}
-              >
+              <div key={step.number} className={`step fade-in-bottom dl-${(index + 1) * 2}`}>
                 <div className="number">
                   <span>{step.number}</span>
                 </div>
@@ -133,11 +128,7 @@ export default function () {
               </div>
             ))}
             <br />
-            <a
-              href="/whitecloak"
-              style={{ margin: "auto" }}
-              className="fade-in-bottom dl-8"
-            >
+            <a href="/whitecloak" style={{ margin: "auto" }} className="fade-in-bottom dl-8">
               <div className="step text-white">
                 <span>See WhiteCloak's Job Openings</span>
                 <div className="number">
