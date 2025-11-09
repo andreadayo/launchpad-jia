@@ -327,21 +327,16 @@ export default function (props) {
           }}
         >
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
-            <div
+            <span
               style={{
-                width: 32,
-                height: 32,
-                backgroundColor: "#181D27",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                paddingLeft: 12,
+                paddingRight: 12,
+                fontSize: 16,
+                color: "#181D27",
+                fontWeight: 700,
               }}
             >
-              <i className="la la-comment-alt" style={{ color: "#FFFFFF", fontSize: 20 }}></i>
-            </div>
-            <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>
-              Interview Questions
+              2. AI Interview Questions
             </span>
             <div
               style={{
