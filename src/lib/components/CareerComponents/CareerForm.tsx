@@ -6,6 +6,10 @@ import InterviewQuestionGeneratorV2 from "./InterviewQuestionGeneratorV2";
 import RichTextEditor from "@/lib/components/CareerComponents/RichTextEditor";
 import CustomDropdown from "@/lib/components/CareerComponents/CustomDropdown";
 import CollapsibleLayeredCard from "@/lib/components/CareerComponents/CollapsibleLayeredCard";
+import Step1CareerInfo from "@/lib/components/CareerComponents/steps/Step1CareerInfo";
+import Step2CVReview from "@/lib/components/CareerComponents/steps/Step2CVReview";
+import Step3AIInterview from "@/lib/components/CareerComponents/steps/Step3AIInterview";
+import Step4ReviewList from "@/lib/components/CareerComponents/steps/Step4ReviewList";
 import philippineCitiesAndProvinces from "../../../../public/philippines-locations.json";
 import { candidateActionToast, errorToast } from "@/lib/Utils";
 import { useAppContext } from "@/lib/context/AppContext";
@@ -63,6 +67,7 @@ export function canGoToStep(data: CareerFormData, targetStep: number): boolean {
   }
   return true;
 }
+
 // Setting List icons
 const screeningSettingList = [
   {
@@ -864,504 +869,75 @@ export default function CareerForm({
         >
           {/* Render step-specific blocks */}
           {currentStep === 1 && (
-            <>
-              {/* STEP 1: Career Information */}
-              <div className="layered-card-outer">
-                <div className="layered-card-middle">
-                  <div
-                    style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}
-                  >
-                    <span
-                      style={{
-                        paddingLeft: 12,
-                        paddingRight: 12,
-                        fontSize: 16,
-                        color: "#181D27",
-                        fontWeight: 700,
-                      }}
-                    >
-                      1. Career Information
-                    </span>
-                  </div>
-                  <div className="layered-card-content">
-                    <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>
-                      Basic Information
-                    </span>
-                    <span>Job Title</span>
-                    <input
-                      data-field="jobTitle"
-                      value={jobTitle}
-                      className={`form-control ${errors.jobTitle ? "is-invalid" : ""}`}
-                      placeholder="Enter job title"
-                      onChange={(e) => {
-                        const v = e.target.value || "";
-                        setJobTitle(v);
-                        if (errors.jobTitle) clearError("jobTitle");
-                      }}
-                    />
-                    {errors.jobTitle && (
-                      <div style={{ color: "#ef4444", marginTop: 6 }}>{errors.jobTitle}</div>
-                    )}
-
-                    {/* Work Setting */}
-                    <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>
-                      Work Setting
-                    </span>
-                    <div style={{ display: "flex", gap: 16 }}>
-                      <div
-                        style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
-                      >
-                        <span>Employment Type</span>
-                        <div data-field="employmentType">
-                          <CustomDropdown
-                            onSelectSetting={(employmentType) => {
-                              setEmploymentType(employmentType);
-                              if (errors.employmentType) clearError("employmentType");
-                            }}
-                            screeningSetting={employmentType}
-                            settingList={employmentTypeOptions}
-                            placeholder="Choose employment type"
-                            invalid={!!errors.employmentType}
-                          />
-                        </div>
-                        {errors.employmentType && (
-                          <div style={{ color: "#ef4444", marginTop: 6 }}>
-                            {errors.employmentType}
-                          </div>
-                        )}
-                      </div>
-                      <div
-                        style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
-                      >
-                        <span>Arrangement</span>
-                        <div data-field="workSetup">
-                          <CustomDropdown
-                            onSelectSetting={(setting) => {
-                              setWorkSetup(setting);
-                              if (errors.workSetup) clearError("workSetup");
-                            }}
-                            screeningSetting={workSetup}
-                            settingList={workSetupOptions}
-                            placeholder="Choose work arrangement"
-                            invalid={!!errors.workSetup}
-                          />
-                        </div>
-                        {errors.workSetup && (
-                          <div style={{ color: "#ef4444", marginTop: 6 }}>{errors.workSetup}</div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Location */}
-                    <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>
-                      Location
-                    </span>
-                    <div style={{ display: "flex", gap: 16 }}>
-                      <div
-                        style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
-                      >
-                        <span>Country</span>
-                        <div data-field="country">
-                          <CustomDropdown
-                            onSelectSetting={(setting) => {
-                              setCountry(setting);
-                              if (errors.country) clearError("country");
-                            }}
-                            screeningSetting={country}
-                            settingList={[]}
-                            placeholder="Select Country"
-                            invalid={!!errors.country}
-                          />
-                        </div>
-                        {errors.country && (
-                          <div style={{ color: "#ef4444", marginTop: 6 }}>{errors.country}</div>
-                        )}
-                      </div>
-                      <div
-                        style={{
-                          minWidth: "fit-content",
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: 6,
-                        }}
-                      >
-                        <span>State / Province</span>
-                        <div data-field="province">
-                          <CustomDropdown
-                            onSelectSetting={(province) => {
-                              setProvince(province);
-                              if (errors.province) clearError("province");
-                              const provinceObj = provinceList.find((p) => p.name === province);
-                              const cities = philippineCitiesAndProvinces.cities.filter(
-                                (city) => city.province === provinceObj.key
-                              );
-                              setCityList(cities);
-                              setCity(cities[0].name);
-                            }}
-                            screeningSetting={province}
-                            settingList={provinceList}
-                            placeholder="Select State / Province"
-                            invalid={!!errors.province}
-                            fitContent={true}
-                          />
-                        </div>
-                        {errors.province && (
-                          <div style={{ color: "#ef4444", marginTop: 6 }}>{errors.province}</div>
-                        )}
-                      </div>
-                      <div
-                        style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
-                      >
-                        <span>City</span>
-                        <div data-field="city">
-                          <CustomDropdown
-                            onSelectSetting={(city) => {
-                              setCity(city);
-                              if (errors.city) clearError("city");
-                            }}
-                            screeningSetting={city}
-                            settingList={cityList}
-                            placeholder="Select City"
-                            invalid={!!errors.city}
-                          />
-                        </div>
-                        {errors.city && (
-                          <div style={{ color: "#ef4444", marginTop: 6 }}>{errors.city}</div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>
-                        Salary
-                      </span>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "flex-start",
-                          gap: 8,
-                          minWidth: "130px",
-                        }}
-                      >
-                        <label className="switch">
-                          <input
-                            type="checkbox"
-                            checked={salaryNegotiable}
-                            onChange={() => setSalaryNegotiable(!salaryNegotiable)}
-                          />
-                          <span className="slider round"></span>
-                        </label>
-                        <span>{salaryNegotiable ? "Negotiable" : "Fixed"}</span>
-                      </div>
-                    </div>
-
-                    <div style={{ display: "flex", gap: 16 }}>
-                      <div
-                        style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
-                      >
-                        <span>Minimum Salary</span>
-                        <div style={{ position: "relative" }}>
-                          <span
-                            style={{
-                              position: "absolute",
-                              left: "12px",
-                              top: "50%",
-                              transform: "translateY(-50%)",
-                              color: "#6c757d",
-                              fontSize: "16px",
-                              pointerEvents: "none",
-                            }}
-                          >
-                            P
-                          </span>
-                          <input
-                            type="number"
-                            className={`form-control ${errors.minimumSalary ? "is-invalid" : ""}`}
-                            placeholder="0"
-                            min={0}
-                            value={minimumSalary}
-                            data-field="minimumSalary"
-                            onChange={(e) => {
-                              const v = e.target.value || "";
-                              setMinimumSalary(v);
-                              if (errors.minimumSalary) clearError("minimumSalary");
-                            }}
-                            style={{ paddingLeft: "28px" }}
-                          />
-                        </div>
-                        {errors.minimumSalary && (
-                          <div style={{ color: "#ef4444", marginTop: 6 }}>
-                            {errors.minimumSalary}
-                          </div>
-                        )}
-                      </div>
-                      <div
-                        style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
-                      >
-                        <span>Maximum Salary</span>
-                        <div style={{ position: "relative" }}>
-                          <span
-                            style={{
-                              position: "absolute",
-                              left: "12px",
-                              top: "50%",
-                              transform: "translateY(-50%)",
-                              color: "#6c757d",
-                              fontSize: "16px",
-                              pointerEvents: "none",
-                            }}
-                          >
-                            P
-                          </span>
-                          <input
-                            type="number"
-                            className={`form-control ${errors.maximumSalary ? "is-invalid" : ""}`}
-                            placeholder="0"
-                            min={0}
-                            value={maximumSalary}
-                            data-field="maximumSalary"
-                            onChange={(e) => {
-                              const v = e.target.value || "";
-                              setMaximumSalary(v);
-                              if (errors.maximumSalary) clearError("maximumSalary");
-                            }}
-                            style={{ paddingLeft: "28px" }}
-                          />
-                          <span
-                            style={{
-                              position: "absolute",
-                              right: "30px",
-                              top: "50%",
-                              transform: "translateY(-50%)",
-                              color: "#6c757d",
-                              fontSize: "16px",
-                              pointerEvents: "none",
-                            }}
-                          >
-                            PHP
-                          </span>
-                        </div>
-                        {errors.maximumSalary && (
-                          <div style={{ color: "#ef4444", marginTop: 6 }}>
-                            {errors.maximumSalary}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* STEP 1: Description */}
-              <div className="layered-card-outer">
-                <div className="layered-card-middle">
-                  <div
-                    style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}
-                  >
-                    <span
-                      style={{
-                        paddingLeft: 12,
-                        paddingRight: 12,
-                        fontSize: 16,
-                        color: "#181D27",
-                        fontWeight: 700,
-                      }}
-                    >
-                      2. Description
-                    </span>
-                  </div>
-                  <div className="layered-card-content">
-                    <div
-                      data-field="description"
-                      style={
-                        errors.description
-                          ? { border: "1px solid #ef4444", borderRadius: 6 }
-                          : undefined
-                      }
-                    >
-                      <RichTextEditor setText={handleSetDescription} text={description} />
-                    </div>
-                    {errors.description && (
-                      <div style={{ color: "#ef4444", marginTop: 6 }}>{errors.description}</div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </>
+            <Step1CareerInfo
+              jobTitle={jobTitle}
+              setJobTitle={(v) => {
+                setJobTitle(v);
+                if (errors.jobTitle) clearError("jobTitle");
+              }}
+              description={description}
+              setDescription={handleSetDescription}
+              employmentType={employmentType}
+              setEmploymentType={(v) => setEmploymentType(v)}
+              workSetup={workSetup}
+              setWorkSetup={(v) => setWorkSetup(v)}
+              country={country}
+              setCountry={(v) => setCountry(v)}
+              province={province}
+              setProvince={(v) => setProvince(v)}
+              city={city}
+              setCity={(v) => setCity(v)}
+              provinceList={provinceList}
+              cityList={cityList}
+              onProvinceSelect={(prov) => {
+                setProvince(prov);
+                if (errors.province) clearError("province");
+                const provinceObj = provinceList.find((p) => p.name === prov);
+                const cities = provinceObj
+                  ? philippineCitiesAndProvinces.cities.filter(
+                      (city) => city.province === provinceObj.key
+                    )
+                  : [];
+                setCityList(cities);
+                setCity(cities[0] ? cities[0].name : "");
+              }}
+              salaryNegotiable={salaryNegotiable}
+              setSalaryNegotiable={(v) => setSalaryNegotiable(v)}
+              minimumSalary={minimumSalary}
+              setMinimumSalary={(v) => setMinimumSalary(v)}
+              maximumSalary={maximumSalary}
+              setMaximumSalary={(v) => setMaximumSalary(v)}
+              errors={errors}
+              clearError={clearError}
+              employmentTypeOptions={employmentTypeOptions}
+              workSetupOptions={workSetupOptions}
+            />
           )}
 
           {currentStep === 2 && (
-            <>
-              {/* STEP 2: CV Review Settings */}
-              <div className="layered-card-outer">
-                <div className="layered-card-middle">
-                  <div
-                    style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}
-                  >
-                    <span
-                      style={{
-                        paddingLeft: 12,
-                        paddingRight: 12,
-                        fontSize: 16,
-                        color: "#181D27",
-                        fontWeight: 700,
-                      }}
-                    >
-                      1. CV Review Settings
-                    </span>
-                  </div>
-                  <div className="layered-card-content">
-                    <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>
-                      CV Screening
-                    </span>
-                    <span>Jia automatically endorses candidates who meet the chosen criteria.</span>
-                    <div data-field="cvScreeningSetting">
-                      <CustomDropdown
-                        onSelectSetting={(setting) => {
-                          setCvScreeningSetting(setting);
-                          if (errors.cvScreeningSetting) clearError("cvScreeningSetting");
-                        }}
-                        screeningSetting={cvScreeningSetting}
-                        settingList={screeningSettingList}
-                        invalid={!!errors.cvScreeningSetting}
-                      />
-                    </div>
-                    {errors.cvScreeningSetting && (
-                      <div style={{ color: "#ef4444", marginTop: 6 }}>
-                        {errors.cvScreeningSetting}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* STEP 2: Pre-Screening Questions (optional) */}
-              <div className="layered-card-outer">
-                <div className="layered-card-middle">
-                  <div
-                    style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}
-                  >
-                    <span
-                      style={{
-                        paddingLeft: 12,
-                        paddingRight: 12,
-                        fontSize: 16,
-                        color: "#181D27",
-                        fontWeight: 700,
-                      }}
-                    >
-                      2. Pre-Screening Questions (optional)
-                    </span>
-                  </div>
-                  <div className="layered-card-content">
-                    <span>No pre-screening questions added yet. </span>
-                  </div>
-                </div>
-              </div>
-            </>
+            <Step2CVReview
+              cvScreeningSetting={cvScreeningSetting}
+              setCvScreeningSetting={(s) => setCvScreeningSetting(s)}
+              errors={errors}
+              clearError={clearError}
+              screeningSettingList={screeningSettingList}
+            />
           )}
 
           {currentStep === 3 && (
-            <>
-              {/* STEP 3: AI Interview Settings */}
-              <div className="layered-card-outer">
-                <div className="layered-card-middle">
-                  <div
-                    style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}
-                  >
-                    <span
-                      style={{
-                        paddingLeft: 12,
-                        paddingRight: 12,
-                        fontSize: 16,
-                        color: "#181D27",
-                        fontWeight: 700,
-                      }}
-                    >
-                      1. AI Interview Settings
-                    </span>
-                  </div>
-                  <div className="layered-card-content">
-                    <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>
-                      AI Interview Screening
-                    </span>
-                    <span>Jia automatically endorses candidates who meet the chosen criteria.</span>
-                    <div data-field="aiScreeningSetting">
-                      <CustomDropdown
-                        onSelectSetting={(setting) => {
-                          setAiScreeningSetting(setting);
-                          if (errors.aiScreeningSetting) clearError("aiScreeningSetting");
-                        }}
-                        screeningSetting={aiScreeningSetting}
-                        settingList={screeningSettingList}
-                        invalid={!!errors.aiScreeningSetting}
-                      />
-                    </div>
-                    {errors.aiScreeningSetting && (
-                      <div style={{ color: "#ef4444", marginTop: 6 }}>
-                        {errors.aiScreeningSetting}
-                      </div>
-                    )}
-
-                    <div style={{ width: "100%", height: 1, backgroundColor: "#E9EAEB" }} />
-
-                    <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>
-                      Require Video on Interview
-                    </span>
-                    <span>
-                      Require candidates to keep their camera on. Recordings will appear on their
-                      analysis page.
-                    </span>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        gap: 8,
-                      }}
-                    >
-                      <div style={{ display: "flex", flexDirection: "row", gap: 8 }}>
-                        <i className="la la-video" style={{ color: "#414651", fontSize: 20 }}></i>
-                        <span>Require Video Interview</span>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "flex-start",
-                          gap: 8,
-                        }}
-                      >
-                        <label className="switch">
-                          <input
-                            type="checkbox"
-                            checked={requireVideo}
-                            onChange={() => setRequireVideo(!requireVideo)}
-                          />
-                          <span className="slider round"></span>
-                        </label>
-                        <span>{requireVideo ? "Yes" : "No"}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <InterviewQuestionGeneratorV2
-                questions={questions}
-                setQuestions={(questions) => setQuestions(questions)}
-                jobTitle={jobTitle}
-                description={description}
-                error={errors.questions}
-              />
-            </>
+            <Step3AIInterview
+              aiScreeningSetting={aiScreeningSetting}
+              setAiScreeningSetting={(s) => setAiScreeningSetting(s)}
+              errors={errors}
+              clearError={clearError}
+              requireVideo={requireVideo}
+              setRequireVideo={(b) => setRequireVideo(b)}
+              questions={questions}
+              setQuestions={(q) => setQuestions(q)}
+              jobTitle={jobTitle}
+              description={description}
+              screeningSettingList={screeningSettingList}
+            />
           )}
         </div>
 
