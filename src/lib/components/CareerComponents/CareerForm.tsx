@@ -5,6 +5,7 @@ import { z } from "zod";
 import InterviewQuestionGeneratorV2 from "./InterviewQuestionGeneratorV2";
 import RichTextEditor from "@/lib/components/CareerComponents/RichTextEditor";
 import CustomDropdown from "@/lib/components/CareerComponents/CustomDropdown";
+import CollapsibleLayeredCard from "@/lib/components/CareerComponents/CollapsibleLayeredCard";
 import philippineCitiesAndProvinces from "../../../../public/philippines-locations.json";
 import { candidateActionToast, errorToast } from "@/lib/Utils";
 import { useAppContext } from "@/lib/context/AppContext";
@@ -301,9 +302,11 @@ export default function CareerForm({
     }
   }
 
+  // Validate current step using Zod schemas and populate `errors` map
   function validateStepWithZod(step: number) {
+    // reset previous errors
     setErrors({});
-    let result;
+    let result: any;
     try {
       if (step === 1) result = step1SchemaWithRefine.safeParse(buildDataForStep(step));
       else if (step === 2) result = step2Schema.safeParse(buildDataForStep(step));
@@ -318,7 +321,6 @@ export default function CareerForm({
       return true;
     }
 
-    // map zod errors to simple field messages
     const newErrors: Record<string, string> = {};
     const issues = (result as any).error?.issues || [];
     for (const issue of issues) {
@@ -330,18 +332,7 @@ export default function CareerForm({
     return false;
   }
 
-  const validateStep = (step: number) => {
-    const data: CareerFormData = {
-      jobTitle,
-      description,
-      cvScreeningSetting,
-      aiScreeningSetting,
-      questions,
-      workSetup,
-    };
-    return validateStepForData(data, step);
-  };
-
+  // Can navigate to a given step only if all previous steps are valid
   const canGoTo = (step: number) => {
     const data: CareerFormData = {
       jobTitle,
@@ -352,15 +343,6 @@ export default function CareerForm({
       workSetup,
     };
     return canGoToStep(data, step);
-  };
-
-  const isFormValid = () => {
-    return (
-      jobTitle?.trim().length > 0 &&
-      description?.trim().length > 0 &&
-      questions.some((q) => q.questions.length > 0) &&
-      workSetup?.trim().length > 0
-    );
   };
 
   const updateCareer = async (status: string) => {
@@ -753,6 +735,12 @@ export default function CareerForm({
     };
     parseProvinces();
   }, [career]);
+
+  function validateStep(step: number): boolean {
+    // reuse the shared validation logic with the data for the given step
+    const data = buildDataForStep(step);
+    return validateStepForData(data, step);
+  }
 
   return (
     <div className="col">
@@ -1375,84 +1363,6 @@ export default function CareerForm({
               />
             </>
           )}
-
-          {currentStep === 4 && (
-            <>
-              {/* STEP 4: Review */}
-              <div className="layered-card-outer">
-                <div className="layered-card-middle">
-                  <div
-                    style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}
-                  >
-                    <span
-                      style={{
-                        paddingLeft: 12,
-                        paddingRight: 12,
-                        fontSize: 16,
-                        color: "#181D27",
-                        fontWeight: 700,
-                      }}
-                    >
-                      Review your inputs
-                    </span>
-                  </div>
-                  <div className="layered-card-content">
-                    <h4>{jobTitle}</h4>
-                    <div dangerouslySetInnerHTML={{ __html: description }} />
-                    <hr />
-                    <div>
-                      <strong>CV Screening:</strong> {cvScreeningSetting}
-                    </div>
-                    <div>
-                      <strong>AI Screening:</strong> {aiScreeningSetting}
-                    </div>
-                    <div>
-                      <strong>Employment:</strong> {employmentType}
-                    </div>
-                    <div>
-                      <strong>Work Arrangement:</strong> {workSetup}{" "}
-                      {workSetupRemarks ? ` - ${workSetupRemarks}` : ""}
-                    </div>
-                    <div>
-                      <strong>Salary:</strong> {salaryNegotiable ? "Negotiable" : "Fixed"}{" "}
-                      {minimumSalary ? ` | Min: ${minimumSalary}` : ""}{" "}
-                      {maximumSalary ? ` | Max: ${maximumSalary}` : ""}
-                    </div>
-                    <div>
-                      <strong>Location:</strong> {country} / {province} / {city}
-                    </div>
-                    <div>
-                      <strong>Question groups:</strong> {questions.length}
-                    </div>
-
-                    <div style={{ marginTop: 12 }}>
-                      <strong>Interview Questions</strong>
-                      {questions.map((g) => (
-                        <div key={g.id} style={{ marginTop: 8 }}>
-                          <div style={{ fontWeight: 700 }}>{g.category}</div>
-                          {Array.isArray(g.questions) && g.questions.length > 0 ? (
-                            <ol style={{ marginLeft: 16 }}>
-                              {g.questions.map((q: any, i: number) => (
-                                <li key={i} style={{ marginBottom: 6 }}>
-                                  {typeof q === "string"
-                                    ? q
-                                    : q?.question || q?.text || q?.prompt || JSON.stringify(q)}
-                                </li>
-                              ))}
-                            </ol>
-                          ) : (
-                            <div style={{ color: "#6b7280" }}>No questions added</div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* (Step-specific blocks above) */}
         </div>
 
         {/* Right Side */}
@@ -1490,6 +1400,103 @@ export default function CareerForm({
           </div>
         )}
       </div>
+
+      {/* STEP 4: Review */}
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        {currentStep === 4 && (
+          <>
+            {/* STEP 1: Review */}
+            <CollapsibleLayeredCard
+              title={<span>Career Details & Team Access</span>}
+              defaultExpanded={true}
+              showEdit={true}
+              onEdit={() => setCurrentStep(1)}
+            >
+              <h4>{jobTitle}</h4>
+              <div dangerouslySetInnerHTML={{ __html: description }} />
+              <hr />
+              <div>
+                <strong>CV Screening:</strong> {cvScreeningSetting}
+              </div>
+              <div>
+                <strong>AI Screening:</strong> {aiScreeningSetting}
+              </div>
+              <div>
+                <strong>Employment:</strong> {employmentType}
+              </div>
+              <div>
+                <strong>Work Arrangement:</strong> {workSetup}{" "}
+                {workSetupRemarks ? ` - ${workSetupRemarks}` : ""}
+              </div>
+              <div>
+                <strong>Salary:</strong> {salaryNegotiable ? "Negotiable" : "Fixed"}{" "}
+                {minimumSalary ? ` | Min: ${minimumSalary}` : ""}{" "}
+                {maximumSalary ? ` | Max: ${maximumSalary}` : ""}
+              </div>
+              <div>
+                <strong>Location:</strong> {country} / {province} / {city}
+              </div>
+            </CollapsibleLayeredCard>
+
+            {/* STEP 2: Review */}
+            <CollapsibleLayeredCard
+              title={<span>CV Review & Pre-Screening Questions</span>}
+              defaultExpanded={true}
+              showEdit={true}
+              onEdit={() => setCurrentStep(2)}
+            >
+              <div>
+                <strong>CV Screening:</strong> {cvScreeningSetting}
+              </div>
+            </CollapsibleLayeredCard>
+
+            {/* STEP 3: Review */}
+            <CollapsibleLayeredCard
+              title={<span>AI Interview Setup</span>}
+              defaultExpanded={true}
+              showEdit={true}
+              onEdit={() => setCurrentStep(3)}
+            >
+              <div>
+                <strong>AI Screening:</strong> {aiScreeningSetting}
+              </div>
+              <div>
+                <strong>Question groups:</strong> {questions.length}
+              </div>
+
+              <div style={{ marginTop: 12 }}>
+                <strong>Interview Questions</strong>
+                {questions.map((g) => (
+                  <div key={g.id} style={{ marginTop: 8 }}>
+                    <div style={{ fontWeight: 700 }}>{g.category}</div>
+                    {Array.isArray(g.questions) && g.questions.length > 0 ? (
+                      <ol style={{ marginLeft: 16 }}>
+                        {g.questions.map((q: any, i: number) => (
+                          <li key={i} style={{ marginBottom: 6 }}>
+                            {typeof q === "string"
+                              ? q
+                              : q?.question || q?.text || q?.prompt || JSON.stringify(q)}
+                          </li>
+                        ))}
+                      </ol>
+                    ) : (
+                      <div style={{ color: "#6b7280" }}>No questions added</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </CollapsibleLayeredCard>
+          </>
+        )}
+      </div>
+
       {showSaveModal && (
         <CareerActionModal action={showSaveModal} onAction={(action) => saveCareer(action)} />
       )}
