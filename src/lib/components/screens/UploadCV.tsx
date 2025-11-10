@@ -25,6 +25,7 @@ export default function () {
   const [interview, setInterview] = useState(null);
   const [screeningResult, setScreeningResult] = useState(null);
   const [userCV, setUserCV] = useState(null);
+  const [preScreenAnswers, setPreScreenAnswers] = useState<Record<string, any>>({});
   const cvSections = [
     "Introduction",
     "Current Position",
@@ -36,8 +37,29 @@ export default function () {
     "Certifications",
     "Awards",
   ];
-  const step = ["Submit CV", "CV Screening", "Review Next Steps"];
+
+  const hasPreScreening =
+    interview &&
+    ((interview.preScreeningQuestions && interview.preScreeningQuestions.length > 0) ||
+      (interview.career &&
+        interview.career.preScreeningQuestions &&
+        interview.career.preScreeningQuestions.length > 0));
+
+  const step = hasPreScreening
+    ? ["Submit CV", "Pre-screening", "Review Next Steps"]
+    : ["Submit CV", "Review Next Steps"];
   const stepStatus = ["Completed", "Pending", "In Progress"];
+  // determine which step label represents the final "Review Next Steps" step
+  const reviewStep = hasPreScreening ? step[2] : step[1];
+  // named step constants for clearer comparisons
+  const STEP_SUBMIT = step[0];
+  const STEP_PRESCREEN = hasPreScreening ? step[1] : null;
+  const STEP_REVIEW = hasPreScreening ? step[2] : step[1];
+  // transient waiting state
+  const STEP_WAIT = "Checking";
+  // when waiting, show the progress highlight for the previous logical step
+  const effectiveCurrentStep =
+    currentStep === STEP_WAIT ? STEP_PRESCREEN || STEP_SUBMIT : currentStep;
 
   function handleDragOver(e) {
     e.preventDefault();
@@ -143,7 +165,7 @@ export default function () {
   }
 
   function processState(index, isAdvance = false) {
-    const currentStepIndex = step.indexOf(currentStep);
+    const currentStepIndex = step.indexOf(effectiveCurrentStep);
 
     if (currentStepIndex == index) {
       if (index == stepStatus.length - 1) {
@@ -198,7 +220,7 @@ export default function () {
             alert("This application has already been processed.");
             window.location.href = pathConstants.dashboard;
           } else {
-            setCurrentStep(step[0]);
+            setCurrentStep(STEP_SUBMIT);
             setInterview(result[0]);
             setLoading(false);
           }
@@ -251,7 +273,8 @@ export default function () {
       }
     }
 
-    setCurrentStep(step[1]);
+    // don't show a dedicated CV Screening step — keep user on Submit while screening in background
+    setCurrentStep(STEP_SUBMIT);
 
     if (hasChanges) {
       const formattedUserCV = cvSections.map((section) => ({
@@ -286,7 +309,7 @@ export default function () {
         })
         .catch((err) => {
           alert("Error saving CV. Please try again.");
-          setCurrentStep(step[0]);
+          setCurrentStep(STEP_SUBMIT);
           console.log(err);
         });
     }
@@ -306,15 +329,16 @@ export default function () {
 
         if (result.error) {
           alert(result.message);
-          setCurrentStep(step[0]);
+          setCurrentStep(STEP_SUBMIT);
         } else {
-          setCurrentStep(step[2]);
+          // advance to the appropriate next step after screening
+          setCurrentStep(STEP_PRESCREEN || STEP_REVIEW);
           setScreeningResult(result);
         }
       })
       .catch((err) => {
         alert("Error screening CV. Please try again.");
-        setCurrentStep(step[0]);
+        setCurrentStep(STEP_SUBMIT);
         console.log(err);
       })
       .finally(() => {
@@ -357,6 +381,7 @@ export default function () {
             } catch (err) {
               console.error("Error parsing digitalize-cv response:", err, result);
               alert("Error building CV: received invalid CV data from server.");
+              setBuildingCV(false);
               return;
             }
 
@@ -435,7 +460,7 @@ export default function () {
             </div>
           </div>
 
-          {currentStep == step[0] && (
+          {currentStep == STEP_SUBMIT && (
             <>
               {!buildingCV && !userCV && !file && (
                 <div className={styles.cvManageContainer}>
@@ -607,7 +632,7 @@ export default function () {
             </>
           )}
 
-          {currentStep == step[1] && (
+          {currentStep == STEP_WAIT && (
             <div className={styles.cvScreeningContainer}>
               <img alt="" src={assetConstants.loading} />
               <span className={styles.title}>Sit tight!</span>
@@ -620,7 +645,216 @@ export default function () {
             </div>
           )}
 
-          {currentStep == step[2] && screeningResult && (
+          {currentStep == STEP_PRESCREEN && (
+            <div className={styles.preScreeningContainer}>
+              <img alt="questions" src="/icons/question-circle.svg" />
+              <span className={styles.title}>Pre-screening Questions</span>
+
+              <div className={styles.preScreeningList}>
+                {(
+                  interview?.preScreeningQuestions ||
+                  interview?.career?.preScreeningQuestions ||
+                  []
+                ).map((q: any, idx: number) => {
+                  const qid = q.id || `q_${idx}`;
+                  const value = preScreenAnswers[qid];
+
+                  if (q.type === "short") {
+                    return (
+                      <div key={qid} className={styles.preQuestion}>
+                        <label>{q.text || q.question || q.title}</label>
+                        <input
+                          type="text"
+                          value={value || ""}
+                          onChange={(e) =>
+                            setPreScreenAnswers((s) => ({ ...s, [qid]: e.target.value }))
+                          }
+                        />
+                      </div>
+                    );
+                  }
+
+                  if (q.type === "long") {
+                    return (
+                      <div key={qid} className={styles.preQuestion}>
+                        <label>{q.text || q.question || q.title}</label>
+                        <textarea
+                          value={value || ""}
+                          onChange={(e) =>
+                            setPreScreenAnswers((s) => ({ ...s, [qid]: e.target.value }))
+                          }
+                        />
+                      </div>
+                    );
+                  }
+
+                  if (q.type === "dropdown") {
+                    return (
+                      <div key={qid} className={styles.preQuestion}>
+                        <label>{q.text || q.question || q.title}</label>
+                        <select
+                          value={value || ""}
+                          onChange={(e) =>
+                            setPreScreenAnswers((s) => ({ ...s, [qid]: e.target.value }))
+                          }
+                        >
+                          <option value="">Select</option>
+                          {(q.options || []).map((opt: string, oi: number) => (
+                            <option key={oi} value={opt}>
+                              {opt}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    );
+                  }
+
+                  if (q.type === "checkboxes") {
+                    const sel: string[] = Array.isArray(value) ? value : [];
+                    return (
+                      <div key={qid} className={styles.preQuestion}>
+                        <label>{q.text || q.question || q.title}</label>
+                        <div className={styles.checkboxGroup}>
+                          {(q.options || []).map((opt: string, oi: number) => (
+                            <label key={oi} className={styles.checkboxLabel}>
+                              <input
+                                type="checkbox"
+                                checked={sel.includes(opt)}
+                                onChange={(e) => {
+                                  const next = e.target.checked
+                                    ? [...sel, opt]
+                                    : sel.filter((s) => s !== opt);
+                                  setPreScreenAnswers((s) => ({ ...s, [qid]: next }));
+                                }}
+                              />
+                              {opt}
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  if (q.type === "range") {
+                    const current = value || {};
+                    const minVal = current.min ?? "";
+                    const maxVal = current.max ?? "";
+
+                    return (
+                      <div key={qid} className={styles.preQuestion}>
+                        <label>
+                          {q.text || q.question || q.title}
+                          <span className={styles.rangeHint}>
+                            {` (range ${q.rangeMin ?? 0} - ${q.rangeMax ?? 100})`}
+                          </span>
+                        </label>
+
+                        <div className={styles.rangeInputs}>
+                          <input
+                            type="number"
+                            placeholder="Min"
+                            min={q.rangeMin ?? 0}
+                            max={q.rangeMax ?? 100}
+                            value={minVal}
+                            onChange={(e) =>
+                              setPreScreenAnswers((s) => ({
+                                ...s,
+                                [qid]: {
+                                  ...(s[qid] || {}),
+                                  min: e.target.value ? Number(e.target.value) : "",
+                                },
+                              }))
+                            }
+                          />
+
+                          <input
+                            type="number"
+                            placeholder="Max"
+                            min={q.rangeMin ?? 0}
+                            max={q.rangeMax ?? 100}
+                            value={maxVal}
+                            onChange={(e) =>
+                              setPreScreenAnswers((s) => ({
+                                ...s,
+                                [qid]: {
+                                  ...(s[qid] || {}),
+                                  max: e.target.value ? Number(e.target.value) : "",
+                                },
+                              }))
+                            }
+                          />
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div key={qid} className={styles.preQuestion}>
+                      <label>{q.text || q.question || q.title}</label>
+                      <input
+                        type="text"
+                        value={value || ""}
+                        onChange={(e) =>
+                          setPreScreenAnswers((s) => ({ ...s, [qid]: e.target.value }))
+                        }
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div style={{ marginTop: 16 }}>
+                <button
+                  onClick={async () => {
+                    try {
+                      // show transient waiting UI while saving answers and running screening
+                      setCurrentStep(STEP_WAIT);
+
+                      // 1) save pre-screen answers to interview
+                      await axios.post("/api/whitecloak/manage-application", {
+                        email: user.email,
+                        interviewData: interview,
+                        body: { preScreenAnswers },
+                      });
+
+                      // 2) run CV screening now that pre-screen answers are saved
+                      let screeningRes = null;
+                      try {
+                        const screenResp = await axios.post("/api/whitecloak/screen-cv", {
+                          interviewID: interview.interviewID,
+                          userEmail: user.email,
+                        });
+                        screeningRes = screenResp.data;
+                        setScreeningResult(screeningRes);
+                      } catch (screenErr) {
+                        console.error("Error during post‑prescreen CV screening:", screenErr);
+                        // do not block the user from proceeding to review; record failure and continue
+                        screeningRes = null;
+                        setScreeningResult(null);
+                      }
+
+                      const qList =
+                        interview?.preScreeningQuestions ||
+                        interview?.career?.preScreeningQuestions ||
+                        [];
+                      const reviewStep =
+                        Array.isArray(qList) && qList.length > 0 ? step[2] : step[1];
+                      setCurrentStep(reviewStep);
+                    } catch (err) {
+                      console.error("Error saving pre-screen answers:", err?.response?.data || err);
+                      // return user to pre-screening so they can retry
+                      setCurrentStep(STEP_PRESCREEN);
+                      alert("Unable to save answers. Please try again.");
+                    }
+                  }}
+                >
+                  Submit Answers
+                </button>
+              </div>
+            </div>
+          )}
+
+          {currentStep == STEP_REVIEW && screeningResult && (
             <div className={styles.cvResultContainer}>
               {screeningResult.applicationStatus == "Dropped" ? (
                 <>
@@ -664,7 +898,7 @@ export default function () {
                     Your CV is now being reviewed by the hiring team.
                   </span>
                   <span className={styles.description}>
-                    We’ll be in touch soon with updates about your application.
+                    We'll be in touch soon with updates about your application.
                   </span>
                   <div className={styles.buttonContainer}>
                     <button onClick={() => handleRedirection("dashboard")}>View Dashboard</button>
