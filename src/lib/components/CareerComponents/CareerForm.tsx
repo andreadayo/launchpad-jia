@@ -38,22 +38,26 @@ export function validateStepForData(data: CareerFormData, step: number): boolean
     case 2:
       return !!data.cvScreeningSetting;
     case 3:
-      // require an AI screening selection and at least one generated/added question
-      const hasAnyQuestion =
-        Array.isArray(data.questions) &&
-        data.questions.some((g) => Array.isArray(g.questions) && g.questions.length > 0);
-      return !!data.aiScreeningSetting && hasAnyQuestion;
+      // require an AI screening selection and at least 5 total questions across groups
+      if (!data.aiScreeningSetting) return false;
+      if (!Array.isArray(data.questions)) return false;
+      let totalQuestions = 0;
+      for (const g of data.questions) {
+        if (g && Array.isArray((g as any).questions)) totalQuestions += (g as any).questions.length;
+      }
+      return totalQuestions >= 5;
     case 4:
-      // overall minimal validity: jobTitle, description, at least one question group with questions
-      const hasQuestion =
-        Array.isArray(data.questions) &&
-        data.questions.some((q) => Array.isArray(q.questions) && q.questions.length > 0);
+      // overall minimal validity: jobTitle, description, and at least 5 total interview questions
+      if (!data.jobTitle || !data.description) return false;
+      if (!Array.isArray(data.questions)) return false;
+      let total = 0;
+      for (const q of data.questions) {
+        if (q && Array.isArray((q as any).questions)) total += (q as any).questions.length;
+      }
       return !!(
-        data.jobTitle &&
         data.jobTitle.trim().length > 0 &&
-        data.description &&
         data.description.trim().length > 0 &&
-        hasQuestion
+        total >= 5
       );
     default:
       return false;
@@ -270,16 +274,20 @@ export default function CareerForm({
 
   const step3Schema = z.object({
     aiScreeningSetting: z.string().min(1, "Please select an AI screening setting"),
-    questions: z
-      .array(z.any())
-      .refine(
-        (qs) =>
-          Array.isArray(qs) &&
-          qs.some((g: any) => Array.isArray(g.questions) && g.questions.length > 0),
-        {
-          message: "Add at least one interview question",
+    questions: z.array(z.any()).refine(
+      (qs) => {
+        if (!Array.isArray(qs)) return false;
+        // count total questions across all groups
+        let total = 0;
+        for (const g of qs) {
+          if (g && Array.isArray(g.questions)) total += g.questions.length;
         }
-      ),
+        return total >= 5;
+      },
+      {
+        message: "Add at least 5 interview questions (total across all groups)",
+      }
+    ),
   });
 
   function buildDataForStep(step: number) {
