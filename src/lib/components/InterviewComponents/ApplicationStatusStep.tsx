@@ -26,8 +26,7 @@ export default function ApplicationStatusStep(props) {
       isCurrent: false,
       toolTip: {
         Pending: "Please start the interview at your earliest convenience.",
-        "For Review":
-          "Your interview record is being reviewed by our recruiters.",
+        "For Review": "Your interview record is being reviewed by our recruiters.",
         Passed: "You passed the AI Interview.",
         Rejected: "You did not pass the AI Interview.",
       },
@@ -37,8 +36,7 @@ export default function ApplicationStatusStep(props) {
       status: "Not Started",
       isCurrent: false,
       toolTip: {
-        Pending:
-          "Recruiter will contact you regarding your interview schedule.",
+        Pending: "Recruiter will contact you regarding your interview schedule.",
         Scheduled: "You are schedule to have interview on [Date]",
         "For Review": "Your interview record being reviewed.",
         Passed: "You passed the human interview.",
@@ -66,8 +64,7 @@ export default function ApplicationStatusStep(props) {
           stage.status = "Passed";
         }
         if (stage.name === "AI Interview") {
-          stage.status =
-            job.status === "For Interview" ? "Pending" : job.status;
+          stage.status = job.status === "For Interview" ? "Pending" : job.status;
           stage.isCurrent = true;
         }
       });
@@ -93,8 +90,7 @@ export default function ApplicationStatusStep(props) {
         if (completedStages.includes(stage.name)) {
           stage.status = "Failed";
           stage.toolTip = {
-            Failed:
-              "Sorry, you did not pass the CV Screening for this role, click to learn more.",
+            Failed: "Sorry, you did not pass the CV Screening for this role, click to learn more.",
           };
           stage.isCurrent = true;
         }
@@ -114,8 +110,7 @@ export default function ApplicationStatusStep(props) {
       <div className="shimmer-line-container">
         <div
           className={`shimmer-line ${
-            applicationStages.find((stage) => stage?.isCurrent)?.status ===
-            "Pending"
+            applicationStages.find((stage) => stage?.isCurrent)?.status === "Pending"
               ? "fast"
               : "slow"
           }`}
@@ -126,9 +121,7 @@ export default function ApplicationStatusStep(props) {
           <div className="progress-line">
             <div
               className={`line ${
-                stage.status === "Passed" || stage.name === "Applied"
-                  ? "completed"
-                  : ""
+                stage.status === "Passed" || stage.name === "Applied" ? "completed" : ""
               }`}
               style={{
                 width: index < applicationStages.length - 1 ? "100%" : "0%",
@@ -137,11 +130,7 @@ export default function ApplicationStatusStep(props) {
             {/* Pulse dot */}
             {stage.isCurrent && (
               <div className="pulse-dot-container">
-                <div
-                  className={`ringring ${
-                    stage.status === "Pending" ? "fast" : "slow"
-                  }`}
-                ></div>
+                <div className={`ringring ${stage.status === "Pending" ? "fast" : "slow"}`}></div>
                 <div className="circle"></div>
               </div>
             )}
@@ -149,10 +138,7 @@ export default function ApplicationStatusStep(props) {
           <div
             className="step-tooltip-container"
             style={{
-              cursor:
-                stage.toolTip && stage.status !== "Not Started"
-                  ? "pointer"
-                  : "default",
+              cursor: stage.toolTip && stage.status !== "Not Started" ? "pointer" : "default",
             }}
             onMouseEnter={() => {
               if (stage.toolTip && stage.status !== "Not Started") {
@@ -185,9 +171,7 @@ export default function ApplicationStatusStep(props) {
               <small>waiting for applicant to start</small>
             )}
             {stage.status === "Rejected" && <i className="la la-times"></i>}
-            {stage.status === "For Review" && stage.isCurrent && (
-              <small>being reviewed</small>
-            )}
+            {stage.status === "For Review" && stage.isCurrent && <small>being reviewed</small>}
             {showTooltip && activeStageIndex === index && (
               <div className="step-tooltip">
                 <div>{stage.toolTip[stage.status]}</div>

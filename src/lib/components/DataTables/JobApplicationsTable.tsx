@@ -300,10 +300,7 @@ export default function () {
                     <div className="job-info">
                       <div className="job-title">
                         <h2>
-                          <div
-                            className="skeleton-bar"
-                            style={{ animationDuration: "2.3s" }}
-                          ></div>
+                          <div className="skeleton-bar" style={{ animationDuration: "2.3s" }}></div>
                         </h2>
                       </div>
                       <div className="cta">
@@ -319,11 +316,7 @@ export default function () {
             </div>
           ) : filteredCompletedInterviews.length > 0 ? (
             filteredCompletedInterviews.map((job, index) => (
-              <div
-                className="application-item"
-                key={index}
-                style={{ flexDirection: "column" }}
-              >
+              <div className="application-item" key={index} style={{ flexDirection: "column" }}>
                 <div className="job-item">
                   <div className="job-info">
                     <div className="job-title">
@@ -341,8 +334,7 @@ export default function () {
                           }}
                         >
                           <span>
-                            <i className="la la-microphone text-primary" />{" "}
-                            Retake Interview
+                            <i className="la la-microphone text-primary" /> Retake Interview
                           </span>
                         </button>
                       )}
@@ -350,11 +342,7 @@ export default function () {
                     {!job.retakeRequest && (
                       <span>
                         <strong className="tag-text">
-                          <i
-                            className={`${getStatusBadge(
-                              job.status
-                            )} la la-square`}
-                          />{" "}
+                          <i className={`${getStatusBadge(job.status)} la la-square`} />{" "}
                           {job.status}
                         </strong>
                       </span>
@@ -363,8 +351,8 @@ export default function () {
                     {job.retakeRequest && (
                       <span>
                         <strong className="tag-text">
-                          <i className={`la la-square text-primary`} /> Retake
-                          Request: {job.retakeRequest.status}
+                          <i className={`la la-square text-primary`} /> Retake Request:{" "}
+                          {job.retakeRequest.status}
                         </strong>
                       </span>
                     )}
@@ -378,12 +366,8 @@ export default function () {
                       <button
                         className="btn btn-default"
                         onClick={() => {
-                          sessionStorage.setItem(
-                            "selectedCareer",
-                            JSON.stringify(job)
-                          );
-                          window.location.href =
-                            "/dashboard/upload-cv";
+                          sessionStorage.setItem("selectedCareer", JSON.stringify(job));
+                          window.location.href = "/dashboard/upload-cv";
                         }}
                       >
                         <span>Submit CV</span>

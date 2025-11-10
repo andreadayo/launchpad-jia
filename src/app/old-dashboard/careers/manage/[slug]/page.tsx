@@ -55,8 +55,7 @@ export default function Dashboard() {
       setData(careerData);
       setScreeningSetting(careerData.screeningSetting || "Good Fit and above");
       setRequireVideo(
-        careerData.requireVideo === undefined ||
-          careerData.requireVideo === null
+        careerData.requireVideo === undefined || careerData.requireVideo === null
           ? true
           : careerData.requireVideo
       );
@@ -200,13 +199,8 @@ export default function Dashboard() {
               <div className="header-body">
                 <div className="row align-items-center py-4">
                   <div className="col-lg-6 col-7">
-                    <h6 className="h2 text-white d-inline-block mb-0">
-                      Manage Career
-                    </h6>
-                    <nav
-                      aria-label="breadcrumb"
-                      className="d-none d-md-inline-block ml-md-4"
-                    >
+                    <h6 className="h2 text-white d-inline-block mb-0">Manage Career</h6>
+                    <nav aria-label="breadcrumb" className="d-none d-md-inline-block ml-md-4">
                       <ol className="breadcrumb breadcrumb-links breadcrumb-dark">
                         <li className="breadcrumb-item">
                           <a href="#">
@@ -317,8 +311,7 @@ export default function Dashboard() {
                   <div className="card shadow-1 ">
                     <div className="card-header">
                       <h3 className="mb-0 mr-auto">
-                        <i className="la la-edit text-primary mr-2" /> Editor
-                        Toolkit
+                        <i className="la la-edit text-primary mr-2" /> Editor Toolkit
                       </h3>
 
                       <i className="la la-bars text-primary mr-2" />
@@ -334,13 +327,9 @@ export default function Dashboard() {
 
                       <div className="btn-set careers-btn-set">
                         <button
-                          className={`btn  ${
-                            status === "active" ? "btn-primary" : "btn-danger"
-                          }`}
+                          className={`btn  ${status === "active" ? "btn-primary" : "btn-danger"}`}
                           onClick={() => {
-                            setStatus(
-                              status === "active" ? "inactive" : "active"
-                            );
+                            setStatus(status === "active" ? "inactive" : "active");
                           }}
                         >
                           <i className="la la-square text-info"></i> Status:{" "}
@@ -351,10 +340,7 @@ export default function Dashboard() {
                           description &&
                           location &&
                           workSetup &&
-                          questions.reduce(
-                            (acc, group) => acc + group.questions.length,
-                            0
-                          ) > 0 && (
+                          questions.reduce((acc, group) => acc + group.questions.length, 0) > 0 && (
                             <button
                               className="btn btn-success fade-in-bottom"
                               onClick={() => {
@@ -383,8 +369,7 @@ export default function Dashboard() {
                   <div className="card shadow-1 mt-4">
                     <div className="card-header">
                       <h3 className="mb-0 mr-auto">
-                        <i className="la la-edit text-primary mr-2" /> Advanced
-                        Settings
+                        <i className="la la-edit text-primary mr-2" /> Advanced Settings
                       </h3>
 
                       <i className="la la-bars text-primary mr-2" />
@@ -392,15 +377,11 @@ export default function Dashboard() {
 
                     <div className="card-body">
                       <small className="text-black">
-                        <i className="la la-exclamation-triangle text-danger"></i>{" "}
-                        Be Careful, This Action cannot be undone.
+                        <i className="la la-exclamation-triangle text-danger"></i> Be Careful, This
+                        Action cannot be undone.
                       </small>
-                      <button
-                        className="btn btn-default"
-                        onClick={deleteCareer}
-                      >
-                        <i className="la la-trash text-danger"></i> Delete this
-                        Entry
+                      <button className="btn btn-default" onClick={deleteCareer}>
+                        <i className="la la-trash text-danger"></i> Delete this Entry
                       </button>
                     </div>
                   </div>

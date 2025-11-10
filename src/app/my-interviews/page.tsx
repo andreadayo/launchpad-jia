@@ -19,7 +19,6 @@ export default function () {
       });
 
       setJobApplications(response.data);
-
     } catch (error) {
       console.error("Error fetching job openings:", error);
     }
@@ -39,14 +38,18 @@ export default function () {
     <>
       <title>WhiteCloak | applicant</title>
       <div className="auth-panel">
-        <div className="panel left" style={{ 
-          overflowY: "auto",
-          maxHeight: "100vh",
-        }}>
-          <div className="form-section fade-in-bottom"
+        <div
+          className="panel left"
           style={{
-            paddingTop: "20px",
+            overflowY: "auto",
+            maxHeight: "100vh",
           }}
+        >
+          <div
+            className="form-section fade-in-bottom"
+            style={{
+              paddingTop: "20px",
+            }}
           >
             <div className="auth-form">
               <img
@@ -55,9 +58,7 @@ export default function () {
                 src="https://www.whitecloak.com/wp-content/uploads/2024/02/logo.svg"
               />
               <br />
-              <span className="text-grey">
-                Start your Career with WhiteCloak
-              </span>
+              <span className="text-grey">Start your Career with WhiteCloak</span>
 
               {user && (
                 <>
@@ -85,8 +86,7 @@ export default function () {
               <br />
 
               <strong>
-                <i className="la la-microphone text-primary blink-2"></i>{" "}
-                All Applications
+                <i className="la la-microphone text-primary blink-2"></i> All Applications
               </strong>
               <br />
 
@@ -98,20 +98,29 @@ export default function () {
                       key={index}
                       style={{ flexDirection: "column" }}
                     >
-                      <div style={{ display: "flex", width: "100%", flexDirection: "row", justifyContent: "space-between" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          width: "100%",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
                         <div className="job-title" style={{ width: "70%" }}>
                           <h2>{job.jobTitle}</h2>
                         </div>
 
-                      {job.status === "For Interview" && <div 
-                          className="cta"
-                          onClick={() => {
-                            startInterview(job);
-                          }}
-                        >
-                        <span>Start Interview</span>
-                        <i className="la la-arrow-circle-right"></i>
-                      </div>}
+                        {job.status === "For Interview" && (
+                          <div
+                            className="cta"
+                            onClick={() => {
+                              startInterview(job);
+                            }}
+                          >
+                            <span>Start Interview</span>
+                            <i className="la la-arrow-circle-right"></i>
+                          </div>
+                        )}
                       </div>
                       <ApplicationStatusStep job={job} />
                     </div>
@@ -140,11 +149,7 @@ export default function () {
                 borderRadius: "10px",
               }}
             >
-              <i
-                className="la la-square blink-1"
-                style={{ color: "turquoise" }}
-              />{" "}
-              Your Interviews
+              <i className="la la-square blink-1" style={{ color: "turquoise" }} /> Your Interviews
             </span>
             <br />
             <br />
@@ -160,9 +165,7 @@ export default function () {
                 <div className="number">
                   <span>1</span>
                 </div>
-                <span className="text-white">
-                  Apply for a Job Position you like
-                </span>
+                <span className="text-white">Apply for a Job Position you like</span>
               </div>
               <div className="step fade-in-bottom dl-4">
                 <div className="number">
@@ -178,11 +181,7 @@ export default function () {
               </div>
               <br />
               {!user && (
-                <a
-                  href="/login"
-                  style={{ margin: "auto" }}
-                  className="fade-in-bottom dl-8"
-                >
+                <a href="/login" style={{ margin: "auto" }} className="fade-in-bottom dl-8">
                   <div className="step text-white">
                     <span>Create Account</span>
                     <div className="number">
@@ -195,11 +194,7 @@ export default function () {
               )}
 
               {user && (
-                <a
-                  href="/applicant"
-                  style={{ margin: "auto" }}
-                  className="fade-in-bottom dl-8"
-                >
+                <a href="/applicant" style={{ margin: "auto" }} className="fade-in-bottom dl-8">
                   <div className="step text-white">
                     <span>See Other Job Openings</span>
                     <div className="number">

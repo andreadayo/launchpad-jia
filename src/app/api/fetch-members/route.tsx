@@ -10,9 +10,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json(members);
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch members" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch members" }, { status: 500 });
   }
 }

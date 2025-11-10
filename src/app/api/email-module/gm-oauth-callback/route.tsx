@@ -95,11 +95,7 @@ export async function GET(request: NextRequest) {
     // Upsert the token document
     await db
       .collection("gmail-refresh-tokens")
-      .updateOne(
-        { email: email.toLowerCase() },
-        { $set: tokenDocument },
-        { upsert: true }
-      );
+      .updateOne({ email: email.toLowerCase() }, { $set: tokenDocument }, { upsert: true });
 
     // Redirect back to email module with success
     return NextResponse.redirect(

@@ -9,12 +9,9 @@ export async function GET(request: Request) {
     const search = searchParams.get("search");
     const sortBy = searchParams.get("sortBy");
     console.log("orgID", orgID);
-    
+
     if (!orgID) {
-      return NextResponse.json(
-        { error: "Organization ID is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Organization ID is required" }, { status: 400 });
     }
 
     const { db } = await connectMongoDB();
@@ -37,8 +34,8 @@ export async function GET(request: Request) {
       },
       {
         $sort: {
-            updatedAt: -1,
-        }
+          updatedAt: -1,
+        },
       },
       {
         $group: {
@@ -64,22 +61,22 @@ export async function GET(request: Request) {
                           $or: [
                             { $eq: ["$$interview.applicationStatus", "Ongoing"] },
                             { $eq: ["$$interview.applicationStatus", null] },
-                            {$eq:[{$type:'$$interview.applicationStatus'},"missing"]}
+                            { $eq: [{ $type: "$$interview.applicationStatus" }, "missing"] },
                           ],
-                        }, 
+                        },
                         then: true,
-                        else: false
+                        else: false,
                       },
                     },
                   },
                 },
               },
               then: "Ongoing",
-              else: { $arrayElemAt: [ "$interviews.applicationStatus", 0 ] }
+              else: { $arrayElemAt: ["$interviews.applicationStatus", 0] },
             },
-          }, 
-          activeAt: { $toDate: { $arrayElemAt: [ "$interviews.updatedAt", 0 ] } }
-        }
+          },
+          activeAt: { $toDate: { $arrayElemAt: ["$interviews.updatedAt", 0] } },
+        },
       },
     ];
 
@@ -90,7 +87,7 @@ export async function GET(request: Request) {
         },
       });
     }
-    
+
     let sort: any = { activeAt: -1 };
     if (sortBy === "Oldest Activity") {
       sort = { activeAt: 1 };
@@ -101,18 +98,27 @@ export async function GET(request: Request) {
     }
 
     // Find all interviews and group by email and put them in an array
-    const candidates = await db.collection("interviews").aggregate([
-      ...stages,
-      { $project: { _id: 0, email: "$_id.email", name: "$_id.name", interviews: 1, candidateStatus: 1, activeAt: 1 } },
-      { $sort: sort }
-    ]).toArray();
+    const candidates = await db
+      .collection("interviews")
+      .aggregate([
+        ...stages,
+        {
+          $project: {
+            _id: 0,
+            email: "$_id.email",
+            name: "$_id.name",
+            interviews: 1,
+            candidateStatus: 1,
+            activeAt: 1,
+          },
+        },
+        { $sort: sort },
+      ])
+      .toArray();
 
     return NextResponse.json(candidates);
   } catch (error) {
     console.log(error);
-    return NextResponse.json(
-      { error: "Failed to fetch candidates" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch candidates" }, { status: 500 });
   }
 }

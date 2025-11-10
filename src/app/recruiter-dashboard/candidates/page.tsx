@@ -4,9 +4,7 @@ import React from "react";
 import HeaderBar from "@/lib/PageComponent/HeaderBar";
 import CandidatesTableV2 from "@/lib/components/DataTables/CandidatesTableV2";
 
-
 export default function () {
-
   return (
     <>
       <HeaderBar activeLink="Candidates" currentPage="Overview" icon="la la-id-badge" />

@@ -40,7 +40,9 @@
         background: var(--Surface-white, #ffffff);
         border: 1px solid var(--Colors-Primary_Colors-Neutrals-100, #f5f5f5);
         border-radius: 8px;
-        box-shadow: 0px 4px 6px -2px #0a0d1208, 0px 12px 16px -4px #0a0d1214;
+        box-shadow:
+          0px 4px 6px -2px #0a0d1208,
+          0px 12px 16px -4px #0a0d1214;
         display: flex;
         flex-direction: column;
         position: absolute;
@@ -109,8 +111,7 @@
         color: var(--Colors-Primary_Colors-Neutrals-800, #252b37);
         span {
           background: var(--Colors-Secondary_Colors-Blue-gray-50, #f8f9fc);
-          border: 1px solid
-            var(--Colors-Secondary_Colors-Blue-gray-200, #d5d9eb);
+          border: 1px solid var(--Colors-Secondary_Colors-Blue-gray-200, #d5d9eb);
           border-radius: 16px;
           box-sizing: border-box;
           padding: 0 8px;
@@ -250,7 +251,9 @@
         background: #ffffff;
         border: 1px solid #e9eaeb;
         border-radius: 12px;
-        box-shadow: 0px 4px 6px -2px #0a0d1208, 0px 12px 16px -4px #0a0d1214;
+        box-shadow:
+          0px 4px 6px -2px #0a0d1208,
+          0px 12px 16px -4px #0a0d1214;
         display: flex;
         flex-direction: column;
         position: absolute;
@@ -316,14 +319,9 @@
                   );
                 }
                 &.in_progress {
-                  background: linear-gradient(
-                        90deg,
-                        #fccec0 0%,
-                        #ebacc9 33%,
-                        #ceb6da 66%,
-                        #9fcaed 100%
-                      )
-                      0 0 / 50% 100% no-repeat,
+                  background:
+                    linear-gradient(90deg, #fccec0 0%, #ebacc9 33%, #ceb6da 66%, #9fcaed 100%) 0 0 /
+                      50% 100% no-repeat,
                     #d9d9d9;
                 }
               }
@@ -361,24 +359,18 @@
                 line-height: 18px;
                 text-align: center;
                 &.pending {
-                  background: var(
-                    --Colors-Secondary_Colors-Blue-gray-50,
-                    #f8f9fc
-                  );
-                  border: 1px solid
-                    var(--Colors-Secondary_Colors-Blue-gray-200, #d5d9eb);
+                  background: var(--Colors-Secondary_Colors-Blue-gray-50, #f8f9fc);
+                  border: 1px solid var(--Colors-Secondary_Colors-Blue-gray-200, #d5d9eb);
                   color: var(--Colors-Secondary_Colors-Blue-gray-700, #363f72);
                 }
                 &.completed {
                   background: var(--Colors-Primary_Colors-Success-50, #ecfdf3);
-                  border: 1px solid
-                    var(--Colors-Primary_Colors-Success-200, #a6f4c5);
+                  border: 1px solid var(--Colors-Primary_Colors-Success-200, #a6f4c5);
                   color: var(--Colors-Primary_Colors-Success-700, #027948);
                 }
                 &.in_progress {
                   background: var(--Colors-Secondary_Colors-Purple-50, #f4f3ff);
-                  border: 1px solid
-                    var(--Colors-Secondary_Colors-Purple-200, #d9d6fe);
+                  border: 1px solid var(--Colors-Secondary_Colors-Purple-200, #d9d6fe);
                   color: var(--Colors-Secondary_Colors-Purple-700, #5925dc);
                 }
               }

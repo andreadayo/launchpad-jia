@@ -40,7 +40,9 @@ export default function AuthGuard() {
         const params = new URLSearchParams(searchParams);
         params.delete("orgID");
         const existingParams = params.toString();
-        router.replace(`${pathname}?orgID=${activeOrg._id}${existingParams ? `&${existingParams}` : ""}`);
+        router.replace(
+          `${pathname}?orgID=${activeOrg._id}${existingParams ? `&${existingParams}` : ""}`
+        );
       } else if (orgIDparams) {
         const foundOrg = orgList.find((o: any) => o._id === orgIDparams);
         const superAdminResponse = await axios.post("/api/admin/check-super-admin", {
@@ -64,7 +66,7 @@ export default function AuthGuard() {
           const orgDetails = await axios.get("/api/admin/get-organization-details", {
             params: {
               id: orgIDparams,
-            }
+            },
           });
           if (orgDetails.data.status === "inactive") {
             clearUserSession();
@@ -121,7 +123,7 @@ export default function AuthGuard() {
         const orgDetails = await axios.get("/api/admin/get-organization-details", {
           params: {
             id: activeOrg._id,
-          }
+          },
         });
         if (orgDetails.data.status === "inactive") {
           clearUserSession();
@@ -175,7 +177,7 @@ export default function AuthGuard() {
           if (window.location.pathname.includes("dashboard")) {
             errorToast("You are not authorized to access this page", 1500);
             setTimeout(() => {
-              window.location.href = '/';
+              window.location.href = "/";
             }, 1500);
           }
         }

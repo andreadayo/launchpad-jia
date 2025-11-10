@@ -12,9 +12,7 @@ export async function GET() {
     const startTimestamp = startDate.getTime();
     const endTimestamp = endDate.getTime();
 
-    console.log(
-      `Querying interviews from ${startDate.toISOString()} to ${endDate.toISOString()}`
-    );
+    console.log(`Querying interviews from ${startDate.toISOString()} to ${endDate.toISOString()}`);
     console.log(`Timestamp range: ${startTimestamp} to ${endTimestamp}`);
 
     // Query interviews within the date range using createdAt field
@@ -41,19 +39,14 @@ export async function GET() {
       })
       .toArray();
 
-    console.log(
-      `Found ${interviews.length} interviews in the specified date range`
-    );
+    console.log(`Found ${interviews.length} interviews in the specified date range`);
 
     // Calculate total interview time from interviewDuration field
     let totalInterviewTime = 0;
     let interviewsWithDuration = 0;
 
     for (const interview of interviews) {
-      if (
-        interview.interviewDuration &&
-        typeof interview.interviewDuration === "number"
-      ) {
+      if (interview.interviewDuration && typeof interview.interviewDuration === "number") {
         totalInterviewTime += interview.interviewDuration;
         interviewsWithDuration++;
       }

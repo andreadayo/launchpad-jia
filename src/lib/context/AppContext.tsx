@@ -77,7 +77,5 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     setTheme,
   };
 
-  return (
-    <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
-  );
+  return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;
 };

@@ -14,8 +14,5 @@ export async function POST(req: Request) {
 
   await db.collection("members").deleteOne({ email, orgID });
 
-  return NextResponse.json(
-    { message: "Member deleted successfully" },
-    { status: 200 }
-  );
+  return NextResponse.json({ message: "Member deleted successfully" }, { status: 200 });
 }

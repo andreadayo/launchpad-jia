@@ -8,8 +8,7 @@ const openai = new OpenAI({
 });
 
 export async function POST(request: Request) {
-  const { interviewID, userEmail, testMode, testInterviewData, testCVData } =
-    await request.json();
+  const { interviewID, userEmail, testMode, testInterviewData, testCVData } = await request.json();
 
   const { db } = await connectMongoDB();
 
@@ -45,8 +44,7 @@ export async function POST(request: Request) {
     }
   );
 
-  const cvScreeningPromptText =
-    cvScreeningPromptData?.cv_screening_prompt?.prompt;
+  const cvScreeningPromptText = cvScreeningPromptData?.cv_screening_prompt?.prompt;
 
   if (!interviewData) {
     return NextResponse.json({
@@ -78,11 +76,7 @@ export async function POST(request: Request) {
     parsedCV += `${section.name}\n${section.content}\n`;
   });
 
-  function generateScreeningPrompt(
-    interviewInstance: any,
-    cvData: any,
-    globalSettings: any
-  ) {
+  function generateScreeningPrompt(interviewInstance: any, cvData: any, globalSettings: any) {
     if (!interviewInstance) {
       console.error("Error: interviewInstance parameter is missing");
       return "";
@@ -136,11 +130,7 @@ export async function POST(request: Request) {
     return promptText;
   }
 
-  let screeningPrompt = generateScreeningPrompt(
-    interviewData,
-    parsedCV,
-    cvScreeningPromptText
-  );
+  let screeningPrompt = generateScreeningPrompt(interviewData, parsedCV, cvScreeningPromptText);
 
   // console.log(screeningPrompt);
 
@@ -193,10 +183,7 @@ export async function POST(request: Request) {
     screeningData.cvSettingResult = "Passed";
   }
 
-  if (
-    result.result === "Ineligible CV" ||
-    result.result === "Insufficient Data"
-  ) {
+  if (result.result === "Ineligible CV" || result.result === "Insufficient Data") {
     screeningData.stateClass = "state-rejected";
     screeningData.cvSettingResult = "Failed";
   }

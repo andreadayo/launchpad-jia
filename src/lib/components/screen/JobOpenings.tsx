@@ -187,9 +187,7 @@ export default function () {
 
     const sortedCareers = filteredCareers.sort((a, b) => {
       if (sort === "Newest") {
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       }
       return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
     });
@@ -213,9 +211,7 @@ export default function () {
 
     if (selectedJob && !skipSelectJob) {
       const job = sortedCareers.find((item) => item._id == selectedJob);
-      const jobIndex = sortedCareers.findIndex(
-        (item) => item._id == selectedJob
-      );
+      const jobIndex = sortedCareers.findIndex((item) => item._id == selectedJob);
       const jobPage = Math.floor(jobIndex / pageSize) + 1;
 
       setSelectedCareer(job);
@@ -268,7 +264,7 @@ export default function () {
     }
 
     // if (!careers || navType === "reload") {
-      getCareers();
+    getCareers();
     // } else {
     //   setCareers(JSON.parse(careers));
     // }
@@ -277,7 +273,7 @@ export default function () {
       const interviews = localStorage.getItem("interviews");
 
       // if (!interviews || navType === "reload") {
-        fetchInterviews();
+      fetchInterviews();
       // } else {
       //   const parsedInterviews = JSON.parse(interviews);
       //   setInterviews(parsedInterviews);
@@ -373,9 +369,7 @@ export default function () {
 
   return (
     <div
-      className={`${styles.jobOpenings} ${
-        pathname.includes("/applicant") ? styles.applicant : ""
-      }`}
+      className={`${styles.jobOpenings} ${pathname.includes("/applicant") ? styles.applicant : ""}`}
     >
       <div className={styles.searchFilterContainer}>
         <div className={styles.searchContainer}>
@@ -433,28 +427,21 @@ export default function () {
           <span className={styles.result}>
             {search.trim() === ""
               ? "All Job Openings"
-              : filteredCareers.length +
-                ' jobs found for "' +
-                search.trim() +
-                '"'}
+              : filteredCareers.length + ' jobs found for "' + search.trim() + '"'}
           </span>
 
           <div className={styles.sort}>
             <img alt="arrow-down-up" src="/icons/arrow-down-up.svg" />
             Sort by:&nbsp;&nbsp;
             <span
-              className={`${styles.sortItem} ${
-                sort === "Newest" ? styles.active : ""
-              }`}
+              className={`${styles.sortItem} ${sort === "Newest" ? styles.active : ""}`}
               onClick={() => handleSort("Newest")}
             >
               Newest
             </span>
             &nbsp;&nbsp;-&nbsp;&nbsp;
             <span
-              className={`${styles.sortItem} ${
-                sort === "Most Relevant" ? styles.active : ""
-              }`}
+              className={`${styles.sortItem} ${sort === "Most Relevant" ? styles.active : ""}`}
               onClick={() => handleSort("Most Relevant")}
             >
               Most Relevant
@@ -478,8 +465,8 @@ export default function () {
                         selectedCareer?.id == item?.id
                           ? selectedCareerRef
                           : index == 0
-                          ? defaultCareerRef
-                          : null
+                            ? defaultCareerRef
+                            : null
                       }
                       className={`${styles.cardContainer} ${
                         selectedCareer?.id === item.id ? styles.active : ""
@@ -490,9 +477,7 @@ export default function () {
                       <div className={styles.cardDetails}>
                         <span className={styles.jobTitle}>{item.jobTitle}</span>
                         {item.location && (
-                          <span
-                            className={`${styles.jobDetails} ${styles.location}`}
-                          >
+                          <span className={`${styles.jobDetails} ${styles.location}`}>
                             <img alt="map-pin" src="/icons/map-pin.svg" />
                             {item.location}
                           </span>
@@ -549,8 +534,8 @@ export default function () {
               {loading
                 ? "Fetching jobs..."
                 : filteredCareers.length === 0
-                ? "No jobs found"
-                : "Select a job to view details"}
+                  ? "No jobs found"
+                  : "Select a job to view details"}
             </span>
           </div>
         ) : (
@@ -586,9 +571,7 @@ export default function () {
               ))}
             </div> */}
 
-            {!interviews.some(
-              (interview) => interview.id === selectedCareer.id
-            ) ? (
+            {!interviews.some((interview) => interview.id === selectedCareer.id) ? (
               <div className={styles.buttonContainer}>
                 <button className={styles.apply} onClick={handleApply}>
                   <img alt="zap" src="/icons/zapV2.svg" />
@@ -606,22 +589,16 @@ export default function () {
                   <span>
                     Applied{" "}
                     {processDate(
-                      interviews.find(
-                        (interview) => interview.id === selectedCareer.id
-                      ).createdAt
+                      interviews.find((interview) => interview.id === selectedCareer.id).createdAt
                     )}
                   </span>
                 </div>
                 <hr className="webView" />
-                <a onClick={() => handleRedirection("dashboard")}>
-                  View Application {">"}
-                </a>
+                <a onClick={() => handleRedirection("dashboard")}>View Application {">"}</a>
               </div>
             )}
 
-            <p
-              dangerouslySetInnerHTML={{ __html: selectedCareer.description }}
-            />
+            <p dangerouslySetInnerHTML={{ __html: selectedCareer.description }} />
           </div>
         )}
       </div>

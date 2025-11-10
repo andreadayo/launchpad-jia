@@ -166,9 +166,7 @@ export default function () {
       setInterviewData(parsedInterviewData);
       setLoading(false);
     } else {
-      Promise.resolve(
-        window.confirm("No application is currently being managed.")
-      ).then(() => {
+      Promise.resolve(window.confirm("No application is currently being managed.")).then(() => {
         window.location.href = "/whitecloak/applicant";
       });
     }
@@ -192,9 +190,7 @@ export default function () {
       return false;
     }
 
-    const allEmpty = Object.values(userCV).every(
-      (value: any) => value?.trim() === ""
-    );
+    const allEmpty = Object.values(userCV).every((value: any) => value?.trim() === "");
 
     if (allEmpty) {
       alert("No details to be save.");
@@ -210,10 +206,7 @@ export default function () {
       parsedDigitalCV = JSON.parse(digitalCV);
 
       if (parsedDigitalCV.errorRemarks) {
-        alert(
-          "Please fix the errors in the CV first.\n\n" +
-            parsedDigitalCV.errorRemarks
-        );
+        alert("Please fix the errors in the CV first.\n\n" + parsedDigitalCV.errorRemarks);
         return false;
       }
     }
@@ -308,8 +301,7 @@ export default function () {
             const formattedCV = {};
 
             cvSections.map((section, index) => {
-              formattedCV[section] =
-                parsedUserCV.digitalCV[index].content?.trim();
+              formattedCV[section] = parsedUserCV.digitalCV[index].content?.trim();
             });
 
             setDigitalCV(result);
@@ -368,16 +360,12 @@ export default function () {
                       step.indexOf(currentStep) == index
                         ? "in-progress"
                         : step.indexOf(currentStep) > index
-                        ? "completed"
-                        : "pending"
+                          ? "completed"
+                          : "pending"
                     }.svg`}
                   />
                   {index < step.length - 1 && (
-                    <hr
-                      className={`${
-                        step.indexOf(currentStep) > index ? styles.done : ""
-                      }`}
-                    />
+                    <hr className={`${step.indexOf(currentStep) > index ? styles.done : ""}`} />
                   )}
                 </div>
               ))}
@@ -404,9 +392,7 @@ export default function () {
                     <img alt="completed" src="/icons/completed.svg" />
                     <span className={styles.title}>{file.name}</span>
                     {buildingCV ? (
-                      <span className={styles.description}>
-                        Building your profile...
-                      </span>
+                      <span className={styles.description}>Building your profile...</span>
                     ) : (
                       <img
                         alt="x"
@@ -423,9 +409,7 @@ export default function () {
                     onDrop={handleDrop}
                   >
                     <img alt="upload" src="/icons/upload.svg" />
-                    <span className={styles.title}>
-                      Click to upload or drag and drop
-                    </span>
+                    <span className={styles.title}>Click to upload or drag and drop</span>
                     <button onClick={handleUploadCV}>Upload CV</button>
                     <input
                       type="file"
@@ -450,9 +434,7 @@ export default function () {
                             {section}
 
                             {editingCV == section ? (
-                              <button onClick={handleEditChange}>
-                                Save Changes
-                              </button>
+                              <button onClick={handleEditChange}>Save Changes</button>
                             ) : (
                               <img
                                 alt="square-pen"
@@ -475,8 +457,7 @@ export default function () {
                                     "Upload your CV to auto-fill this section.";
                                 }}
                                 onClick={(e) => {
-                                  (e.target as HTMLInputElement).placeholder =
-                                    "";
+                                  (e.target as HTMLInputElement).placeholder = "";
                                 }}
                                 onChange={(e) => {
                                   setUserCV({
@@ -490,9 +471,7 @@ export default function () {
                           ) : (
                             <span
                               className={`${styles.sectionDetails} ${
-                                userCV && userCV[section]?.trim()
-                                  ? styles.withDetails
-                                  : ""
+                                userCV && userCV[section]?.trim() ? styles.withDetails : ""
                               }`}
                             >
                               <Markdown>
@@ -520,9 +499,8 @@ export default function () {
                   <img alt="upload" src={`/icons/upload.svg`} />
                   <button onClick={handleUploadCV}>Upload CV</button>
                   <span>
-                    Choose or drag and drop a file here. Our AI tools will
-                    automatically pre-fill your CV and also check how well it
-                    matches the role.
+                    Choose or drag and drop a file here. Our AI tools will automatically pre-fill
+                    your CV and also check how well it matches the role.
                   </span>
                 </div>
                 <input
@@ -543,8 +521,7 @@ export default function () {
                     Review Current CV
                   </button>
                   <span>
-                    Already uploaded a CV? Take a moment to review your details
-                    before we proceed.
+                    Already uploaded a CV? Take a moment to review your details before we proceed.
                   </span>
                 </div>
               </div>
@@ -556,8 +533,8 @@ export default function () {
               <span className={styles.title}>Sit tight!</span>
 
               <span className={`mobileView ${styles.description}`}>
-                Our smart reviewer is checking your qualifications. We'll let
-                you know what's next in just a moment.
+                Our smart reviewer is checking your qualifications. We'll let you know what's next
+                in just a moment.
               </span>
 
               <span className={`webView ${styles.description}`}>
@@ -572,9 +549,7 @@ export default function () {
           {currentStep == step[2] && (
             <div
               className={`${styles.cvResultContainer} ${
-                screeningResult == "For AI Interview"
-                  ? styles.forInterview
-                  : styles.forReview
+                screeningResult == "For AI Interview" ? styles.forInterview : styles.forReview
               }`}
             >
               {screeningResult == "For AI Interview" ? (
@@ -589,9 +564,7 @@ export default function () {
                   <span className={`${styles.description} ${styles.bold}`}>
                     Ready to take the next step?
                   </span>
-                  <span className={styles.description}>
-                    You may start your AI interview now.
-                  </span>
+                  <span className={styles.description}>You may start your AI interview now.</span>
                   <div className={styles.buttonContainer}>
                     <button onClick={() => handleRedirection("interview")}>
                       Start AI Interview
@@ -608,16 +581,12 @@ export default function () {
                 <>
                   <img alt="user-check" src="/icons/user-check.svg" />
                   <span className={styles.title}>Your CV is now being</span>
-                  <span className={styles.title}>
-                    reviewed by the hiring team.
-                  </span>
+                  <span className={styles.title}>reviewed by the hiring team.</span>
                   <span className={styles.description}>
                     We’ll be in touch soon with updates about your application.
                   </span>
                   <div className={styles.buttonContainer}>
-                    <button onClick={() => handleRedirection("dashboard")}>
-                      View Dashboard
-                    </button>
+                    <button onClick={() => handleRedirection("dashboard")}>View Dashboard</button>
                   </div>
                 </>
               )}

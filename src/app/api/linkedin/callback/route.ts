@@ -5,8 +5,7 @@ import axios from "axios";
 export async function GET(req: NextRequest) {
   const code = req.nextUrl.searchParams.get("code");
 
-  if (!code)
-    return NextResponse.json({ error: "No code in query" }, { status: 400 });
+  if (!code) return NextResponse.json({ error: "No code in query" }, { status: 400 });
 
   const redirectUri = "https://jia-alpha.vercel.app/api/linkedin/callback";
   const tokenRes = await axios.post(

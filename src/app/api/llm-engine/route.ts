@@ -10,10 +10,7 @@ export async function POST(request: Request) {
     const { systemPrompt, prompt } = await request.json();
 
     if (!prompt) {
-      return NextResponse.json(
-        { error: "Prompt is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
     }
 
     const completion = await openai.chat.completions.create({
@@ -39,9 +36,6 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Error in LLM engine:", error);
-    return NextResponse.json(
-      { error: "Failed to process request" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to process request" }, { status: 500 });
   }
 }

@@ -10,10 +10,7 @@ export async function POST(request: Request) {
     const { corePrompt } = await request.json();
 
     if (!corePrompt) {
-      return NextResponse.json(
-        { error: "corePrompt is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "corePrompt is required" }, { status: 400 });
     }
 
     const completion = await openai.responses.create({
@@ -32,9 +29,6 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Error in LLM reasoner:", error);
-    return NextResponse.json(
-      { error: "Failed to process request" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to process request" }, { status: 500 });
   }
 }

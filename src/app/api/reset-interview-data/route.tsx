@@ -8,10 +8,7 @@ export async function POST(request: Request) {
 
     // Validate required fields
     if (!id) {
-      return NextResponse.json(
-        { error: "Interview ID is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Interview ID is required" }, { status: 400 });
     }
 
     const { db } = await connectMongoDB();
@@ -53,15 +50,14 @@ export async function POST(request: Request) {
       interviewID: interviewInstance.interviewID,
     });
 
-
     // delete cloudflare recording if exists
     if (interviewInstance.interviewRecording?.filename) {
       const s3Client = new S3Client({
         region: "auto",
         endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
         credentials: {
-            accessKeyId: process.env.R2_ACCESS_KEY_ID,
-            secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+          accessKeyId: process.env.R2_ACCESS_KEY_ID,
+          secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
         },
       });
 
@@ -79,9 +75,6 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Error deleting Interview:", error);
-    return NextResponse.json(
-      { error: "Failed to delete Interview" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to delete Interview" }, { status: 500 });
   }
 }

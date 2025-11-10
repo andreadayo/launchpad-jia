@@ -30,9 +30,7 @@ async function refreshAccessToken(refreshToken: string) {
       statusText: response.statusText,
       error: errorText,
     });
-    throw new Error(
-      `Failed to refresh access token: ${response.status} - ${errorText}`
-    );
+    throw new Error(`Failed to refresh access token: ${response.status} - ${errorText}`);
   }
 
   const data = await response.json();
@@ -123,14 +121,11 @@ export async function POST(request: NextRequest) {
 
     // First, test the Gmail API with a simple profile request
     console.log("Testing Gmail API access...");
-    const profileResponse = await fetch(
-      "https://gmail.googleapis.com/gmail/v1/users/me/profile",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const profileResponse = await fetch("https://gmail.googleapis.com/gmail/v1/users/me/profile", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
     if (!profileResponse.ok) {
       const errorText = await profileResponse.text();
@@ -139,9 +134,7 @@ export async function POST(request: NextRequest) {
         statusText: profileResponse.statusText,
         error: errorText,
       });
-      throw new Error(
-        `Gmail Profile API Error: ${profileResponse.status} - ${errorText}`
-      );
+      throw new Error(`Gmail Profile API Error: ${profileResponse.status} - ${errorText}`);
     }
 
     const profileData = await profileResponse.json();
@@ -165,9 +158,7 @@ export async function POST(request: NextRequest) {
         error: errorText,
         accessToken: accessToken.substring(0, 20) + "...",
       });
-      throw new Error(
-        `Gmail API Error: ${gmailResponse.status} - ${errorText}`
-      );
+      throw new Error(`Gmail API Error: ${gmailResponse.status} - ${errorText}`);
     }
 
     const gmailData = await gmailResponse.json();
@@ -193,8 +184,7 @@ export async function POST(request: NextRequest) {
 
         // Extract email headers
         const headers = detail.payload?.headers || [];
-        const subject =
-          headers.find((h: any) => h.name === "Subject")?.value || "No Subject";
+        const subject = headers.find((h: any) => h.name === "Subject")?.value || "No Subject";
         const from = headers.find((h: any) => h.name === "From")?.value || "";
         const to = headers.find((h: any) => h.name === "To")?.value || "";
         const date = headers.find((h: any) => h.name === "Date")?.value || "";
@@ -204,9 +194,7 @@ export async function POST(request: NextRequest) {
         if (detail.payload?.body?.data) {
           body = Buffer.from(detail.payload.body.data, "base64").toString();
         } else if (detail.payload?.parts) {
-          const textPart = detail.payload.parts.find(
-            (part: any) => part.mimeType === "text/plain"
-          );
+          const textPart = detail.payload.parts.find((part: any) => part.mimeType === "text/plain");
           if (textPart?.body?.data) {
             body = Buffer.from(textPart.body.data, "base64").toString();
           }
@@ -242,9 +230,8 @@ export async function POST(request: NextRequest) {
           unreadCount: detail.labelIds?.includes("UNREAD") ? 1 : 0,
           messageCount: 1,
           hasAttachment:
-            detail.payload?.parts?.some(
-              (part: any) => part.filename && part.filename.length > 0
-            ) || false,
+            detail.payload?.parts?.some((part: any) => part.filename && part.filename.length > 0) ||
+            false,
           stage: isAutomated ? "Automated" : "Direct",
           emailContent: {
             subject: subject,
@@ -292,8 +279,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error: "Failed to fetch emails",
-        details:
-          process.env.NODE_ENV === "development" ? error.message : undefined,
+        details: process.env.NODE_ENV === "development" ? error.message : undefined,
       },
       { status: 500 }
     );
@@ -306,12 +292,9 @@ function formatTimeAgo(date: Date): string {
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
   if (diffInSeconds < 60) return "Just now";
-  if (diffInSeconds < 3600)
-    return `${Math.floor(diffInSeconds / 60)} minutes ago`;
-  if (diffInSeconds < 86400)
-    return `${Math.floor(diffInSeconds / 3600)} hours ago`;
-  if (diffInSeconds < 2592000)
-    return `${Math.floor(diffInSeconds / 86400)} days ago`;
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+  if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} days ago`;
 
   return date.toLocaleDateString();
 }

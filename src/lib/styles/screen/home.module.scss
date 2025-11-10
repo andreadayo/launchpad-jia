@@ -183,11 +183,7 @@
           letter-spacing: -2%;
           color: #181d27;
           &.whitecloak {
-            background: linear-gradient(
-              90.03deg,
-              #000000 0.04%,
-              #666666 56.04%
-            );
+            background: linear-gradient(90.03deg, #000000 0.04%, #666666 56.04%);
             background-clip: text;
           }
         }

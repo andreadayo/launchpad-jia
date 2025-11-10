@@ -6,12 +6,7 @@ export default function DarkTableArchived() {
       budget: "$2,500 USD",
       status: "pending",
       completion: 60,
-      members: [
-        "Ryan Tompson",
-        "Romina Hadid",
-        "Alexander Smith",
-        "Jessica Doe",
-      ],
+      members: ["Ryan Tompson", "Romina Hadid", "Alexander Smith", "Jessica Doe"],
     },
     {
       id: 2,
@@ -33,9 +28,7 @@ export default function DarkTableArchived() {
 
   const getAvatarUrl = (name: string) => {
     // This would normally fetch a real avatar URL
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      name
-    )}&background=random`;
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
   };
 
   const getStatusBadge = (status: string) => {
@@ -84,25 +77,16 @@ export default function DarkTableArchived() {
                     <th scope="row">
                       <div className="media align-items-center">
                         <a href="#" className="avatar rounded-circle mr-3">
-                          <img
-                            alt="Project avatar"
-                            src={getAvatarUrl(project.name)}
-                          />
+                          <img alt="Project avatar" src={getAvatarUrl(project.name)} />
                         </a>
                         <div className="media-body">
-                          <span className="name mb-0 text-sm">
-                            {project.name}
-                          </span>
+                          <span className="name mb-0 text-sm">{project.name}</span>
                         </div>
                       </div>
                     </th>
                     <td className="budget">{project.budget}</td>
                     <td>
-                      <span
-                        className={`badge badge-dot mr-4 ${getStatusBadge(
-                          project.status
-                        )}`}
-                      >
+                      <span className={`badge badge-dot mr-4 ${getStatusBadge(project.status)}`}>
                         <i className={getStatusBadge(project.status)}></i>
                         <span className="status">{project.status}</span>
                       </span>
@@ -117,19 +101,14 @@ export default function DarkTableArchived() {
                             data-toggle="tooltip"
                             data-original-title={member}
                           >
-                            <img
-                              alt="Member avatar"
-                              src={getAvatarUrl(member)}
-                            />
+                            <img alt="Member avatar" src={getAvatarUrl(member)} />
                           </a>
                         ))}
                       </div>
                     </td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <span className="completion mr-2">
-                          {project.completion}%
-                        </span>
+                        <span className="completion mr-2">{project.completion}%</span>
                         <div>
                           <div className="progress">
                             <div

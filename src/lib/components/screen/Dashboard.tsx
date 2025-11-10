@@ -27,12 +27,7 @@ export default function () {
     "Job Offer",
     "For Interview", // old data
   ];
-  const applicationStep = [
-    "CV Screening",
-    "AI Interview",
-    "Human Interview",
-    "Job Offer",
-  ];
+  const applicationStep = ["CV Screening", "AI Interview", "Human Interview", "Job Offer"];
   const buttonStatus = [
     {
       buttonText: "Submit CV",
@@ -274,9 +269,7 @@ export default function () {
     const stepIndex = applicationStep.indexOf(step);
 
     if (interview.currentStep == "Applied") {
-      return isImage && step == applicationStep[0]
-        ? stepStatus[2]
-        : stepStatus[1];
+      return isImage && step == applicationStep[0] ? stepStatus[2] : stepStatus[1];
     }
 
     // old data
@@ -285,19 +278,13 @@ export default function () {
     }
 
     if (!interviewStatus.includes(interview.applicationStatus)) {
-      return isImage && step == applicationStep[0]
-        ? stepStatus[2]
-        : stepStatus[1];
+      return isImage && step == applicationStep[0] ? stepStatus[2] : stepStatus[1];
     }
     // old data
 
     if (currentStepIndex == stepIndex) {
       if (
-        [
-          applicationPhase[1],
-          applicationPhase[3],
-          applicationPhase[5],
-        ].includes(interview.status)
+        [applicationPhase[1], applicationPhase[3], applicationPhase[5]].includes(interview.status)
       ) {
         return stepStatus[2];
       }
@@ -309,9 +296,7 @@ export default function () {
     if (
       currentStepIndex + 1 == stepIndex &&
       isImage &&
-      ![applicationPhase[1], applicationPhase[3], applicationPhase[5]].includes(
-        interview.status
-      )
+      ![applicationPhase[1], applicationPhase[3], applicationPhase[5]].includes(interview.status)
     )
       return stepStatus[2];
 
@@ -356,12 +341,8 @@ export default function () {
       })
         .then(async (res) => {
           const result = await res.data;
-          const activeInterviews = result.filter(
-            (interview) => interview.archived !== true
-          );
-          const archivedInterviews = result.filter(
-            (interview) => interview.archived === true
-          );
+          const activeInterviews = result.filter((interview) => interview.archived !== true);
+          const archivedInterviews = result.filter((interview) => interview.archived === true);
 
           setActiveInterviews(activeInterviews);
           setArchivedInterviews(archivedInterviews);
@@ -449,10 +430,7 @@ export default function () {
               {viewDropdown == index && (
                 <div className={styles.dropDownContainer}>
                   {dropdownStatus.slice(0, 1).map((item, index) => (
-                    <span
-                      key={index}
-                      onClick={() => item.handleClick(interview)}
-                    >
+                    <span key={index} onClick={() => item.handleClick(interview)}>
                       {item.text}
                     </span>
                   ))}
@@ -478,9 +456,7 @@ export default function () {
                             <hr
                               className={
                                 styles[
-                                  processState(interview, step)
-                                    .toLowerCase()
-                                    .replace(" ", "-")
+                                  processState(interview, step).toLowerCase().replace(" ", "-")
                                 ]
                               }
                             />
@@ -497,9 +473,7 @@ export default function () {
                           />
 
                           <div className={styles.textContainer}>
-                            <span className={styles.stepNumber}>
-                              STEP {index + 1}
-                            </span>
+                            <span className={styles.stepNumber}>STEP {index + 1}</span>
                             <span
                               className={`${styles.stepDescription} ${
                                 styles[
@@ -514,9 +488,7 @@ export default function () {
                             <span
                               className={`webView ${styles.stepStatus} ${
                                 styles[
-                                  processState(interview, step)
-                                    .toLowerCase()
-                                    .replace(" ", "-")
+                                  processState(interview, step).toLowerCase().replace(" ", "-")
                                 ]
                               }`}
                             >
@@ -528,20 +500,14 @@ export default function () {
                                 <span className={styles.stepDate}>
                                   {/* {interview.statusDate["Applied"]} */}
                                 </span>
-                                <span className={styles.stepNote}>
-                                  {/* {stepNote[index]} */}
-                                </span>
+                                <span className={styles.stepNote}>{/* {stepNote[index]} */}</span>
                               </>
                             )}
                           </div>
 
                           <span
                             className={`mobileView ${styles.stepStatus} ${
-                              styles[
-                                processState(interview, step)
-                                  .toLowerCase()
-                                  .replace(" ", "-")
-                              ]
+                              styles[processState(interview, step).toLowerCase().replace(" ", "-")]
                             }`}
                           >
                             {processState(interview, step)}
@@ -556,9 +522,7 @@ export default function () {
                       <span>{processButtonState(interview).spanText}:</span>
                       <button
                         className={`${
-                          processButtonState(interview).disabled
-                            ? styles.disabled
-                            : ""
+                          processButtonState(interview).disabled ? styles.disabled : ""
                         }`}
                         disabled={processButtonState(interview).disabled}
                         onClick={() => {
@@ -574,36 +538,19 @@ export default function () {
 
               {interview.applicationStatus == interviewStatus[1] && (
                 <>
-                  <div
-                    className={`${styles.updateContainer} ${styles.dropped}`}
-                  >
-                    <img
-                      alt="circle-x"
-                      className="webView"
-                      src="/icons/circle-x.svg"
-                    />
+                  <div className={`${styles.updateContainer} ${styles.dropped}`}>
+                    <img alt="circle-x" className="webView" src="/icons/circle-x.svg" />
                     <div className={styles.textContainer}>
                       <span className={styles.statusTitle}>
-                        <img
-                          alt="circle-x"
-                          className="mobileView"
-                          src="/icons/circle-x.svg"
-                        />
+                        <img alt="circle-x" className="mobileView" src="/icons/circle-x.svg" />
                         Application Update
                       </span>
                       <span className={styles.statusDescription}>
-                        {
-                          droppedStatus[interview?.currentStep || "generic"]
-                            .description
-                        }
+                        {droppedStatus[interview?.currentStep || "generic"].description}
                       </span>
 
                       <div className={styles.bottomTextContainer}>
-                        <img
-                          alt="lightbulb"
-                          className="webView"
-                          src="/icons/lightbulb.svg"
-                        />
+                        <img alt="lightbulb" className="webView" src="/icons/lightbulb.svg" />
                         <div className={styles.tipsContainer}>
                           <span className={styles.tipsTitle}>
                             <img
@@ -614,11 +561,11 @@ export default function () {
                             Tips for your next application:
                           </span>
                           <ul>
-                            {droppedStatus[
-                              interview?.currentStep || "generic"
-                            ]?.tips.map((item, index) => (
-                              <li key={index}>{item}</li>
-                            ))}
+                            {droppedStatus[interview?.currentStep || "generic"]?.tips.map(
+                              (item, index) => (
+                                <li key={index}>{item}</li>
+                              )
+                            )}
                           </ul>
                         </div>
                         {/* <div className={styles.reminderContainer}>
@@ -660,9 +607,7 @@ export default function () {
                     </div>
                   </div>
 
-                  <div
-                    className={`${styles.buttonContainer} ${styles.dropped}`}
-                  >
+                  <div className={`${styles.buttonContainer} ${styles.dropped}`}>
                     <button onClick={() => handleArchive(interview)}>
                       <img alt="archive" src="/icons/archive.svg" />
                       Archive Application
@@ -679,12 +624,8 @@ export default function () {
         <div className={styles.emptyContainer}>
           <img alt="folder-closed" src="/icons/folder-closed.svg" />
           <span className={styles.emptyTitle}>No Applications Yet</span>
-          <span className={styles.emptyDescription}>
-            You haven’t applied to any roles yet.
-          </span>
-          <span className={styles.emptyDescription}>
-            Once you do, they’ll appear here.
-          </span>
+          <span className={styles.emptyDescription}>You haven’t applied to any roles yet.</span>
+          <span className={styles.emptyDescription}>Once you do, they’ll appear here.</span>
           <button onClick={handleBrowseJob}>Browse Job Openings</button>
         </div>
       )}
@@ -705,10 +646,7 @@ export default function () {
               {viewDropdown == index && (
                 <div className={styles.dropDownContainer}>
                   {dropdownStatus.slice(1, 3).map((item, index) => (
-                    <span
-                      key={index}
-                      onClick={() => item.handleClick(interview)}
-                    >
+                    <span key={index} onClick={() => item.handleClick(interview)}>
                       {item.text}
                     </span>
                   ))}
@@ -719,36 +657,19 @@ export default function () {
 
               {interview.applicationStatus == interviewStatus[1] && (
                 <>
-                  <div
-                    className={`${styles.updateContainer} ${styles.dropped}`}
-                  >
-                    <img
-                      alt="circle-x"
-                      className="webView"
-                      src="/icons/circle-x.svg"
-                    />
+                  <div className={`${styles.updateContainer} ${styles.dropped}`}>
+                    <img alt="circle-x" className="webView" src="/icons/circle-x.svg" />
                     <div className={styles.textContainer}>
                       <span className={styles.statusTitle}>
-                        <img
-                          alt="circle-x"
-                          className="mobileView"
-                          src="/icons/circle-x.svg"
-                        />
+                        <img alt="circle-x" className="mobileView" src="/icons/circle-x.svg" />
                         Application Update
                       </span>
                       <span className={styles.statusDescription}>
-                        {
-                          droppedStatus[interview?.currentStep || "generic"]
-                            ?.description
-                        }
+                        {droppedStatus[interview?.currentStep || "generic"]?.description}
                       </span>
 
                       <div className={styles.bottomTextContainer}>
-                        <img
-                          alt="lightbulb"
-                          className="webView"
-                          src="/icons/lightbulb.svg"
-                        />
+                        <img alt="lightbulb" className="webView" src="/icons/lightbulb.svg" />
                         <div className={styles.tipsContainer}>
                           <span className={styles.tipsTitle}>
                             <img
@@ -759,11 +680,11 @@ export default function () {
                             Tips for your next application:
                           </span>
                           <ul>
-                            {droppedStatus[
-                              interview?.currentStep || "generic"
-                            ]?.tips.map((item, index) => (
-                              <li key={index}>{item}</li>
-                            ))}
+                            {droppedStatus[interview?.currentStep || "generic"]?.tips.map(
+                              (item, index) => (
+                                <li key={index}>{item}</li>
+                              )
+                            )}
                           </ul>
                         </div>
                         {/* <div className={styles.reminderContainer}>
@@ -809,51 +730,34 @@ export default function () {
 
               {interview.applicationStatus == interviewStatus[3] && (
                 <div className={styles.updateContainer}>
-                  <img
-                    alt="circle-x"
-                    className="webView"
-                    src="/icons/circle-x.svg"
-                  />
+                  <img alt="circle-x" className="webView" src="/icons/circle-x.svg" />
                   <div className={styles.textContainer}>
                     <span className={styles.statusTitle}>
-                      <img
-                        alt="circle-x"
-                        className="mobileView"
-                        src="/icons/circle-x.svg"
-                      />
+                      <img alt="circle-x" className="mobileView" src="/icons/circle-x.svg" />
                       Application Update
                     </span>
-                    <span
-                      className={`${styles.statusDescription} ${styles.cancelled}`}
-                    >
+                    <span className={`${styles.statusDescription} ${styles.cancelled}`}>
                       This application is no longer active.
                     </span>
                     <div className={styles.statusDetails}>
                       <div className={styles.detailsContainer}>
                         <span className={styles.detailsTitle}>Status:</span>
-                        <span className={styles.detailsStatus}>
-                          {interview.applicationStatus}
-                        </span>
+                        <span className={styles.detailsStatus}>{interview.applicationStatus}</span>
                       </div>
                       <div className={styles.detailsContainer}>
-                        <span className={styles.detailsTitle}>
-                          Cancelled on:
-                        </span>
+                        <span className={styles.detailsTitle}>Cancelled on:</span>
                         <span className={styles.detailsDate}>
                           {processDate(interview.completedAt)}
                         </span>
                       </div>
                       <div className={styles.detailsContainer}>
-                        <span className={styles.detailsTitle}>
-                          Reason for cancelling:
-                        </span>
+                        <span className={styles.detailsTitle}>Reason for cancelling:</span>
                         <span className={styles.detailsReason}>
                           {interview.selectedReason != "Others" ? (
                             interview.selectedReason
                           ) : (
                             <>
-                              {interview.selectedReason}:{" "}
-                              <span>{interview.cancelReason}</span>
+                              {interview.selectedReason}: <span>{interview.cancelReason}</span>
                             </>
                           )}
                         </span>
@@ -871,9 +775,7 @@ export default function () {
         <div className={styles.emptyContainer}>
           <img alt="archive-restore" src="/icons/archive-restore.svg" />
           <span className={styles.emptyTitle}>Nothing Yet</span>
-          <span className={styles.emptyDescription}>
-            Applications you archive appear here.
-          </span>
+          <span className={styles.emptyDescription}>Applications you archive appear here.</span>
           <button onClick={handleBrowseJob}>Browse Job Openings</button>
         </div>
       )}

@@ -168,9 +168,7 @@ export default function () {
       return false;
     }
 
-    const allEmpty = Object.values(userCV).every(
-      (value: any) => value?.trim() === ""
-    );
+    const allEmpty = Object.values(userCV).every((value: any) => value?.trim() === "");
 
     if (allEmpty) {
       alert("No details to be save.");
@@ -186,10 +184,7 @@ export default function () {
       parsedDigitalCV = JSON.parse(digitalCV);
 
       if (parsedDigitalCV.errorRemarks) {
-        alert(
-          "Please fix the errors in the CV first.\n\n" +
-            parsedDigitalCV.errorRemarks
-        );
+        alert("Please fix the errors in the CV first.\n\n" + parsedDigitalCV.errorRemarks);
         return false;
       }
     }
@@ -262,8 +257,7 @@ export default function () {
             const formattedCV = {};
 
             cvSections.map((section, index) => {
-              formattedCV[section] =
-                parsedUserCV.digitalCV[index].content?.trim();
+              formattedCV[section] = parsedUserCV.digitalCV[index].content?.trim();
             });
 
             setDigitalCV(result);
@@ -316,8 +310,7 @@ export default function () {
             />
           </span>
           <span className={styles.uploadDetails}>
-            Upload your CV and let our AI automatically fill in your profile
-            information.
+            Upload your CV and let our AI automatically fill in your profile information.
           </span>
           <div
             className={`${styles.fileUpload} ${file ? styles.uploaded : ""}`}
@@ -342,9 +335,7 @@ export default function () {
                 <span className={styles.uploadFileText}>
                   <span>Click to upload</span> or drag and drop
                 </span>
-                <span className={styles.uploadFileRules}>
-                  PDF, DOC, DOCX, or TXT (max 10MB)
-                </span>
+                <span className={styles.uploadFileRules}>PDF, DOC, DOCX, or TXT (max 10MB)</span>
               </>
             )}
           </div>
@@ -356,13 +347,9 @@ export default function () {
             onChange={handleFileChange}
           />
 
-          {buildingCV && (
-            <span className={styles.cvUploaded}>Building CV...</span>
-          )}
+          {buildingCV && <span className={styles.cvUploaded}>Building CV...</span>}
 
-          {!buildingCV && !file && !userCV && (
-            <span className={styles.cvUploaded}>Submit</span>
-          )}
+          {!buildingCV && !file && !userCV && <span className={styles.cvUploaded}>Submit</span>}
 
           {!buildingCV && !digitalCV && file && !userCV && (
             <button onClick={handleSubmit}>Submit</button>
@@ -418,8 +405,7 @@ export default function () {
                     value={userCV ? userCV[section] : ""}
                     placeholder="Upload your CV to auto-fill this section."
                     onBlur={(e) => {
-                      e.target.placeholder =
-                        "Upload your CV to auto-fill this section.";
+                      e.target.placeholder = "Upload your CV to auto-fill this section.";
                     }}
                     onClick={(e) => {
                       (e.target as HTMLInputElement).placeholder = "";

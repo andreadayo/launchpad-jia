@@ -12,6 +12,8 @@ export async function POST(request: Request) {
       lastEditedBy,
       createdBy,
       screeningSetting,
+      cvScreeningSetting,
+      aiScreeningSetting,
       orgID,
       requireVideo,
       location,
@@ -29,8 +31,7 @@ export async function POST(request: Request) {
     if (!jobTitle || !description || !questions || !location || !workSetup) {
       return NextResponse.json(
         {
-          error:
-            "Job title, description, questions, location and work setup are required",
+          error: "Job title, description, questions, location and work setup are required",
         },
         { status: 400 }
       );
@@ -38,44 +39,52 @@ export async function POST(request: Request) {
 
     const { db } = await connectMongoDB();
 
-    const orgDetails = await db.collection("organizations").aggregate([
-      {
-        $match: {
-          _id: new ObjectId(orgID)
-        }
-      },
-      {
-        $lookup: {
+    const orgDetails = await db
+      .collection("organizations")
+      .aggregate([
+        {
+          $match: {
+            _id: new ObjectId(orgID),
+          },
+        },
+        {
+          $lookup: {
             from: "organization-plans",
             let: { planId: "$planId" },
             pipeline: [
-                {
-                    $addFields: {
-                        _id: { $toString: "$_id" }
-                    }
+              {
+                $addFields: {
+                  _id: { $toString: "$_id" },
                 },
-                {
-                    $match: {
-                        $expr: { $eq: ["$_id", "$$planId"] }
-                    }
-                }
+              },
+              {
+                $match: {
+                  $expr: { $eq: ["$_id", "$$planId"] },
+                },
+              },
             ],
-            as: "plan"
-        }
-      },
-      {
-        $unwind: "$plan"
-      },
-    ]).toArray();
+            as: "plan",
+          },
+        },
+        {
+          $unwind: "$plan",
+        },
+      ])
+      .toArray();
 
     if (!orgDetails || orgDetails.length === 0) {
       return NextResponse.json({ error: "Organization not found" }, { status: 404 });
     }
 
-    const totalActiveCareers = await db.collection("careers").countDocuments({ orgID, status: "active" });
+    const totalActiveCareers = await db
+      .collection("careers")
+      .countDocuments({ orgID, status: "active" });
 
-    if (totalActiveCareers >= (orgDetails[0].plan.jobLimit + (orgDetails[0].extraJobSlots || 0))) {
-      return NextResponse.json({ error: "You have reached the maximum number of jobs for your plan" }, { status: 400 });
+    if (totalActiveCareers >= orgDetails[0].plan.jobLimit + (orgDetails[0].extraJobSlots || 0)) {
+      return NextResponse.json(
+        { error: "You have reached the maximum number of jobs for your plan" },
+        { status: 400 }
+      );
     }
 
     const career = {
@@ -91,7 +100,8 @@ export async function POST(request: Request) {
       lastEditedBy,
       createdBy,
       status: status || "active",
-      screeningSetting,
+      cvScreeningSetting: cvScreeningSetting || screeningSetting,
+      aiScreeningSetting: aiScreeningSetting || screeningSetting,
       orgID,
       requireVideo,
       lastActivityAt: new Date(),
@@ -111,9 +121,6 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Error adding career:", error);
-    return NextResponse.json(
-      { error: "Failed to add career" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to add career" }, { status: 500 });
   }
 }

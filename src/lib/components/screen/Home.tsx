@@ -12,11 +12,7 @@ export default function () {
     setModalType("loading");
     removeSessionStorage();
 
-    if (
-      typeof window !== "undefined" &&
-      window.innerWidth < 768 &&
-      user != null
-    ) {
+    if (typeof window !== "undefined" && window.innerWidth < 768 && user != null) {
       window.location.href = "/whitecloak/applicant/job-openings";
     } else {
       window.location.href = "/whitecloak/job-openings";
@@ -57,17 +53,14 @@ export default function () {
         <div className={styles.topContainer}>
           <div className={styles.textContainer}>
             <span className={styles.title}>Your future at </span>
-            <span className={`${styles.title} ${styles.whitecloak}`}>
-              White Cloak
-            </span>
+            <span className={`${styles.title} ${styles.whitecloak}`}>White Cloak</span>
             <span className={styles.title}>starts here.</span>
 
             <span className={`${styles.description} ${styles.withMargin}`}>
               We've modernized the way we hire,
             </span>
             <span className={styles.description}>
-              so you can experience a
-              <span className={styles.bold}> better, faster,</span>
+              so you can experience a<span className={styles.bold}> better, faster,</span>
             </span>
             <span className={styles.description}>
               and <span className={styles.bold}>more transparent </span>

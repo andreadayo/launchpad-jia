@@ -71,8 +71,7 @@ async function getValidAccessToken(email: string) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { fromEmail, toEmail, subject, message, threadId, isReply } =
-      await request.json();
+    const { fromEmail, toEmail, subject, message, threadId, isReply } = await request.json();
 
     // Validate required fields
     if (!fromEmail || !toEmail || !subject || !message) {
@@ -88,10 +87,7 @@ export async function POST(request: NextRequest) {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(fromEmail) || !emailRegex.test(toEmail)) {
-      return NextResponse.json(
-        { error: "Invalid email format" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
     }
 
     // Get valid access token
@@ -129,9 +125,7 @@ export async function POST(request: NextRequest) {
         // Continue without thread ID - Gmail will create a new thread
       }
     } else if (isReply) {
-      console.warn(
-        "Reply requested but no thread ID provided - will create new thread"
-      );
+      console.warn("Reply requested but no thread ID provided - will create new thread");
     }
 
     console.log("Sending email with request body:", {
@@ -164,17 +158,11 @@ export async function POST(request: NextRequest) {
 
       // Handle specific error cases
       if (gmailResponse.status === 404) {
-        throw new Error(
-          "Thread not found. The original email may have been deleted or moved."
-        );
+        throw new Error("Thread not found. The original email may have been deleted or moved.");
       } else if (gmailResponse.status === 400) {
-        throw new Error(
-          "Invalid request. Please check the email format and try again."
-        );
+        throw new Error("Invalid request. Please check the email format and try again.");
       } else {
-        throw new Error(
-          `Gmail API Error: ${gmailResponse.status} - ${errorData}`
-        );
+        throw new Error(`Gmail API Error: ${gmailResponse.status} - ${errorData}`);
       }
     }
 
@@ -195,8 +183,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error: "Failed to send email",
-        details:
-          process.env.NODE_ENV === "development" ? error.message : undefined,
+        details: process.env.NODE_ENV === "development" ? error.message : undefined,
       },
       { status: 500 }
     );

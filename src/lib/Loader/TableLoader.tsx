@@ -2,7 +2,15 @@ import React from "react";
 
 interface TableLoaderProps {
   columns?: number;
-  type?: "candidates" | "careers" | "interviews" | "feedback" | "members" | "job-openings" | "career-applicants" | "careers-v2";
+  type?:
+    | "candidates"
+    | "careers"
+    | "interviews"
+    | "feedback"
+    | "members"
+    | "job-openings"
+    | "career-applicants"
+    | "careers-v2";
 }
 
 const TableLoader: React.FC<TableLoaderProps> = ({ type = "candidates" }) => {
@@ -12,10 +20,7 @@ const TableLoader: React.FC<TableLoaderProps> = ({ type = "candidates" }) => {
         <div className="job-item">
           <div className="job-title">
             <h2>
-              <div
-                className="skeleton-bar"
-                style={{ animationDuration: "2.3s" }}
-              ></div>
+              <div className="skeleton-bar" style={{ animationDuration: "2.3s" }}></div>
             </h2>
             <small>
               <div className="skeleton-bar"></div>
@@ -42,38 +47,20 @@ const TableLoader: React.FC<TableLoaderProps> = ({ type = "candidates" }) => {
                 style={{ width: "48px", height: "48px" }}
               ></div>
               <div className="media-body">
-                <div
-                  className="bg-gray-300 rounded"
-                  style={{ width: "120px", height: "16px" }}
-                >
-                  <div
-                    className="skeleton-bar blink-2"
-                    style={{ width: "120px" }}
-                  ></div>
+                <div className="bg-gray-300 rounded" style={{ width: "120px", height: "16px" }}>
+                  <div className="skeleton-bar blink-2" style={{ width: "120px" }}></div>
                 </div>
               </div>
             </div>
           </th>
           <td>
-            <div
-              className="bg-gray-300 rounded blink-2"
-              style={{ width: "150px", height: "16px" }}
-            >
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "150px" }}
-              ></div>
+            <div className="bg-gray-300 rounded blink-2" style={{ width: "150px", height: "16px" }}>
+              <div className="skeleton-bar blink-2" style={{ width: "150px" }}></div>
             </div>
           </td>
           <td>
-            <div
-              className="bg-gray-300 rounded"
-              style={{ width: "100px", height: "16px" }}
-            >
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "100px" }}
-              ></div>
+            <div className="bg-gray-300 rounded" style={{ width: "100px", height: "16px" }}>
+              <div className="skeleton-bar blink-2" style={{ width: "100px" }}></div>
             </div>
           </td>
         </tr>
@@ -88,71 +75,35 @@ const TableLoader: React.FC<TableLoaderProps> = ({ type = "candidates" }) => {
                 style={{ width: "48px", height: "48px" }}
               ></div>
               <div className="media-body">
-                <div
-                  className="bg-gray-300 rounded"
-                  style={{ width: "120px", height: "16px" }}
-                >
-                  <div
-                    className="skeleton-bar blink-2"
-                    style={{ width: "120px" }}
-                  ></div>
+                <div className="bg-gray-300 rounded" style={{ width: "120px", height: "16px" }}>
+                  <div className="skeleton-bar blink-2" style={{ width: "120px" }}></div>
                 </div>
               </div>
             </div>
           </td>
           <td>
-            <div
-              className="bg-gray-300 rounded blink-2"
-              style={{ width: "150px", height: "16px" }}
-            >
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "150px" }}
-              ></div>
+            <div className="bg-gray-300 rounded blink-2" style={{ width: "150px", height: "16px" }}>
+              <div className="skeleton-bar blink-2" style={{ width: "150px" }}></div>
             </div>
           </td>
           <td>
-            <div
-              className="bg-gray-300 rounded blink-2"
-              style={{ width: "150px", height: "16px" }}
-            >
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "150px" }}
-              ></div>
+            <div className="bg-gray-300 rounded blink-2" style={{ width: "150px", height: "16px" }}>
+              <div className="skeleton-bar blink-2" style={{ width: "150px" }}></div>
             </div>
           </td>
           <td>
-            <div
-              className="bg-gray-300 rounded blink-2"
-              style={{ width: "150px", height: "16px" }}
-            >
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "150px" }}
-              ></div>
+            <div className="bg-gray-300 rounded blink-2" style={{ width: "150px", height: "16px" }}>
+              <div className="skeleton-bar blink-2" style={{ width: "150px" }}></div>
             </div>
           </td>
           <td>
-            <div
-              className="bg-gray-300 rounded blink-2"
-              style={{ width: "150px", height: "16px" }}
-            >
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "150px" }}
-              ></div>
+            <div className="bg-gray-300 rounded blink-2" style={{ width: "150px", height: "16px" }}>
+              <div className="skeleton-bar blink-2" style={{ width: "150px" }}></div>
             </div>
           </td>
           <td>
-            <div
-              className="bg-gray-300 rounded blink-2"
-              style={{ width: "150px", height: "16px" }}
-            >
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "150px" }}
-              ></div>
+            <div className="bg-gray-300 rounded blink-2" style={{ width: "150px", height: "16px" }}>
+              <div className="skeleton-bar blink-2" style={{ width: "150px" }}></div>
             </div>
           </td>
         </tr>
@@ -163,27 +114,15 @@ const TableLoader: React.FC<TableLoaderProps> = ({ type = "candidates" }) => {
           <th scope="row">
             <div className="media align-items-center">
               <div className="media-body">
-                <div
-                  className="bg-gray-300 rounded"
-                  style={{ width: "150px", height: "16px" }}
-                >
-                  <div
-                    className="skeleton-bar blink-2"
-                    style={{ width: "150px" }}
-                  ></div>
+                <div className="bg-gray-300 rounded" style={{ width: "150px", height: "16px" }}>
+                  <div className="skeleton-bar blink-2" style={{ width: "150px" }}></div>
                 </div>
               </div>
             </div>
           </th>
           <td>
-            <div
-              className="bg-gray-300 rounded"
-              style={{ width: "80px", height: "16px" }}
-            >
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "80px" }}
-              ></div>
+            <div className="bg-gray-300 rounded" style={{ width: "80px", height: "16px" }}>
+              <div className="skeleton-bar blink-2" style={{ width: "80px" }}></div>
             </div>
           </td>
           <td>
@@ -198,43 +137,22 @@ const TableLoader: React.FC<TableLoaderProps> = ({ type = "candidates" }) => {
             </div>
           </td>
           <td>
-            <div
-              className="bg-gray-300 rounded"
-              style={{ width: "100px", height: "16px" }}
-            >
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "100px" }}
-              ></div>
+            <div className="bg-gray-300 rounded" style={{ width: "100px", height: "16px" }}>
+              <div className="skeleton-bar blink-2" style={{ width: "100px" }}></div>
             </div>
           </td>
           <td>
-            <div
-              className="bg-gray-300 rounded"
-              style={{ width: "100px", height: "16px" }}
-            >
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "100px" }}
-              ></div>
+            <div className="bg-gray-300 rounded" style={{ width: "100px", height: "16px" }}>
+              <div className="skeleton-bar blink-2" style={{ width: "100px" }}></div>
             </div>
           </td>
           <td>
-            <div
-              className="bg-gray-300 rounded"
-              style={{ width: "80px", height: "16px" }}
-            >
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "80px" }}
-              ></div>
+            <div className="bg-gray-300 rounded" style={{ width: "80px", height: "16px" }}>
+              <div className="skeleton-bar blink-2" style={{ width: "80px" }}></div>
             </div>
           </td>
           <td>
-            <div
-              className="bg-gray-300 rounded"
-              style={{ width: "24px", height: "24px" }}
-            ></div>
+            <div className="bg-gray-300 rounded" style={{ width: "24px", height: "24px" }}></div>
           </td>
         </tr>
       );
@@ -248,50 +166,29 @@ const TableLoader: React.FC<TableLoaderProps> = ({ type = "candidates" }) => {
                 style={{ width: "48px", height: "48px" }}
               ></div>
               <div className="media-body">
-                <div
-                  className="skeleton-bar blink-2"
-                  style={{ width: "120px" }}
-                ></div>
+                <div className="skeleton-bar blink-2" style={{ width: "120px" }}></div>
               </div>
             </div>
           </th>
           <td className="budget">
-            <div
-              className="skeleton-bar blink-2"
-              style={{ width: "150px" }}
-            ></div>
+            <div className="skeleton-bar blink-2" style={{ width: "150px" }}></div>
           </td>
           <td>
-            <div
-              className="skeleton-bar blink-2"
-              style={{ width: "100px" }}
-            ></div>
+            <div className="skeleton-bar blink-2" style={{ width: "100px" }}></div>
           </td>
           <td>
             <div className="avatar-group">
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "100px" }}
-              ></div>
+              <div className="skeleton-bar blink-2" style={{ width: "100px" }}></div>
             </div>
           </td>
           <td>
-            <div
-              className="skeleton-bar blink-2"
-              style={{ width: "100px" }}
-            ></div>
+            <div className="skeleton-bar blink-2" style={{ width: "100px" }}></div>
           </td>
           <td>
-            <div
-              className="skeleton-bar blink-2"
-              style={{ width: "100px" }}
-            ></div>
+            <div className="skeleton-bar blink-2" style={{ width: "100px" }}></div>
           </td>
           <td>
-            <div
-              className="skeleton-bar blink-2"
-              style={{ width: "80px" }}
-            ></div>
+            <div className="skeleton-bar blink-2" style={{ width: "80px" }}></div>
           </td>
         </tr>
       );
@@ -304,10 +201,7 @@ const TableLoader: React.FC<TableLoaderProps> = ({ type = "candidates" }) => {
                 className="bg-gray-300 rounded blink-2"
                 style={{ width: "100%", height: "16px" }}
               >
-                <div
-                  className="skeleton-bar blink-2"
-                  style={{ width: "100%" }}
-                ></div>
+                <div className="skeleton-bar blink-2" style={{ width: "100%" }}></div>
               </div>
             </td>
           ))}
@@ -323,64 +217,46 @@ const TableLoader: React.FC<TableLoaderProps> = ({ type = "candidates" }) => {
                 style={{ width: "48px", height: "48px" }}
               ></div>
               <div className="media-body">
-                <div
-                  className="bg-gray-300 rounded"
-                  style={{ width: "120px", height: "16px" }}
-                >
-                  <div
-                    className="skeleton-bar blink-2"
-                    style={{ width: "120px" }}
-                  ></div>
+                <div className="bg-gray-300 rounded" style={{ width: "120px", height: "16px" }}>
+                  <div className="skeleton-bar blink-2" style={{ width: "120px" }}></div>
                 </div>
               </div>
             </div>
           </th>
           {Array.from({ length: 4 }).map((_, idx) => (
             <td key={idx}>
-            <div
-              className="bg-gray-300 rounded blink-2"
-              style={{ width: "150px", height: "16px" }}
-            >
               <div
-                className="skeleton-bar blink-2"
-                style={{ width: "150px" }}
-              ></div>
-            </div>
-          </td>
+                className="bg-gray-300 rounded blink-2"
+                style={{ width: "150px", height: "16px" }}
+              >
+                <div className="skeleton-bar blink-2" style={{ width: "150px" }}></div>
+              </div>
+            </td>
           ))}
         </tr>
       );
     } else if (type === "careers-v2") {
       return (
         <tr>
-            <td>
-            <div
-              className="bg-gray-300 rounded blink-2"
-              style={{ width: "250px", height: "16px" }}
-            >
-              <div
-                className="skeleton-bar blink-2"
-                style={{ width: "250px" }}
-              ></div>
+          <td>
+            <div className="bg-gray-300 rounded blink-2" style={{ width: "250px", height: "16px" }}>
+              <div className="skeleton-bar blink-2" style={{ width: "250px" }}></div>
             </div>
           </td>
           {Array.from({ length: 6 }).map((_, idx) => (
             <td key={idx}>
-            <div
-              className="bg-gray-300 rounded blink-2"
-              style={{ width: "100px", height: "16px" }}
-            >
               <div
-                className="skeleton-bar blink-2"
-                style={{ width: "100px" }}
-              ></div>
-            </div>
-          </td>
+                className="bg-gray-300 rounded blink-2"
+                style={{ width: "100px", height: "16px" }}
+              >
+                <div className="skeleton-bar blink-2" style={{ width: "100px" }}></div>
+              </div>
+            </td>
           ))}
         </tr>
-      )
+      );
     }
-  }
+  };
 
   if (type === "job-openings") {
     return (
@@ -423,27 +299,15 @@ export const MembersTableLoader = () => (
               style={{ width: "48px", height: "48px" }}
             ></div>
             <div className="media-body">
-              <div
-                className="bg-gray-300 rounded"
-                style={{ width: "120px", height: "16px" }}
-              >
-                <div
-                  className="skeleton-bar blink-2"
-                  style={{ width: "120px" }}
-                ></div>
+              <div className="bg-gray-300 rounded" style={{ width: "120px", height: "16px" }}>
+                <div className="skeleton-bar blink-2" style={{ width: "120px" }}></div>
               </div>
             </div>
           </div>
         </td>
         <td>
-          <div
-            className="bg-gray-300 rounded blink-2"
-            style={{ width: "150px", height: "16px" }}
-          >
-            <div
-              className="skeleton-bar blink-2"
-              style={{ width: "150px" }}
-            ></div>
+          <div className="bg-gray-300 rounded blink-2" style={{ width: "150px", height: "16px" }}>
+            <div className="skeleton-bar blink-2" style={{ width: "150px" }}></div>
           </div>
         </td>
         <td className="text-right">

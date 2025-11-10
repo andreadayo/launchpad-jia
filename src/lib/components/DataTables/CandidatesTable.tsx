@@ -35,9 +35,7 @@ export default function () {
 
   // Generate DiceBear avatar URL
   const getAvatarUrl = (name) => {
-    return `https://api.dicebear.com/6.x/shapes/svg?seed=${encodeURIComponent(
-      name
-    )}`;
+    return `https://api.dicebear.com/6.x/shapes/svg?seed=${encodeURIComponent(name)}`;
   };
 
   useEffect(() => {
@@ -123,9 +121,7 @@ export default function () {
                               alt="Applicant avatar"
                               src={
                                 item.applicantInfo.image ||
-                                getAvatarUrl(
-                                  item.applicantInfo.name || "Applicant"
-                                )
+                                getAvatarUrl(item.applicantInfo.name || "Applicant")
                               }
                               className="avatar avatar-md rounded-circle mr-2"
                             />
@@ -136,13 +132,8 @@ export default function () {
                             </div>
                           </div>
                         </th>
-                        <td className="budget">
-                          {item.applicantInfo.email || "Not specified"}
-                        </td>
-                        <td>
-                          {moment(item.createdAt).format("MMMM DD, YYYY") ||
-                            "Not started"}
-                        </td>
+                        <td className="budget">{item.applicantInfo.email || "Not specified"}</td>
+                        <td>{moment(item.createdAt).format("MMMM DD, YYYY") || "Not started"}</td>
 
                         <td>
                           <a href={`/dashboard/candidates/view-cv/${item._id}`}>

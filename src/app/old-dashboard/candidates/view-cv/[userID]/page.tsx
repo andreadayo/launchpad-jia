@@ -105,13 +105,8 @@ export default function () {
               <div className="header-body">
                 <div className="row align-items-center py-4">
                   <div className="col-lg-6 col-7">
-                    <h6 className="h2 text-white d-inline-block mb-0">
-                      View CV
-                    </h6>
-                    <nav
-                      aria-label="breadcrumb"
-                      className="d-none d-md-inline-block ml-md-4"
-                    >
+                    <h6 className="h2 text-white d-inline-block mb-0">View CV</h6>
+                    <nav aria-label="breadcrumb" className="d-none d-md-inline-block ml-md-4">
                       <ol className="breadcrumb breadcrumb-links breadcrumb-dark">
                         <li className="breadcrumb-item">
                           <a href="#">
@@ -138,8 +133,7 @@ export default function () {
                     <div className="card shadow-1">
                       <div className="card-header">
                         <h3 className="mb-0 mr-auto">
-                          <i className="la la-edit text-primary mr-2" />{" "}
-                          Processing CV...
+                          <i className="la la-edit text-primary mr-2" /> Processing CV...
                         </h3>
                       </div>
 
@@ -172,15 +166,14 @@ export default function () {
                   <div className="card shadow-1">
                     <div className="card-header">
                       <h3 className="mb-0 mr-auto">
-                        <i className="la la-square text-red mr-2" /> Upload
-                        Error Remarks
+                        <i className="la la-square text-red mr-2" /> Upload Error Remarks
                       </h3>
                     </div>
 
                     <div className="card-body">
                       <p>
-                        {cvData.errorRemarks} Please upload proper CV / Resume
-                        file in PDF or Docs Format.
+                        {cvData.errorRemarks} Please upload proper CV / Resume file in PDF or Docs
+                        Format.
                       </p>
                     </div>
                   </div>
@@ -189,13 +182,7 @@ export default function () {
                 {cvData && (
                   <>
                     {cvData.digitalCV.map((section: any) => {
-                      return (
-                        <CVSectionItem
-                          key={section.name}
-                          data={section}
-                          editable={false}
-                        />
-                      );
+                      return <CVSectionItem key={section.name} data={section} editable={false} />;
                     })}
                   </>
                 )}
@@ -205,8 +192,7 @@ export default function () {
                   <div className="card shadow-1 ">
                     <div className="card-header">
                       <h3 className="mb-0 mr-auto">
-                        <i className="la la-edit text-primary mr-2" /> User
-                        Profile
+                        <i className="la la-edit text-primary mr-2" /> User Profile
                       </h3>
 
                       <i className="la la-bars text-primary mr-2" />
@@ -215,8 +201,7 @@ export default function () {
                     <div className="card-body">
                       <div className="section-header">
                         <strong>
-                          <i className="la la-file text-primary" /> CV User
-                          Profile
+                          <i className="la la-file text-primary" /> CV User Profile
                         </strong>
                       </div>
 

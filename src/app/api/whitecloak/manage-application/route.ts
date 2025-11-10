@@ -61,10 +61,9 @@ export async function POST(request: Request) {
   }
 
   // Update career lastActivityAt to current date
-  await db.collection("careers").updateOne(
-    { id: interviewInstance.id },
-    { $set: { lastActivityAt: new Date() } }
-  );
+  await db
+    .collection("careers")
+    .updateOne({ id: interviewInstance.id }, { $set: { lastActivityAt: new Date() } });
 
   return NextResponse.json({
     message: "Job application updated successfully.",

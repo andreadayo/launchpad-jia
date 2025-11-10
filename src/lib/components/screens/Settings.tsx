@@ -26,8 +26,7 @@ export default function () {
     {
       id: "traits_prompt",
       name: "[Prompt] JIA Default Traits | Interviewer Traits",
-      descriptions:
-        "Customize interviewer personality and behavior for AI-led interviews.",
+      descriptions: "Customize interviewer personality and behavior for AI-led interviews.",
       editor: {
         image: "",
         name: "",
@@ -38,8 +37,7 @@ export default function () {
     {
       id: "summary_prompt",
       name: "[Prompt] Interview Summary Prompt",
-      descriptions:
-        "Define how Jia generates structured summaries of interview sessions.",
+      descriptions: "Define how Jia generates structured summaries of interview sessions.",
       editor: {
         image: "",
         name: "",
@@ -50,8 +48,7 @@ export default function () {
     {
       id: "analysis_prompt",
       name: "[Prompt] Interview Analysis Prompt",
-      descriptions:
-        "Set instructions for Jia to assess and score interview performance.",
+      descriptions: "Set instructions for Jia to assess and score interview performance.",
       editor: {
         image: "",
         name: "",
@@ -62,8 +59,7 @@ export default function () {
     {
       id: "question_gen_prompt",
       name: "[Prompt] Question Generator Prompt",
-      descriptions:
-        "Control how follow-up and probing questions are generated during interviews.",
+      descriptions: "Control how follow-up and probing questions are generated during interviews.",
       editor: {
         image: "",
         name: "",
@@ -253,18 +249,12 @@ export default function () {
               data.item.find(
                 (item) =>
                   item.value ===
-                  (tempInputValue[id] !== undefined
-                    ? tempInputValue[id]
-                    : inputValue[id])
+                  (tempInputValue[id] !== undefined ? tempInputValue[id] : inputValue[id])
               ).label
             }
           </span>
 
-          <img
-            alt=""
-            className={dropdown == id ? styles.active : ""}
-            src="/icons/chevron.svg"
-          />
+          <img alt="" className={dropdown == id ? styles.active : ""} src="/icons/chevron.svg" />
         </div>
 
         {dropdown == id && (
@@ -272,8 +262,7 @@ export default function () {
             {data.item.map((item, index) => (
               <span
                 className={
-                  item ==
-                  (tempInputValue[id] ? tempInputValue[id] : inputValue[id])
+                  item == (tempInputValue[id] ? tempInputValue[id] : inputValue[id])
                     ? styles.active
                     : ""
                 }
@@ -288,10 +277,7 @@ export default function () {
               >
                 {item.label}
 
-                {item ==
-                  (tempInputValue[id]
-                    ? tempInputValue[id]
-                    : inputValue[id]) && (
+                {item == (tempInputValue[id] ? tempInputValue[id] : inputValue[id]) && (
                   <img alt="" src="/icons/checkV4.svg" />
                 )}
               </span>
@@ -342,8 +328,7 @@ export default function () {
             <div className={styles.buttonConatainer}>
               <button
                 className={`${styles.primary} ${
-                  Object.keys(tempValue).length > 0 ||
-                  Object.keys(tempInputValue).length > 0
+                  Object.keys(tempValue).length > 0 || Object.keys(tempInputValue).length > 0
                     ? ""
                     : styles.disabled
                 }`}
@@ -353,8 +338,7 @@ export default function () {
               </button>
               <button
                 className={`${styles.secondary} ${
-                  Object.keys(tempValue).length > 0 ||
-                  Object.keys(tempInputValue).length > 0
+                  Object.keys(tempValue).length > 0 || Object.keys(tempInputValue).length > 0
                     ? ""
                     : styles.disabled
                 }`}
@@ -382,17 +366,13 @@ export default function () {
                     )}
                   </div>
 
-                  <span className={styles.description}>
-                    {item.descriptions}
-                  </span>
+                  <span className={styles.description}>{item.descriptions}</span>
 
                   {item.editor.name && item.date && (
                     <div className={styles.userInfoContainer}>
                       <img alt="" src={item.editor.image} />
                       <span className={styles.name}>{item.editor.name}</span>
-                      <span className={styles.date}>
-                        edited this {processDate(item.date)}
-                      </span>
+                      <span className={styles.date}>edited this {processDate(item.date)}</span>
                     </div>
                   )}
                 </div>
@@ -407,8 +387,7 @@ export default function () {
                           item: [
                             {
                               value: "gpt-4o-realtime-preview",
-                              label:
-                                "gpt-4o-realtime-preview - Best but Expensive",
+                              label: "gpt-4o-realtime-preview - Best but Expensive",
                             },
                             {
                               value: "gpt-4o-realtime-preview-2025-06-03",
@@ -417,8 +396,7 @@ export default function () {
                             },
                             {
                               value: "gpt-4o-mini-realtime-preview",
-                              label:
-                                "gpt-4o-mini-realtime-preview - 2nd Best and Cheaper",
+                              label: "gpt-4o-mini-realtime-preview - 2nd Best and Cheaper",
                             },
                           ],
                         }}
@@ -504,8 +482,7 @@ export default function () {
                           item: [
                             {
                               value: "gpt-4o-mini-transcribe",
-                              label:
-                                "gpt-4o-mini-transcribe - Best but more Expensive",
+                              label: "gpt-4o-mini-transcribe - Best but more Expensive",
                             },
                             {
                               value: "whisper-1",
@@ -519,18 +496,12 @@ export default function () {
 
                   <div className={styles.textContainer}>
                     {item.id == settingsItems[0].id && (
-                      <span className={styles.label}>
-                        [Prompt] Audio Transcription Prompt
-                      </span>
+                      <span className={styles.label}>[Prompt] Audio Transcription Prompt</span>
                     )}
                     <textarea
-                      className={
-                        item.id == settingsItems[0].id ? styles.audioPrompt : ""
-                      }
+                      className={item.id == settingsItems[0].id ? styles.audioPrompt : ""}
                       placeholder="Enter prompt instructions to guide AI behavior. Be clear and concise."
-                      value={
-                        tempValue[item.id] ? tempValue[item.id] : item.value
-                      }
+                      value={tempValue[item.id] ? tempValue[item.id] : item.value}
                       onBlur={(e) =>
                         (e.target.placeholder =
                           "Enter prompt instructions to guide AI behavior. Be clear and concise.")

@@ -11,11 +11,7 @@ export default function (props) {
 
   console.log(data);
 
-  async function updateCareer(
-    dataUpdates: any,
-    loadingMessage: string,
-    sucessMessage: string
-  ) {
+  async function updateCareer(dataUpdates: any, loadingMessage: string, sucessMessage: string) {
     let userInfoSlice = {
       image: user.image,
       name: user.name,
@@ -92,8 +88,7 @@ export default function (props) {
           <div className="card shadow-1 mt-4 fade-in-bottom">
             <div className="card-header">
               <h3 className="mb-0 mr-auto">
-                <i className="la la-link text-primary mr-2" /> Direct Interview
-                Link
+                <i className="la la-link text-primary mr-2" /> Direct Interview Link
               </h3>
 
               <i className="la la-bars text-primary mr-2" />
@@ -104,15 +99,11 @@ export default function (props) {
                 {shareLink && (
                   <>
                     <small className="text-black">
-                      <i className="la la-square text-primary"></i> Share this
-                      link to an applicant for a direct interview.
+                      <i className="la la-square text-primary"></i> Share this link to an applicant
+                      for a direct interview.
                     </small>
 
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={shareLink}
-                    />
+                    <input type="text" className="form-control" value={shareLink} />
 
                     <div className="btn-set careers-btn-set">
                       <a href={shareLink} target="_blank" className="mr-2">
@@ -128,12 +119,8 @@ export default function (props) {
                       >
                         <i className="la la-copy"></i> Copy
                       </button>
-                      <button
-                        className="btn btn-outline-default"
-                        onClick={disableLink}
-                      >
-                        <i className="la la-square text-danger"></i> Disable
-                        Link
+                      <button className="btn btn-outline-default" onClick={disableLink}>
+                        <i className="la la-square text-danger"></i> Disable Link
                       </button>
                     </div>
                   </>
@@ -142,8 +129,7 @@ export default function (props) {
 
               {!shareLink && (
                 <button className="btn btn-default" onClick={generateLink}>
-                  <i className="la la-link text-success" /> Generate Direct
-                  Interview Link
+                  <i className="la la-link text-success" /> Generate Direct Interview Link
                 </button>
               )}
             </div>

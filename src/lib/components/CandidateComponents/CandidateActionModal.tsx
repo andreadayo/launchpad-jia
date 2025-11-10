@@ -15,10 +15,7 @@ export default function CandidateActionModal({
   const getAssesment = () => {
     let assesment = "N/A";
 
-    if (
-      candidate?.currentStep === "CV Screening" ||
-      candidate?.stage === "Pending AI Interview"
-    ) {
+    if (candidate?.currentStep === "CV Screening" || candidate?.stage === "Pending AI Interview") {
       assesment = candidate?.cvStatus;
     } else {
       assesment = candidate?.jobFit;
@@ -150,29 +147,20 @@ export default function CandidateActionModal({
                     cursor: "pointer",
                   }}
                 >
-                  <i
-                    className="la la-times"
-                    style={{ fontSize: 24, color: "#717680" }}
-                  ></i>
+                  <i className="la la-times" style={{ fontSize: 24, color: "#717680" }}></i>
                 </button>
               </div>
-              <span
-                style={{ fontSize: 14, color: "#717680", maxWidth: "540px" }}
-              >
+              <span style={{ fontSize: 14, color: "#717680", maxWidth: "540px" }}>
                 {" "}
                 <strong>Reason:</strong>{" "}
                 {candidate?.retakeRequest?.reason ||
                   candidate?.retakeRequest ||
                   "No reason provided"}
               </span>
-              <span
-                style={{ fontSize: 14, color: "#717680", maxWidth: "540px" }}
-              >
+              <span style={{ fontSize: 14, color: "#717680", maxWidth: "540px" }}>
                 {" "}
                 <strong>Request submitted on:</strong>{" "}
-                {moment(candidate?.retakeRequest?.createdAt).format(
-                  "MMM D, YYYY | hh:mm:ss A"
-                )}
+                {moment(candidate?.retakeRequest?.createdAt).format("MMM D, YYYY | hh:mm:ss A")}
               </span>
 
               <div
@@ -355,9 +343,7 @@ export default function CandidateActionModal({
                     e.preventDefault();
                     onAction(action);
 
-                    let candidateEmailBtn = document.getElementById(
-                      "candidate-email-send-button"
-                    );
+                    let candidateEmailBtn = document.getElementById("candidate-email-send-button");
                     if (candidateEmailBtn) {
                       candidateEmailBtn.click();
                     }

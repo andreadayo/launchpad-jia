@@ -30,12 +30,7 @@ export default function () {
     "For Human Interview",
     "For Human Interview Review",
   ];
-  const applicationStep = [
-    "CV Screening",
-    "AI Interview",
-    "Human Interview",
-    "Job Offer",
-  ];
+  const applicationStep = ["CV Screening", "AI Interview", "Human Interview", "Job Offer"];
   const buttonStatus = [
     {
       buttonText: "Submit CV",
@@ -147,11 +142,7 @@ export default function () {
       ],
     },
   };
-  const filters = [
-    "All Application Stages",
-    ...applicationStep,
-    "Application Closed",
-  ];
+  const filters = ["All Application Stages", ...applicationStep, "Application Closed"];
   const interviewStatus = ["Ongoing", "Dropped", "Hired", "Cancelled"];
   const stepNote = [
     "Your CV is being reviewed by the hiring team.",
@@ -225,9 +216,7 @@ export default function () {
 
     if (applicationStep.includes(interview.currentStep)) {
       if (interview.currentStep == applicationStep[0]) {
-        return interview.status == applicationPhase[1]
-          ? applicationStep[1]
-          : applicationStep[0];
+        return interview.status == applicationPhase[1] ? applicationStep[1] : applicationStep[0];
       }
 
       if (interview.currentStep == applicationStep[1]) {
@@ -243,10 +232,7 @@ export default function () {
       }
     }
 
-    if (
-      interview.currentStep &&
-      !applicationStep.includes(interview.currentStep)
-    ) {
+    if (interview.currentStep && !applicationStep.includes(interview.currentStep)) {
       return `Final ${applicationStep[3]}`;
     }
 
@@ -298,11 +284,9 @@ export default function () {
 
     if (currentStepIndex != -1) {
       if (stepIndex == currentStepIndex) {
-        return [
-          applicationPhase[0],
-          applicationPhase[2],
-          applicationPhase[4],
-        ].includes(interview.status)
+        return [applicationPhase[0], applicationPhase[2], applicationPhase[4]].includes(
+          interview.status
+        )
           ? stepStatus[2]
           : stepStatus[0];
       }
@@ -310,11 +294,9 @@ export default function () {
       if (stepIndex > currentStepIndex) {
         return stepIndex == currentStepIndex + 1 &&
           isAdvance &&
-          ![
-            applicationPhase[0],
-            applicationPhase[2],
-            applicationPhase[4],
-          ].includes(interview.status)
+          ![applicationPhase[0], applicationPhase[2], applicationPhase[4]].includes(
+            interview.status
+          )
           ? stepStatus[2]
           : stepStatus[1];
       }
@@ -324,11 +306,7 @@ export default function () {
       }
     }
 
-    if (
-      interview.currentStep &&
-      currentStepIndex == -1 &&
-      interview.currentStep != "Applied"
-    ) {
+    if (interview.currentStep && currentStepIndex == -1 && interview.currentStep != "Applied") {
       return stepStatus[0];
     }
 
@@ -375,12 +353,8 @@ export default function () {
     })
       .then((res) => {
         const result = res.data;
-        const activeInterviews = result.filter(
-          (interview) => interview.archived !== true
-        );
-        const archivedInterviews = result.filter(
-          (interview) => interview.archived === true
-        );
+        const activeInterviews = result.filter((interview) => interview.archived !== true);
+        const archivedInterviews = result.filter((interview) => interview.archived === true);
 
         setActiveInterviews(activeInterviews);
         setArchivedInterviews(archivedInterviews);
@@ -447,9 +421,7 @@ export default function () {
     <div className={styles.dashboard}>
       <div className={styles.infoFilter}>
         <div className={styles.textContainer}>
-          <span className={styles.name}>
-            Welcome, {user.name.split(" ")[0]}!
-          </span>
+          <span className={styles.name}>Welcome, {user.name.split(" ")[0]}!</span>
           <span className={styles.description}>
             Track all of your job applications in one place
           </span>
@@ -477,9 +449,7 @@ export default function () {
                   }}
                 >
                   {item}
-                  {item == filterValue && (
-                    <img alt="" src={assetConstants.checkV5} />
-                  )}
+                  {item == filterValue && <img alt="" src={assetConstants.checkV5} />}
                 </span>
               ))}
             </div>
@@ -525,25 +495,19 @@ export default function () {
       </div>
 
       {activeTab ? (
-        ((filteredActiveInterview.length == 0 &&
-          activeTab.name == tabs[0].name) ||
-          (filteredArchiveInterview.length == 0 &&
-            activeTab.name == tabs[1].name)) && (
+        ((filteredActiveInterview.length == 0 && activeTab.name == tabs[0].name) ||
+          (filteredArchiveInterview.length == 0 && activeTab.name == tabs[1].name)) && (
           <div className={styles.gradientContainer}>
             <div className={styles.emptyContainer}>
               <span className={styles.emptyTitle}>
-                {activeTab.name == tabs[0].name
-                  ? "No Applications Yet"
-                  : "Nothing Yet"}
+                {activeTab.name == tabs[0].name ? "No Applications Yet" : "Nothing Yet"}
               </span>
               <span className={styles.emptyDescription}>
                 {activeTab.name == tabs[0].name
                   ? "You haven’t applied to any roles yet."
                   : "You haven’t archived any roles yet."}
               </span>
-              <span className={styles.emptyDescription}>
-                Once you do, they’ll appear here.
-              </span>
+              <span className={styles.emptyDescription}>Once you do, they’ll appear here.</span>
               <button onClick={handleBrowseJob}>
                 Browse Job Openings
                 <img alt="arrow" src={assetConstants.arrow} />
@@ -557,467 +521,92 @@ export default function () {
 
       {activeTab && (
         <>
-          {filteredActiveInterview.length > 0 &&
-            activeTab.name == tabs[0].name && (
-              <div className={styles.applicationContainer}>
-                {filteredActiveInterview.map((interview, index) => (
+          {filteredActiveInterview.length > 0 && activeTab.name == tabs[0].name && (
+            <div className={styles.applicationContainer}>
+              {filteredActiveInterview.map((interview, index) => (
+                <div className={styles.applicationDetailsContainer} key={index}>
                   <div
-                    className={styles.applicationDetailsContainer}
-                    key={index}
-                  >
-                    <div
-                      className={`${styles.titleContainer} ${
-                        interview.applicationStatus != interviewStatus[0]
-                          ? styles.disabled
-                          : activeInterviewIndex == index
+                    className={`${styles.titleContainer} ${
+                      interview.applicationStatus != interviewStatus[0]
+                        ? styles.disabled
+                        : activeInterviewIndex == index
                           ? styles.active
                           : ""
-                      }`}
-                      onClick={() => handleApplication(interview, index)}
-                    >
-                      {interview.organization &&
-                        interview.organization.image && (
-                          <img
-                            alt=""
-                            className={styles.companyLogo}
-                            src={interview.organization.image}
-                          />
-                        )}
+                    }`}
+                    onClick={() => handleApplication(interview, index)}
+                  >
+                    {interview.organization && interview.organization.image && (
+                      <img
+                        alt=""
+                        className={styles.companyLogo}
+                        src={interview.organization.image}
+                      />
+                    )}
 
-                      <div className={styles.companyDetailsContainer}>
-                        <span className={styles.jobTitle}>
-                          {interview.jobTitle}
-                        </span>
-                        {interview.organization &&
-                          interview.organization.name && (
-                            <span className={styles.companyName}>
-                              {interview.organization.name}
-                            </span>
-                          )}
-                      </div>
-
-                      <div
-                        className={`webView ${styles.applicationStatusContainer}`}
-                      >
-                        <span className={styles.statusTitle}>Stage</span>
-                        <span className={styles.statusValue}>
-                          {processCurrentStep(interview)}
-                        </span>
-                      </div>
-
-                      <div
-                        className={`webView ${styles.applicationStatusContainer}`}
-                      >
-                        <span className={styles.statusTitle}>
-                          Stage Updated
-                        </span>
-                        <span className={styles.statusValue}>
-                          {[interviewStatus[1], interviewStatus[3]].includes(
-                            interview.applicationStatus
-                          )
-                            ? processDisplayDate(
-                                interview.completedAt || interview.updatedAt
-                              )
-                            : processDisplayDate(interview.updatedAt)}
-                        </span>
-                      </div>
-
-                      {interview.applicationStatus == interviewStatus[0] && (
-                        <img
-                          alt="ellipsis"
-                          className={styles.menu}
-                          src={assetConstants.ellipsis}
-                          onClick={(e) => handleDropdown(e, index)}
-                        />
+                    <div className={styles.companyDetailsContainer}>
+                      <span className={styles.jobTitle}>{interview.jobTitle}</span>
+                      {interview.organization && interview.organization.name && (
+                        <span className={styles.companyName}>{interview.organization.name}</span>
                       )}
                     </div>
 
-                    {viewDropdown == index && (
-                      <div className={styles.dropDownContainer}>
-                        {dropdownItems.map((item, index) => (
-                          <span
-                            key={index}
-                            onClick={() => item.handleClick(interview)}
-                          >
-                            {item.text}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                    <div className={`webView ${styles.applicationStatusContainer}`}>
+                      <span className={styles.statusTitle}>Stage</span>
+                      <span className={styles.statusValue}>{processCurrentStep(interview)}</span>
+                    </div>
 
-                    {interview.applicationStatus == interviewStatus[0] &&
-                      activeInterviewIndex == index && (
-                        <div className={styles.bottomContainer}>
-                          <div className={styles.applicationStepContainer}>
-                            {applicationStep.map((step, index) => (
-                              <div className={styles.stepContainer} key={index}>
-                                <div className={styles.indicator}>
-                                  <img
-                                    alt=""
-                                    src={
-                                      assetConstants[
-                                        processState(interview, step, true)
-                                          .toLowerCase()
-                                          .replace(" ", "_")
-                                      ]
-                                    }
-                                  />
+                    <div className={`webView ${styles.applicationStatusContainer}`}>
+                      <span className={styles.statusTitle}>Stage Updated</span>
+                      <span className={styles.statusValue}>
+                        {[interviewStatus[1], interviewStatus[3]].includes(
+                          interview.applicationStatus
+                        )
+                          ? processDisplayDate(interview.completedAt || interview.updatedAt)
+                          : processDisplayDate(interview.updatedAt)}
+                      </span>
+                    </div>
 
-                                  <div className={styles.stepDetails}>
-                                    <span
-                                      className={`mobileView ${
-                                        styles.stepNumber
-                                      } ${
-                                        styles[
-                                          processState(interview, step, true)
-                                            .toLowerCase()
-                                            .replace(" ", "_")
-                                        ]
-                                      }`}
-                                    >
-                                      STEP {index + 1}
-                                    </span>
-                                    <span
-                                      className={`mobileView ${
-                                        styles.stepDescription
-                                      } ${
-                                        styles[
-                                          processState(interview, step, true)
-                                            .toLowerCase()
-                                            .replace(" ", "_")
-                                        ]
-                                      }`}
-                                    >
-                                      {step}
-                                    </span>
-
-                                    <span
-                                      className={`mobileView ${styles.stepNote}`}
-                                    >
-                                      {processNoteState(interview, index)}
-                                    </span>
-                                  </div>
-
-                                  {index < applicationStep.length - 1 && (
-                                    <hr
-                                      className={`webView ${
-                                        styles[
-                                          processState(interview, step)
-                                            .toLowerCase()
-                                            .replace(" ", "_")
-                                        ]
-                                      }`}
-                                    />
-                                  )}
-                                </div>
-                                <div className={styles.stepDetails}>
-                                  <span
-                                    className={`webView ${styles.stepNumber} ${
-                                      styles[
-                                        processState(interview, step, true)
-                                          .toLowerCase()
-                                          .replace(" ", "_")
-                                      ]
-                                    }`}
-                                  >
-                                    STEP {index + 1}
-                                  </span>
-                                  <span
-                                    className={`webView ${
-                                      styles.stepDescription
-                                    } ${
-                                      styles[
-                                        processState(interview, step, true)
-                                          .toLowerCase()
-                                          .replace(" ", "_")
-                                      ]
-                                    }`}
-                                  >
-                                    {step}
-                                  </span>
-                                  <span
-                                    className={`${styles.stepStatus} ${
-                                      styles[
-                                        processState(interview, step)
-                                          .toLowerCase()
-                                          .replace(" ", "_")
-                                      ]
-                                    }`}
-                                  >
-                                    {processState(interview, step)}
-                                  </span>
-
-                                  <span
-                                    className={`webView ${styles.stepNote}`}
-                                  >
-                                    {processNoteState(interview, index)}
-                                  </span>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-
-                          {processButtonState(interview) && (
-                            <div className={styles.buttonContainer}>
-                              {interview.retakeRequest &&
-                                interview.retakeRequest.reason && (
-                                  <div className={styles.hoverContainer}>
-                                    <span>
-                                      You’ve already submitted a retake request
-                                      for this application.
-                                    </span>
-                                  </div>
-                                )}
-                              <span>
-                                {processButtonState(interview).spanText}:
-                              </span>
-                              <button
-                                className={`${
-                                  processButtonState(interview).disabled ||
-                                  (interview.retakeRequest &&
-                                    interview.retakeRequest.reason)
-                                    ? "disabled"
-                                    : ""
-                                }`}
-                                disabled={
-                                  (interview.retakeRequest &&
-                                    interview.retakeRequest.reason) ||
-                                  processButtonState(interview).disabled
-                                }
-                                onClick={() =>
-                                  processButtonState(interview).handleClick(
-                                    interview
-                                  )
-                                }
-                              >
-                                {processButtonState(interview).buttonText}
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                    {interview.applicationStatus == interviewStatus[1] && (
-                      <div className={styles.updateContainer}>
-                        <div className={styles.applicationUpdate}>
-                          <img alt="" src={assetConstants.userRejected} />
-                          <div className={styles.textContainer}>
-                            <span className={styles.title}>
-                              Application Update
-                            </span>
-                            <span className={styles.description}>
-                              {interview.currentStep &&
-                              interviewStatus.includes(interview.currentStep)
-                                ? droppedStatus[interview.currentStep]
-                                    .description
-                                : droppedStatus.generic.description}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className={styles.tipsUpdate}>
-                          <div className={styles.leftContainer}>
-                            <img alt="" src={assetConstants.hilight} />
-                            <div className={styles.textContainer}>
-                              <span className={styles.title}>
-                                Jia’s tips for your next application:
-                              </span>
-                              <ul>
-                                {(interview.currentStep &&
-                                interviewStatus.includes(interview.currentStep)
-                                  ? droppedStatus[interview.currentStep].tips
-                                  : droppedStatus.generic.tips
-                                ).map((item, index) => (
-                                  <li key={index}>{item}</li>
-                                ))}
-
-                                {(interview.summary ||
-                                  interview.cvScreeningReason) &&
-                                  [
-                                    applicationStep[0],
-                                    applicationStep[1],
-                                  ].includes(processCurrentStep(interview)) && (
-                                    <li
-                                      className={styles.screeningLink}
-                                      onClick={() =>
-                                        handleViewScreeningResult(interview)
-                                      }
-                                    >
-                                      View the AI Screening Result
-                                    </li>
-                                  )}
-                              </ul>
-                            </div>
-                          </div>
-                          <div className={styles.rightContainer}></div>
-                        </div>
-                        <button onClick={() => handleArchive(interview)}>
-                          <img alt="" src={assetConstants.archiveV2} />
-                          Archive Application
-                        </button>
-                      </div>
+                    {interview.applicationStatus == interviewStatus[0] && (
+                      <img
+                        alt="ellipsis"
+                        className={styles.menu}
+                        src={assetConstants.ellipsis}
+                        onClick={(e) => handleDropdown(e, index)}
+                      />
                     )}
                   </div>
-                ))}
-              </div>
-            )}
 
-          {filteredArchiveInterview.length > 0 &&
-            activeTab.name == tabs[1].name && (
-              <div className={styles.applicationContainer}>
-                {filteredArchiveInterview.map((interview, index) => (
-                  <div
-                    className={styles.applicationDetailsContainer}
-                    key={index}
-                  >
-                    <div
-                      className={`${styles.titleContainer} ${
-                        interview.applicationStatus != interviewStatus[0]
-                          ? styles.disabled
-                          : activeInterviewIndex == index
-                          ? styles.active
-                          : ""
-                      }`}
-                      onClick={() => handleApplication(interview, index)}
-                    >
-                      {interview.organization &&
-                        interview.organization.image && (
-                          <img
-                            alt=""
-                            className={styles.companyLogo}
-                            src={interview.organization.image}
-                          />
-                        )}
-
-                      <div className={styles.companyDetailsContainer}>
-                        <span className={styles.jobTitle}>
-                          {interview.jobTitle}
+                  {viewDropdown == index && (
+                    <div className={styles.dropDownContainer}>
+                      {dropdownItems.map((item, index) => (
+                        <span key={index} onClick={() => item.handleClick(interview)}>
+                          {item.text}
                         </span>
-                        {interview.organization &&
-                          interview.organization.name && (
-                            <span className={styles.companyName}>
-                              {interview.organization.name}
-                            </span>
-                          )}
-                      </div>
-
-                      <div
-                        className={`webView ${styles.applicationStatusContainer}`}
-                      >
-                        <span className={styles.statusTitle}>Stage</span>
-                        <span className={styles.statusValue}>
-                          {processCurrentStep(interview)}
-                        </span>
-                      </div>
-
-                      <div
-                        className={`webView ${styles.applicationStatusContainer}`}
-                      >
-                        <span className={styles.statusTitle}>
-                          Stage Updated
-                        </span>
-                        <span className={styles.statusValue}>
-                          {[interviewStatus[1], interviewStatus[3]].includes(
-                            interview.applicationStatus
-                          )
-                            ? processDisplayDate(
-                                interview.completedAt || interview.updatedAt
-                              )
-                            : processDisplayDate(interview.updatedAt)}
-                        </span>
-                      </div>
-
-                      {interview.applicationStatus == interviewStatus[0] && (
-                        <img
-                          alt="ellipsis"
-                          className={styles.menu}
-                          src={assetConstants.ellipsis}
-                          onClick={(e) => handleDropdown(e, index)}
-                        />
-                      )}
+                      ))}
                     </div>
+                  )}
 
-                    {viewDropdown == index && (
-                      <div className={styles.dropDownContainer}>
-                        {dropdownItems.map((item, index) => (
-                          <span
-                            key={index}
-                            onClick={() => item.handleClick(interview)}
-                          >
-                            {item.text}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                  {interview.applicationStatus == interviewStatus[0] &&
+                    activeInterviewIndex == index && (
+                      <div className={styles.bottomContainer}>
+                        <div className={styles.applicationStepContainer}>
+                          {applicationStep.map((step, index) => (
+                            <div className={styles.stepContainer} key={index}>
+                              <div className={styles.indicator}>
+                                <img
+                                  alt=""
+                                  src={
+                                    assetConstants[
+                                      processState(interview, step, true)
+                                        .toLowerCase()
+                                        .replace(" ", "_")
+                                    ]
+                                  }
+                                />
 
-                    {interview.applicationStatus == interviewStatus[0] &&
-                      activeInterviewIndex == index && (
-                        <div className={styles.bottomContainer}>
-                          <div className={styles.applicationStepContainer}>
-                            {applicationStep.map((step, index) => (
-                              <div className={styles.stepContainer} key={index}>
-                                <div className={styles.indicator}>
-                                  <img
-                                    alt=""
-                                    src={
-                                      assetConstants[
-                                        processState(interview, step, true)
-                                          .toLowerCase()
-                                          .replace(" ", "_")
-                                      ]
-                                    }
-                                  />
-
-                                  <div className={styles.stepDetails}>
-                                    <span
-                                      className={`mobileView ${
-                                        styles.stepNumber
-                                      } ${
-                                        styles[
-                                          processState(interview, step, true)
-                                            .toLowerCase()
-                                            .replace(" ", "_")
-                                        ]
-                                      }`}
-                                    >
-                                      STEP {index + 1}
-                                    </span>
-                                    <span
-                                      className={`mobileView ${
-                                        styles.stepDescription
-                                      } ${
-                                        styles[
-                                          processState(interview, step, true)
-                                            .toLowerCase()
-                                            .replace(" ", "_")
-                                        ]
-                                      }`}
-                                    >
-                                      {step}
-                                    </span>
-
-                                    <span
-                                      className={`mobileView ${styles.stepNote}`}
-                                    >
-                                      {processNoteState(interview, index)}
-                                    </span>
-                                  </div>
-
-                                  {index < applicationStep.length - 1 && (
-                                    <hr
-                                      className={`webView ${
-                                        styles[
-                                          processState(interview, step)
-                                            .toLowerCase()
-                                            .replace(" ", "_")
-                                        ]
-                                      }`}
-                                    />
-                                  )}
-                                </div>
                                 <div className={styles.stepDetails}>
                                   <span
-                                    className={`webView ${styles.stepNumber} ${
+                                    className={`mobileView ${styles.stepNumber} ${
                                       styles[
                                         processState(interview, step, true)
                                           .toLowerCase()
@@ -1028,9 +617,7 @@ export default function () {
                                     STEP {index + 1}
                                   </span>
                                   <span
-                                    className={`webView ${
-                                      styles.stepDescription
-                                    } ${
+                                    className={`mobileView ${styles.stepDescription} ${
                                       styles[
                                         processState(interview, step, true)
                                           .toLowerCase()
@@ -1040,179 +627,442 @@ export default function () {
                                   >
                                     {step}
                                   </span>
-                                  <span
-                                    className={`${styles.stepStatus} ${
+
+                                  <span className={`mobileView ${styles.stepNote}`}>
+                                    {processNoteState(interview, index)}
+                                  </span>
+                                </div>
+
+                                {index < applicationStep.length - 1 && (
+                                  <hr
+                                    className={`webView ${
                                       styles[
                                         processState(interview, step)
                                           .toLowerCase()
                                           .replace(" ", "_")
                                       ]
                                     }`}
-                                  >
-                                    {processState(interview, step)}
-                                  </span>
-
-                                  <span
-                                    className={`webView ${styles.stepNote}`}
-                                  >
-                                    {processNoteState(interview, index)}
-                                  </span>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-
-                          {processButtonState(interview) && (
-                            <div className={styles.buttonContainer}>
-                              {interview.retakeRequest &&
-                                interview.retakeRequest.reason && (
-                                  <div className={styles.hoverContainer}>
-                                    <span>
-                                      You’ve already submitted a retake request
-                                      for this application.
-                                    </span>
-                                  </div>
+                                  />
                                 )}
-                              <span>
-                                {processButtonState(interview).spanText}:
-                              </span>
-                              <button
-                                className={`${
-                                  processButtonState(interview).disabled ||
-                                  (interview.retakeRequest &&
-                                    interview.retakeRequest.reason)
-                                    ? "disabled"
-                                    : ""
-                                }`}
-                                disabled={
-                                  (interview.retakeRequest &&
-                                    interview.retakeRequest.reason) ||
-                                  processButtonState(interview).disabled
-                                }
-                                onClick={() =>
-                                  processButtonState(interview).handleClick(
-                                    interview
-                                  )
-                                }
-                              >
-                                {processButtonState(interview).buttonText}
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      )}
+                              </div>
+                              <div className={styles.stepDetails}>
+                                <span
+                                  className={`webView ${styles.stepNumber} ${
+                                    styles[
+                                      processState(interview, step, true)
+                                        .toLowerCase()
+                                        .replace(" ", "_")
+                                    ]
+                                  }`}
+                                >
+                                  STEP {index + 1}
+                                </span>
+                                <span
+                                  className={`webView ${styles.stepDescription} ${
+                                    styles[
+                                      processState(interview, step, true)
+                                        .toLowerCase()
+                                        .replace(" ", "_")
+                                    ]
+                                  }`}
+                                >
+                                  {step}
+                                </span>
+                                <span
+                                  className={`${styles.stepStatus} ${
+                                    styles[
+                                      processState(interview, step).toLowerCase().replace(" ", "_")
+                                    ]
+                                  }`}
+                                >
+                                  {processState(interview, step)}
+                                </span>
 
-                    {interview.applicationStatus == interviewStatus[1] && (
-                      <div className={styles.updateContainer}>
-                        <div className={styles.applicationUpdate}>
-                          <img alt="" src={assetConstants.userRejected} />
+                                <span className={`webView ${styles.stepNote}`}>
+                                  {processNoteState(interview, index)}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {processButtonState(interview) && (
+                          <div className={styles.buttonContainer}>
+                            {interview.retakeRequest && interview.retakeRequest.reason && (
+                              <div className={styles.hoverContainer}>
+                                <span>
+                                  You’ve already submitted a retake request for this application.
+                                </span>
+                              </div>
+                            )}
+                            <span>{processButtonState(interview).spanText}:</span>
+                            <button
+                              className={`${
+                                processButtonState(interview).disabled ||
+                                (interview.retakeRequest && interview.retakeRequest.reason)
+                                  ? "disabled"
+                                  : ""
+                              }`}
+                              disabled={
+                                (interview.retakeRequest && interview.retakeRequest.reason) ||
+                                processButtonState(interview).disabled
+                              }
+                              onClick={() => processButtonState(interview).handleClick(interview)}
+                            >
+                              {processButtonState(interview).buttonText}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                  {interview.applicationStatus == interviewStatus[1] && (
+                    <div className={styles.updateContainer}>
+                      <div className={styles.applicationUpdate}>
+                        <img alt="" src={assetConstants.userRejected} />
+                        <div className={styles.textContainer}>
+                          <span className={styles.title}>Application Update</span>
+                          <span className={styles.description}>
+                            {interview.currentStep &&
+                            interviewStatus.includes(interview.currentStep)
+                              ? droppedStatus[interview.currentStep].description
+                              : droppedStatus.generic.description}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className={styles.tipsUpdate}>
+                        <div className={styles.leftContainer}>
+                          <img alt="" src={assetConstants.hilight} />
                           <div className={styles.textContainer}>
                             <span className={styles.title}>
-                              Application Update
+                              Jia’s tips for your next application:
                             </span>
-                            <span className={styles.description}>
-                              {interview.currentStep &&
+                            <ul>
+                              {(interview.currentStep &&
                               interviewStatus.includes(interview.currentStep)
-                                ? droppedStatus[interview.currentStep]
-                                    .description
-                                : droppedStatus.generic.description}
-                            </span>
-                          </div>
-                        </div>
+                                ? droppedStatus[interview.currentStep].tips
+                                : droppedStatus.generic.tips
+                              ).map((item, index) => (
+                                <li key={index}>{item}</li>
+                              ))}
 
-                        <div className={styles.tipsUpdate}>
-                          <div className={styles.leftContainer}>
-                            <img alt="" src={assetConstants.hilight} />
-                            <div className={styles.textContainer}>
-                              <span className={styles.title}>
-                                Jia’s tips for your next application:
-                              </span>
-                              <ul>
-                                {(interview.currentStep &&
-                                interviewStatus.includes(interview.currentStep)
-                                  ? droppedStatus[interview.currentStep].tips
-                                  : droppedStatus.generic.tips
-                                ).map((item, index) => (
-                                  <li key={index}>{item}</li>
-                                ))}
-                                {[
-                                  applicationStep[0],
-                                  applicationStep[1],
-                                ].includes(processCurrentStep(interview)) && (
+                              {(interview.summary || interview.cvScreeningReason) &&
+                                [applicationStep[0], applicationStep[1]].includes(
+                                  processCurrentStep(interview)
+                                ) && (
                                   <li
                                     className={styles.screeningLink}
-                                    onClick={() =>
-                                      handleViewScreeningResult(interview)
-                                    }
+                                    onClick={() => handleViewScreeningResult(interview)}
                                   >
                                     View the AI Screening Result
                                   </li>
                                 )}
-                              </ul>
-                            </div>
+                            </ul>
                           </div>
-                          <div className={styles.rightContainer}></div>
                         </div>
+                        <div className={styles.rightContainer}></div>
                       </div>
+                      <button onClick={() => handleArchive(interview)}>
+                        <img alt="" src={assetConstants.archiveV2} />
+                        Archive Application
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {filteredArchiveInterview.length > 0 && activeTab.name == tabs[1].name && (
+            <div className={styles.applicationContainer}>
+              {filteredArchiveInterview.map((interview, index) => (
+                <div className={styles.applicationDetailsContainer} key={index}>
+                  <div
+                    className={`${styles.titleContainer} ${
+                      interview.applicationStatus != interviewStatus[0]
+                        ? styles.disabled
+                        : activeInterviewIndex == index
+                          ? styles.active
+                          : ""
+                    }`}
+                    onClick={() => handleApplication(interview, index)}
+                  >
+                    {interview.organization && interview.organization.image && (
+                      <img
+                        alt=""
+                        className={styles.companyLogo}
+                        src={interview.organization.image}
+                      />
                     )}
 
-                    {interview.applicationStatus == interviewStatus[3] && (
-                      <div
-                        className={`${styles.updateContainer} ${styles.cancelled}`}
-                      >
-                        <div className={styles.applicationUpdate}>
-                          <img alt="" src={assetConstants.trash} />
-                          <div className={styles.textContainer}>
-                            <span className={styles.title}>
-                              Application Update
-                            </span>
-                            <span className={styles.description}>
-                              This application is no longer active.
-                            </span>
-                          </div>
-                        </div>
+                    <div className={styles.companyDetailsContainer}>
+                      <span className={styles.jobTitle}>{interview.jobTitle}</span>
+                      {interview.organization && interview.organization.name && (
+                        <span className={styles.companyName}>{interview.organization.name}</span>
+                      )}
+                    </div>
 
-                        <div className={styles.statusDetails}>
-                          <div className={styles.detailsContainer}>
-                            <span className={styles.detailsTitle}>Status:</span>
-                            <span className={styles.detailsStatus}>
-                              {interview.applicationStatus}
-                            </span>
-                          </div>
+                    <div className={`webView ${styles.applicationStatusContainer}`}>
+                      <span className={styles.statusTitle}>Stage</span>
+                      <span className={styles.statusValue}>{processCurrentStep(interview)}</span>
+                    </div>
 
-                          <div className={styles.detailsContainer}>
-                            <span className={styles.detailsTitle}>
-                              Cancelled on:
-                            </span>
-                            <span className={styles.detailsDate}>
-                              {processDisplayDate(
-                                interview.completedAt || interview.updatedAt
-                              )}
-                            </span>
-                          </div>
+                    <div className={`webView ${styles.applicationStatusContainer}`}>
+                      <span className={styles.statusTitle}>Stage Updated</span>
+                      <span className={styles.statusValue}>
+                        {[interviewStatus[1], interviewStatus[3]].includes(
+                          interview.applicationStatus
+                        )
+                          ? processDisplayDate(interview.completedAt || interview.updatedAt)
+                          : processDisplayDate(interview.updatedAt)}
+                      </span>
+                    </div>
 
-                          <div className={styles.detailsContainer}>
-                            <span className={styles.detailsTitle}>
-                              Reason for cancelling:
-                            </span>
-                            <span className={styles.detailsReason}>
-                              {interview.selectedReason != "Others" ? (
-                                interview.selectedReason
-                              ) : (
-                                <>
-                                  {interview.selectedReason}:{" "}
-                                  <span>{interview.cancelReason}</span>
-                                </>
-                              )}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
+                    {interview.applicationStatus == interviewStatus[0] && (
+                      <img
+                        alt="ellipsis"
+                        className={styles.menu}
+                        src={assetConstants.ellipsis}
+                        onClick={(e) => handleDropdown(e, index)}
+                      />
                     )}
                   </div>
-                ))}
-              </div>
-            )}
+
+                  {viewDropdown == index && (
+                    <div className={styles.dropDownContainer}>
+                      {dropdownItems.map((item, index) => (
+                        <span key={index} onClick={() => item.handleClick(interview)}>
+                          {item.text}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {interview.applicationStatus == interviewStatus[0] &&
+                    activeInterviewIndex == index && (
+                      <div className={styles.bottomContainer}>
+                        <div className={styles.applicationStepContainer}>
+                          {applicationStep.map((step, index) => (
+                            <div className={styles.stepContainer} key={index}>
+                              <div className={styles.indicator}>
+                                <img
+                                  alt=""
+                                  src={
+                                    assetConstants[
+                                      processState(interview, step, true)
+                                        .toLowerCase()
+                                        .replace(" ", "_")
+                                    ]
+                                  }
+                                />
+
+                                <div className={styles.stepDetails}>
+                                  <span
+                                    className={`mobileView ${styles.stepNumber} ${
+                                      styles[
+                                        processState(interview, step, true)
+                                          .toLowerCase()
+                                          .replace(" ", "_")
+                                      ]
+                                    }`}
+                                  >
+                                    STEP {index + 1}
+                                  </span>
+                                  <span
+                                    className={`mobileView ${styles.stepDescription} ${
+                                      styles[
+                                        processState(interview, step, true)
+                                          .toLowerCase()
+                                          .replace(" ", "_")
+                                      ]
+                                    }`}
+                                  >
+                                    {step}
+                                  </span>
+
+                                  <span className={`mobileView ${styles.stepNote}`}>
+                                    {processNoteState(interview, index)}
+                                  </span>
+                                </div>
+
+                                {index < applicationStep.length - 1 && (
+                                  <hr
+                                    className={`webView ${
+                                      styles[
+                                        processState(interview, step)
+                                          .toLowerCase()
+                                          .replace(" ", "_")
+                                      ]
+                                    }`}
+                                  />
+                                )}
+                              </div>
+                              <div className={styles.stepDetails}>
+                                <span
+                                  className={`webView ${styles.stepNumber} ${
+                                    styles[
+                                      processState(interview, step, true)
+                                        .toLowerCase()
+                                        .replace(" ", "_")
+                                    ]
+                                  }`}
+                                >
+                                  STEP {index + 1}
+                                </span>
+                                <span
+                                  className={`webView ${styles.stepDescription} ${
+                                    styles[
+                                      processState(interview, step, true)
+                                        .toLowerCase()
+                                        .replace(" ", "_")
+                                    ]
+                                  }`}
+                                >
+                                  {step}
+                                </span>
+                                <span
+                                  className={`${styles.stepStatus} ${
+                                    styles[
+                                      processState(interview, step).toLowerCase().replace(" ", "_")
+                                    ]
+                                  }`}
+                                >
+                                  {processState(interview, step)}
+                                </span>
+
+                                <span className={`webView ${styles.stepNote}`}>
+                                  {processNoteState(interview, index)}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {processButtonState(interview) && (
+                          <div className={styles.buttonContainer}>
+                            {interview.retakeRequest && interview.retakeRequest.reason && (
+                              <div className={styles.hoverContainer}>
+                                <span>
+                                  You’ve already submitted a retake request for this application.
+                                </span>
+                              </div>
+                            )}
+                            <span>{processButtonState(interview).spanText}:</span>
+                            <button
+                              className={`${
+                                processButtonState(interview).disabled ||
+                                (interview.retakeRequest && interview.retakeRequest.reason)
+                                  ? "disabled"
+                                  : ""
+                              }`}
+                              disabled={
+                                (interview.retakeRequest && interview.retakeRequest.reason) ||
+                                processButtonState(interview).disabled
+                              }
+                              onClick={() => processButtonState(interview).handleClick(interview)}
+                            >
+                              {processButtonState(interview).buttonText}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                  {interview.applicationStatus == interviewStatus[1] && (
+                    <div className={styles.updateContainer}>
+                      <div className={styles.applicationUpdate}>
+                        <img alt="" src={assetConstants.userRejected} />
+                        <div className={styles.textContainer}>
+                          <span className={styles.title}>Application Update</span>
+                          <span className={styles.description}>
+                            {interview.currentStep &&
+                            interviewStatus.includes(interview.currentStep)
+                              ? droppedStatus[interview.currentStep].description
+                              : droppedStatus.generic.description}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className={styles.tipsUpdate}>
+                        <div className={styles.leftContainer}>
+                          <img alt="" src={assetConstants.hilight} />
+                          <div className={styles.textContainer}>
+                            <span className={styles.title}>
+                              Jia’s tips for your next application:
+                            </span>
+                            <ul>
+                              {(interview.currentStep &&
+                              interviewStatus.includes(interview.currentStep)
+                                ? droppedStatus[interview.currentStep].tips
+                                : droppedStatus.generic.tips
+                              ).map((item, index) => (
+                                <li key={index}>{item}</li>
+                              ))}
+                              {[applicationStep[0], applicationStep[1]].includes(
+                                processCurrentStep(interview)
+                              ) && (
+                                <li
+                                  className={styles.screeningLink}
+                                  onClick={() => handleViewScreeningResult(interview)}
+                                >
+                                  View the AI Screening Result
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        </div>
+                        <div className={styles.rightContainer}></div>
+                      </div>
+                    </div>
+                  )}
+
+                  {interview.applicationStatus == interviewStatus[3] && (
+                    <div className={`${styles.updateContainer} ${styles.cancelled}`}>
+                      <div className={styles.applicationUpdate}>
+                        <img alt="" src={assetConstants.trash} />
+                        <div className={styles.textContainer}>
+                          <span className={styles.title}>Application Update</span>
+                          <span className={styles.description}>
+                            This application is no longer active.
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className={styles.statusDetails}>
+                        <div className={styles.detailsContainer}>
+                          <span className={styles.detailsTitle}>Status:</span>
+                          <span className={styles.detailsStatus}>
+                            {interview.applicationStatus}
+                          </span>
+                        </div>
+
+                        <div className={styles.detailsContainer}>
+                          <span className={styles.detailsTitle}>Cancelled on:</span>
+                          <span className={styles.detailsDate}>
+                            {processDisplayDate(interview.completedAt || interview.updatedAt)}
+                          </span>
+                        </div>
+
+                        <div className={styles.detailsContainer}>
+                          <span className={styles.detailsTitle}>Reason for cancelling:</span>
+                          <span className={styles.detailsReason}>
+                            {interview.selectedReason != "Others" ? (
+                              interview.selectedReason
+                            ) : (
+                              <>
+                                {interview.selectedReason}: <span>{interview.cancelReason}</span>
+                              </>
+                            )}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </>
       )}
     </div>

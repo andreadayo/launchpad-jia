@@ -8,10 +8,7 @@ export async function POST(req: Request) {
 
     // Get counts from each collection
     const careersCount = await db.collection("careers").find({ orgID, status: "active" }).count();
-    const interviewsCount = await db
-      .collection("interviews")
-      .find({ orgID })
-      .count();
+    const interviewsCount = await db.collection("interviews").find({ orgID }).count();
     const interviewIDs = await db
       .collection("interviews")
       .find({ orgID })
@@ -21,10 +18,7 @@ export async function POST(req: Request) {
     const transcriptsCount = await db
       .collection("transcripts")
       .countDocuments({ interviewID: { $in: interviewIDList } });
-    const applicantsCount = await db
-      .collection("affiliations")
-      .find({ orgID })
-      .count();
+    const applicantsCount = await db.collection("affiliations").find({ orgID }).count();
 
     // Prepare response in the required format
     const metricsData = [
@@ -53,9 +47,6 @@ export async function POST(req: Request) {
     return NextResponse.json(metricsData);
   } catch (error) {
     console.error("Error fetching metrics:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch metrics" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch metrics" }, { status: 500 });
   }
 }

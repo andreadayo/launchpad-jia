@@ -35,10 +35,7 @@ export default function (props: any) {
           <strong>
             <i className="la la-square text-primary" /> Scoring Rationale
           </strong>
-          <button
-            className="btn btn-outline-primary btn-sm"
-            onClick={toggleAll}
-          >
+          <button className="btn btn-outline-primary btn-sm" onClick={toggleAll}>
             <i className="la la-bars" /> {allShow ? "Hide" : "Show"} All
           </button>
         </div>
@@ -60,8 +57,7 @@ export default function (props: any) {
                       </span>
                     </div>
                     <h3>
-                      {x.key}:{" "}
-                      <strong className="text-primary">{x.data} / 100</strong>
+                      {x.key}: <strong className="text-primary">{x.data} / 100</strong>
                     </h3>
                   </div>
 

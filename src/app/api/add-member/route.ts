@@ -3,11 +3,7 @@ import connectMongoDB from "@/lib/mongoDB/mongoDB";
 import { sendEmail } from "@/lib/Email";
 import { ObjectId } from "mongodb";
 
-const getInvitationEmailTemplate = (
-  email: string,
-  orgName: string,
-  role: string
-) => `
+const getInvitationEmailTemplate = (email: string, orgName: string, role: string) => `
   <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
     <div style="background: linear-gradient(to bottom, #4f04b9f0, #b79fcf76); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
       <h1 style="color: white; margin: 0; font-size: 24px;">Welcome to Jia</h1>
@@ -20,8 +16,8 @@ const getInvitationEmailTemplate = (
       
       <p style="font-size: 16px; line-height: 1.6; color: #333333; margin-bottom: 20px;">
         We are pleased to invite you to join <strong>${orgName}</strong> on Jia as a <strong>${
-  role.charAt(0).toUpperCase() + role.slice(1)
-}</strong>. Your expertise and contribution will be valuable to our team.
+          role.charAt(0).toUpperCase() + role.slice(1)
+        }</strong>. Your expertise and contribution will be valuable to our team.
       </p>
       
       <p style="font-size: 16px; line-height: 1.6; color: #333333; margin-bottom: 30px;">
@@ -56,16 +52,11 @@ export async function POST(req: Request) {
   const { db } = await connectMongoDB();
 
   const member = await db.collection("members").findOne({ email, orgID });
-  const org = await db
-    .collection("organizations")
-    .findOne({ _id: new ObjectId(orgID) });
+  const org = await db.collection("organizations").findOne({ _id: new ObjectId(orgID) });
 
   if (member) {
     if (member.status !== "invited") {
-      return NextResponse.json(
-        { message: "Member already exists" },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "Member already exists" }, { status: 400 });
     }
     // If member exists and is still invited, just resend the email
     await sendEmail({
@@ -73,17 +64,12 @@ export async function POST(req: Request) {
       html: getInvitationEmailTemplate(email, org?.name || "", role),
     });
 
-    return NextResponse.json(
-      { message: "Invitation email resent successfully" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Invitation email resent successfully" }, { status: 200 });
   }
 
   const newMember = {
     image: `https://api.dicebear.com/9.x/shapes/svg?seed=${email}`,
-    name:
-      email.split("@")[0].charAt(0).toUpperCase() +
-      email.split("@")[0].slice(1),
+    name: email.split("@")[0].charAt(0).toUpperCase() + email.split("@")[0].slice(1),
     email,
     orgID,
     role,
@@ -99,8 +85,5 @@ export async function POST(req: Request) {
     html: getInvitationEmailTemplate(email, org?.name || "", role),
   });
 
-  return NextResponse.json(
-    { message: "Member added successfully" },
-    { status: 200 }
-  );
+  return NextResponse.json({ message: "Member added successfully" }, { status: 200 });
 }

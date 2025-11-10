@@ -2,26 +2,17 @@ import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { useState } from "react";
 
-const RadialGauge = dynamic(
-  () => import("reaviz").then((mod) => mod.RadialGauge),
-  {
-    ssr: false,
-  }
-);
+const RadialGauge = dynamic(() => import("reaviz").then((mod) => mod.RadialGauge), {
+  ssr: false,
+});
 
-const RadialGaugeSeries = dynamic(
-  () => import("reaviz").then((mod) => mod.RadialGaugeSeries),
-  {
-    ssr: false,
-  }
-);
+const RadialGaugeSeries = dynamic(() => import("reaviz").then((mod) => mod.RadialGaugeSeries), {
+  ssr: false,
+});
 
-const RadialGaugeArc = dynamic(
-  () => import("reaviz").then((mod) => mod.RadialGaugeArc),
-  {
-    ssr: false,
-  }
-);
+const RadialGaugeArc = dynamic(() => import("reaviz").then((mod) => mod.RadialGaugeArc), {
+  ssr: false,
+});
 
 const Gradient = dynamic(() => import("reaviz").then((mod) => mod.Gradient), {
   ssr: false,
@@ -58,9 +49,7 @@ export default function RVRadialCharts(props: any) {
         <RadialGaugeSeries
           colorScheme={colorScheme}
           arcWidth={8}
-          innerArc={
-            <RadialGaugeArc cornerRadius={12.5} gradient={<Gradient />} />
-          }
+          innerArc={<RadialGaugeArc cornerRadius={12.5} gradient={<Gradient />} />}
           // className="radial-series"
         />
       }

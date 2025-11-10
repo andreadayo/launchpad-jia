@@ -52,9 +52,7 @@ export default function ({ children }) {
 
     if (hasChanges == "true") {
       Promise.resolve(
-        window.confirm(
-          "You have unsaved changes. Are you sure you want to leave this page?"
-        )
+        window.confirm("You have unsaved changes. Are you sure you want to leave this page?")
       ).then((confirmed) => {
         if (confirmed) {
           if (path == pathConstants.home) {
@@ -77,11 +75,7 @@ export default function ({ children }) {
     if (user == null) {
       alert("Please sign in to continue.");
       handleRedirection(
-        `${
-          window.location.origin.includes("localhost")
-            ? "/job-portal"
-            : pathConstants.employee
-        }`
+        `${window.location.origin.includes("localhost") ? "/job-portal" : pathConstants.employee}`
       );
     } else {
       links.forEach((link) => {
@@ -106,11 +100,7 @@ export default function ({ children }) {
         const result = res.data;
         const manageCV = sessionStorage.getItem("manageCV");
 
-        if (
-          !result &&
-          manageCV != "true" &&
-          pathname != pathConstants.uploadCV
-        ) {
+        if (!result && manageCV != "true" && pathname != pathConstants.uploadCV) {
           setModalType("manageCV");
         }
 
@@ -135,9 +125,7 @@ export default function ({ children }) {
         {links.slice(0, 3).map((link, index) => (
           <span
             key={index}
-            className={`${styles.link} ${
-              actveLink == link.name ? styles.active : ""
-            }`}
+            className={`${styles.link} ${actveLink == link.name ? styles.active : ""}`}
             onClick={() => handleRedirection(link.href)}
           >
             <img alt={link.image.split(".")[0]} src={link.image} />
@@ -149,11 +137,7 @@ export default function ({ children }) {
 
         <span className={styles.groupName}>Others</span>
         {links.slice(4, 5).map((link, index) => (
-          <span
-            key={index}
-            className={styles.link}
-            onClick={() => handleRedirection(link.href)}
-          >
+          <span key={index} className={styles.link} onClick={() => handleRedirection(link.href)}>
             <img alt={link.image.split(".")[0]} src={link.image} />
             <span>{link.name}</span>
           </span>

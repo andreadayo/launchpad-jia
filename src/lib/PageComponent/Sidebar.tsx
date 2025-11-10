@@ -29,13 +29,7 @@ const baseSuperAdminLinkSet = [
 ];
 
 export default function (props: any) {
-  const {
-    activeLink,
-    sidebarType,
-    customLinkSet,
-    isOpen = false,
-    onClose,
-  } = props;
+  const { activeLink, sidebarType, customLinkSet, isOpen = false, onClose } = props;
   const { user, orgID } = useAppContext();
   const [showAddOrgModal, setShowAddOrgModal] = useState(false);
   const [filteredLinks, setFilteredLinks] = useState(baseLinkSet);
@@ -47,10 +41,7 @@ export default function (props: any) {
       const parsedActiveOrg = JSON.parse(activeOrg);
       if (parsedActiveOrg.role == "hiring_manager") {
         links = links.filter(
-          (link) =>
-            link.name !== "Settings" &&
-            link.name !== "Dashboard" &&
-            link.name !== "Members"
+          (link) => link.name !== "Settings" && link.name !== "Dashboard" && link.name !== "Members"
         );
       }
     }
@@ -105,15 +96,8 @@ export default function (props: any) {
         <div className="scroll-wrapper scrollbar-inner sidebar-content">
           <div className="scrollbar-inner scroll-content">
             {/* Brand */}
-            <div
-              className="sidenav-header align-items-center"
-              style={{ flexDirection: "column" }}
-            >
-              <img
-                src="/jia-new-logo.png"
-                alt="Logo"
-                className="sidebar-logo"
-              />
+            <div className="sidenav-header align-items-center" style={{ flexDirection: "column" }}>
+              <img src="/jia-new-logo.png" alt="Logo" className="sidebar-logo" />
               {/* Organization Dropdown */}
               {sidebarType !== "Applicant" ? (
                 <OrgDropdown onAddOrg={() => setShowAddOrgModal(true)} />
@@ -135,21 +119,17 @@ export default function (props: any) {
               <div className="mx-auto mt-4" id="sidenav-collapse-main">
                 {/* Nav items */}
                 <ul className="navbar-nav">
-                  {[...(customLinkSet ? customLinkSet : filteredLinks)].map(
-                    (link) => (
-                      <li className="nav-item" key={link.name}>
-                        <Link
-                          className={`nav-link ${
-                            activeLink === link.name ? "active" : ""
-                          }`}
-                          href={link.href}
-                        >
-                          <i className={`${link.icon} text-primary`}></i>
-                          <span className="nav-link-text">{link.name}</span>
-                        </Link>
-                      </li>
-                    )
-                  )}
+                  {[...(customLinkSet ? customLinkSet : filteredLinks)].map((link) => (
+                    <li className="nav-item" key={link.name}>
+                      <Link
+                        className={`nav-link ${activeLink === link.name ? "active" : ""}`}
+                        href={link.href}
+                      >
+                        <i className={`${link.icon} text-primary`}></i>
+                        <span className="nav-link-text">{link.name}</span>
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
                 {/* Divider */}
                 <hr className="my-3" />

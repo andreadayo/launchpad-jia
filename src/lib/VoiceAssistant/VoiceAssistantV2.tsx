@@ -27,11 +27,7 @@ declare global {
   }
 }
 
-export default function VoiceAssistantV2({
-  interviewID,
-}: {
-  interviewID: string;
-}) {
+export default function VoiceAssistantV2({ interviewID }: { interviewID: string }) {
   const { user } = useAppContext();
   const [isSpeaking, setIsSpeaking] = useState(false);
   const recorderRef = useRef(null);
@@ -67,9 +63,7 @@ export default function VoiceAssistantV2({
   const [selectedMicrophoneDevice, setSelectedMicrophoneDevice] = useState("");
   const [selectedSpeakerDevice, setSelectedSpeakerDevice] = useState("");
   const [cameraDevices, setCameraDevices] = useState<MediaDeviceInfo[]>([]);
-  const [microphoneDevices, setMicrophoneDevices] = useState<MediaDeviceInfo[]>(
-    []
-  );
+  const [microphoneDevices, setMicrophoneDevices] = useState<MediaDeviceInfo[]>([]);
   const [speakerDevices, setSpeakerDevices] = useState<MediaDeviceInfo[]>([]);
 
   // Function to enumerate available devices
@@ -81,12 +75,8 @@ export default function VoiceAssistantV2({
       const devices = await navigator.mediaDevices.enumerateDevices();
 
       const cameras = devices.filter((device) => device.kind === "videoinput");
-      const microphones = devices.filter(
-        (device) => device.kind === "audioinput"
-      );
-      const speakers = devices.filter(
-        (device) => device.kind === "audiooutput"
-      );
+      const microphones = devices.filter((device) => device.kind === "audioinput");
+      const speakers = devices.filter((device) => device.kind === "audiooutput");
 
       setCameraDevices(cameras);
       setMicrophoneDevices(microphones);
@@ -108,10 +98,7 @@ export default function VoiceAssistantV2({
   };
 
   // Function to validate if a device is still available
-  const isDeviceAvailable = (
-    deviceId: string,
-    deviceList: MediaDeviceInfo[]
-  ) => {
+  const isDeviceAvailable = (deviceId: string, deviceList: MediaDeviceInfo[]) => {
     return deviceList.some((device) => device.deviceId === deviceId);
   };
 
@@ -129,10 +116,7 @@ export default function VoiceAssistantV2({
     navigator.mediaDevices.addEventListener("devicechange", handleDeviceChange);
 
     return () => {
-      navigator.mediaDevices.removeEventListener(
-        "devicechange",
-        handleDeviceChange
-      );
+      navigator.mediaDevices.removeEventListener("devicechange", handleDeviceChange);
     };
   }, []);
 
@@ -402,9 +386,7 @@ export default function VoiceAssistantV2({
       );
 
       filteredQuestions.forEach((questionGroup) => {
-        selectedQuestions.push(
-          ...questionGroup.questions.map((question) => question.question)
-        );
+        selectedQuestions.push(...questionGroup.questions.map((question) => question.question));
       });
       // selectedQuestions = shuffleArray(selectedQuestions);
     } else {
@@ -412,9 +394,7 @@ export default function VoiceAssistantV2({
       // selectedQuestions = shuffleArray(
       //   details.questions.map((question) => question.question)
       // );
-      selectedQuestions = details.questions.map(
-        (question) => question.question
-      );
+      selectedQuestions = details.questions.map((question) => question.question);
     }
 
     let interviewInstructions = `
@@ -484,8 +464,7 @@ export default function VoiceAssistantV2({
             {
               type: "function",
               name: "endInterview",
-              description:
-                "Ends the interview, can be triggered by assistant or user",
+              description: "Ends the interview, can be triggered by assistant or user",
               parameters: {
                 type: "object",
                 properties: {},
@@ -497,17 +476,11 @@ export default function VoiceAssistantV2({
         .then((keyResponse) => {
           const startWebRTCLLMSession = (keyResponse: any) => {
             // Validate and get available devices
-            const validVideoDevice = isDeviceAvailable(
-              selectedVideoDevice,
-              cameraDevices
-            )
+            const validVideoDevice = isDeviceAvailable(selectedVideoDevice, cameraDevices)
               ? selectedVideoDevice
               : getFallbackDevice(cameraDevices);
 
-            const validAudioDevice = isDeviceAvailable(
-              selectedMicrophoneDevice,
-              microphoneDevices
-            )
+            const validAudioDevice = isDeviceAvailable(selectedMicrophoneDevice, microphoneDevices)
               ? selectedMicrophoneDevice
               : getFallbackDevice(microphoneDevices);
 
@@ -552,10 +525,7 @@ export default function VoiceAssistantV2({
                     if (audioContextRef.current.state === "suspended") {
                       await audioContextRef.current.resume();
                     }
-                    console.log(
-                      "[INFO] Audio Context Created",
-                      audioContextRef.current.state
-                    );
+                    console.log("[INFO] Audio Context Created", audioContextRef.current.state);
                   } catch (error) {
                     console.error("[Error] Creating Audio Context =>", error);
                     customLog({
@@ -589,9 +559,7 @@ export default function VoiceAssistantV2({
                 pc.ontrack = (e) => {
                   audioEl.srcObject = e.streams[0];
                   // Add JIA speaker audio to the mix
-                  const speakerSource = audioContext.createMediaStreamSource(
-                    e.streams[0]
-                  );
+                  const speakerSource = audioContext.createMediaStreamSource(e.streams[0]);
                   speakerSource.connect(destination);
                 };
                 pc.addTrack(stream.getTracks()[0]);
@@ -605,9 +573,7 @@ export default function VoiceAssistantV2({
                   ? "video/webm;codecs=vp9,opus"
                   : "audio/webm;codecs=opus";
                 if (!MediaRecorder.isTypeSupported(mimeType)) {
-                  console.log(
-                    `[INFO] MIME type ${mimeType} not supported, using default`
-                  );
+                  console.log(`[INFO] MIME type ${mimeType} not supported, using default`);
                   mimeType = "";
                 }
                 const constraints: any = {
@@ -619,10 +585,7 @@ export default function VoiceAssistantV2({
                 if (mimeType) {
                   constraints.mimeType = mimeType;
                 }
-                const mixedRecorder = new MediaRecorder(
-                  mixedStream,
-                  constraints
-                );
+                const mixedRecorder = new MediaRecorder(mixedStream, constraints);
                 mixedRecorderRef.current = mixedRecorder;
                 console.log(`[INFO] MIME type ${mixedRecorder.mimeType}`);
                 actualMimeTypeRef.current =
@@ -641,10 +604,7 @@ export default function VoiceAssistantV2({
 
                 mixedRecorder.onstop = () => {
                   console.log("[INFO] Recording stopped, finishing upload");
-                  if (
-                    bufferSizeRef.current > 0 &&
-                    recordingChunksRef.current.length > 0
-                  ) {
+                  if (bufferSizeRef.current > 0 && recordingChunksRef.current.length > 0) {
                     const finalChunk = new Blob(recordingChunksRef.current);
                     uploadChainRef.current = uploadChainRef.current.then(() =>
                       saveInterviewRecording(finalChunk)
@@ -674,8 +634,7 @@ export default function VoiceAssistantV2({
                       bufferSize = fullBlob.size;
                     }
 
-                    recordingChunksRef.current =
-                      bufferSize > 0 ? [fullBlob] : [];
+                    recordingChunksRef.current = bufferSize > 0 ? [fullBlob] : [];
                     bufferSizeRef.current = bufferSize;
                   } else {
                     customLog({
@@ -710,8 +669,7 @@ export default function VoiceAssistantV2({
                     }
 
                     if (
-                      data.type ===
-                        "conversation.item.input_audio_transcription.completed" &&
+                      data.type === "conversation.item.input_audio_transcription.completed" &&
                       data?.transcript
                     ) {
                       setMessage((prevMessages) => {
@@ -766,8 +724,7 @@ export default function VoiceAssistantV2({
                       setUserSpeaking(false);
                       const newAIMessage = {
                         type: "jia",
-                        content:
-                          data?.response?.output[0]?.content[0]?.transcript,
+                        content: data?.response?.output[0]?.content[0]?.transcript,
                         time: Date.now(),
                         uid: guid(),
                       };
@@ -778,18 +735,14 @@ export default function VoiceAssistantV2({
                         setMessage((prevMessages) => {
                           // Check if this message content already exists in previous messages
                           const isDuplicate = prevMessages.some(
-                            (msg) =>
-                              msg.type === "jia" &&
-                              msg.content === newAIMessage.content
+                            (msg) => msg.type === "jia" && msg.content === newAIMessage.content
                           );
 
                           if (isDuplicate) {
                             return prevMessages; // Don't add duplicate message
                           }
 
-                          return [...prevMessages, newAIMessage].sort(
-                            (a, b) => a.time - b.time
-                          );
+                          return [...prevMessages, newAIMessage].sort((a, b) => a.time - b.time);
                         });
                       }
                     }
@@ -802,10 +755,7 @@ export default function VoiceAssistantV2({
                     // }
 
                     // catch possible event errors on custom logs
-                    if (
-                      data.type.includes("error") ||
-                      data.type.includes("failed")
-                    ) {
+                    if (data.type.includes("error") || data.type.includes("failed")) {
                       customLog({
                         name: "[Interview] RT OpenAI Error",
                         interviewID: interviewID,
@@ -908,10 +858,7 @@ export default function VoiceAssistantV2({
                       startWebRTCLLMSession(keyResponse);
                     })
                     .catch((fallbackError) => {
-                      console.error(
-                        "[WebRTC Fallback Error] =>",
-                        fallbackError
-                      );
+                      console.error("[WebRTC Fallback Error] =>", fallbackError);
                       customLog({
                         name: "[Interview] WebRTC Fallback Error",
                         interviewID: interviewID,
@@ -980,9 +927,7 @@ export default function VoiceAssistantV2({
     console.log("[INFO] Saving interview recording part", partNumber);
     // Upload interview recording to storage
     try {
-      const fileExtension = actualMimeTypeRef.current
-        .split(";")[0]
-        .split("/")[1];
+      const fileExtension = actualMimeTypeRef.current.split(";")[0].split("/")[1];
       if (!recordingIdRef.current) {
         const recordingId = guid();
         const fileName = `recordings/interview_${interviewDetails._id}/${recordingId}.${fileExtension}`;
@@ -990,16 +935,13 @@ export default function VoiceAssistantV2({
       }
       // Start the multipart upload
       if (!uploadIdRef.current) {
-        const startUploadResponse = await fetch(
-          "/api/start-multi-part-upload",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              name: recordingIdRef.current,
-              type: actualMimeTypeRef.current,
-            }),
-          }
-        );
+        const startUploadResponse = await fetch("/api/start-multi-part-upload", {
+          method: "POST",
+          body: JSON.stringify({
+            name: recordingIdRef.current,
+            type: actualMimeTypeRef.current,
+          }),
+        });
         const { uploadId } = await startUploadResponse.json();
         uploadIdRef.current = uploadId;
       }
@@ -1120,9 +1062,7 @@ export default function VoiceAssistantV2({
     if (!window.savedMessageIDs) {
       window.savedMessageIDs = [];
     }
-    messageSet = messageSet.filter(
-      (x) => !window.savedMessageIDs.includes(x.uid)
-    );
+    messageSet = messageSet.filter((x) => !window.savedMessageIDs.includes(x.uid));
 
     Swal.fire({
       icon: "info",
@@ -1158,8 +1098,7 @@ export default function VoiceAssistantV2({
         <div className="offline-indicator">
           <i className="la la-wifi la-2x text-danger"></i>
           <span>
-            You are offline or have a slow internet connection, please check
-            your network.
+            You are offline or have a slow internet connection, please check your network.
           </span>
         </div>
       </Offline>
@@ -1183,11 +1122,7 @@ export default function VoiceAssistantV2({
         onSpeakerDeviceChange={handleSpeakerDeviceChange}
       />
 
-      <div
-        className={`meeting-interface ${
-          currentScreen === "interview" ? "d-flex" : "d-none"
-        }`}
-      >
+      <div className={`meeting-interface ${currentScreen === "interview" ? "d-flex" : "d-none"}`}>
         <div className="meeting-container">
           <div className="interview-top-bar">
             <div className="interview-info">
@@ -1220,15 +1155,9 @@ export default function VoiceAssistantV2({
 
               <div className="start-btn-group">
                 <button
-                  className={`start-interview-btn ${
-                    isSpeaking ? "d-none" : ""
-                  }`}
+                  className={`start-interview-btn ${isSpeaking ? "d-none" : ""}`}
                   onClick={() => {
-                    if (
-                      interviewDetails?.requireVideo &&
-                      !cameraOpen &&
-                      !isSpeaking
-                    ) {
+                    if (interviewDetails?.requireVideo && !cameraOpen && !isSpeaking) {
                       // Modal to require camera
                       Swal.fire({
                         icon: "info",
@@ -1262,8 +1191,8 @@ export default function VoiceAssistantV2({
 
                     <div className="box">
                       <span>
-                        <i className="la la-microphone text-primary"></i> Click
-                        "Start Interview" Begin
+                        <i className="la la-microphone text-primary"></i> Click "Start Interview"
+                        Begin
                       </span>
                     </div>
                   </div>
@@ -1283,11 +1212,7 @@ export default function VoiceAssistantV2({
             {/* Participant Video Display */}
             {interviewDetails?.requireVideo && (
               <div className="participant-video-container">
-                <div
-                  className={`video-preview ${
-                    userSpeaking ? "user-speaking" : ""
-                  }`}
-                >
+                <div className={`video-preview ${userSpeaking ? "user-speaking" : ""}`}>
                   <div className="video-container">
                     <video
                       ref={videoElement2}
@@ -1303,12 +1228,7 @@ export default function VoiceAssistantV2({
 
                 <div className="participant-info">
                   <span className="participant-name">
-                    {user && (
-                      <AvatarImage
-                        src={user.image}
-                        className="avatar-xsm rounded"
-                      />
-                    )}{" "}
+                    {user && <AvatarImage src={user.image} className="avatar-xsm rounded" />}{" "}
                     {interviewDetails?.name || "Applicant"}
                   </span>
                   {userSpeaking && (
@@ -1323,11 +1243,7 @@ export default function VoiceAssistantV2({
               </div>
             )}
 
-            <div
-              className={`avatar-set  ${
-                jiaSpeaking ? "heartbeat active" : "inactive"
-              }`}
-            >
+            <div className={`avatar-set  ${jiaSpeaking ? "heartbeat active" : "inactive"}`}>
               <div className={`outer-ring ${jiaSpeaking ? "heartbeat" : ""}`}>
                 <div className="gap-ring">
                   <JiaOrb />

@@ -1,7 +1,4 @@
-export const refineUserTranscriptInput = (
-  existingText: string,
-  newText: string
-) => {
+export const refineUserTranscriptInput = (existingText: string, newText: string) => {
   //   console.log("[existingText] =>", existingText);
   //   console.log("[newText] =>", newText);
 
@@ -36,9 +33,7 @@ export const refineUserTranscriptInput = (
     refinedNewText = refinedNewText.replaceAll(textToRemove[i], "");
   }
 
-  if (
-    refinedExistingText.toLowerCase().includes(refinedNewText.toLowerCase())
-  ) {
+  if (refinedExistingText.toLowerCase().includes(refinedNewText.toLowerCase())) {
     textDelta = refinedExistingText;
     return textDelta;
   }

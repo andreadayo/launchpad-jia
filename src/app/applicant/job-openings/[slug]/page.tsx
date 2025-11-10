@@ -98,15 +98,13 @@ export default function () {
                   <h1>{jobDetails?.jobTitle}</h1>
                   <p>
                     {jobDetails?.hiringStatus || "Hiring"} |{" "}
-                    {new Date(jobDetails?.createdAt).toLocaleDateString() ||
-                      "May 2025"}
+                    {new Date(jobDetails?.createdAt).toLocaleDateString() || "May 2025"}
                   </p>
 
                   {jobDetails?.workSetup && (
                     <strong>
-                      <i className="la la-map-marker mr-1 text-primary"></i>{" "}
-                      {jobDetails?.location} | {jobDetails?.workSetup}{" "}
-                      {jobDetails?.workSetupRemarks}
+                      <i className="la la-map-marker mr-1 text-primary"></i> {jobDetails?.location}{" "}
+                      | {jobDetails?.workSetup} {jobDetails?.workSetupRemarks}
                     </strong>
                   )}
                 </div>
@@ -172,9 +170,7 @@ export default function () {
                 }}
               >
                 <h2>Job Description</h2>
-                <p style={{ whiteSpace: "pre-wrap" }}>
-                  {jobDetails?.description}
-                </p>
+                <p style={{ whiteSpace: "pre-wrap" }}>{jobDetails?.description}</p>
               </div>
             ) : (
               <div

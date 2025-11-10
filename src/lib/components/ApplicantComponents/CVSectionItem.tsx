@@ -23,9 +23,7 @@ export default function CVSectionItem(props: any) {
 
           {props.editable && (
             <button
-              className={`btn btn-muted ${
-                isEditing ? "btn-primary editing-now" : ""
-              }`}
+              className={`btn btn-muted ${isEditing ? "btn-primary editing-now" : ""}`}
               onClick={() => {
                 if (isEditing) {
                   setTimeout(() => {
@@ -36,8 +34,7 @@ export default function CVSectionItem(props: any) {
                 setIsEditing(!isEditing);
               }}
             >
-              <i className="la la-edit mr-2" />{" "}
-              {isEditing ? "Done Editing" : "Edit"}
+              <i className="la la-edit mr-2" /> {isEditing ? "Done Editing" : "Edit"}
             </button>
           )}
         </div>
@@ -68,9 +65,7 @@ export default function CVSectionItem(props: any) {
 
           {!data.content && !isEditing && !content && (
             <div className="markdown-body cv-section-content">
-              <p>
-                No content found. Click "Edit" to add content for this section.
-              </p>
+              <p>No content found. Click "Edit" to add content for this section.</p>
             </div>
           )}
         </div>

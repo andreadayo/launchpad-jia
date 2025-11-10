@@ -67,9 +67,7 @@ class ErrorBoundary extends Component<Props, State> {
               <i className="las la-exclamation-triangle"></i>
             </div>
             <h2>Something went wrong</h2>
-            <p>
-              We're sorry, but something unexpected happened. Please try again.
-            </p>
+            <p>We're sorry, but something unexpected happened. Please try again.</p>
 
             <div className="error-actions">
               <button onClick={this.handleRetry} className="retry-button">
@@ -87,9 +85,7 @@ class ErrorBoundary extends Component<Props, State> {
               <details className="error-details">
                 <summary>Error Details (Development)</summary>
                 <pre>{this.state.error.toString()}</pre>
-                {this.state.errorInfo && (
-                  <pre>{this.state.errorInfo.componentStack}</pre>
-                )}
+                {this.state.errorInfo && <pre>{this.state.errorInfo.componentStack}</pre>}
               </details>
             )}
           </div>
@@ -101,8 +97,7 @@ class ErrorBoundary extends Component<Props, State> {
               align-items: center;
               justify-content: center;
               background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-                sans-serif;
+              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             }
 
             .error-container {

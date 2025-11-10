@@ -56,12 +56,8 @@ export default function ({ children }) {
   return (
     <Context.Provider value={contextValue}>
       <main>
-        {modalType && (
-          <Modal modalType={modalType} setModalType={setModalType} />
-        )}
-        {toasterType && (
-          <Toaster toasterType={toasterType} setToasterType={setToasterType} />
-        )}
+        {modalType && <Modal modalType={modalType} setModalType={setModalType} />}
+        {toasterType && <Toaster toasterType={toasterType} setToasterType={setToasterType} />}
         <Navbar />
         <FloatingActionButton />
         {children}

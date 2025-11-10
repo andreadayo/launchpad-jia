@@ -22,11 +22,7 @@ export default function () {
 
   return (
     <>
-      <HeaderBar
-        activeLink="Inbox"
-        currentPage="Overview"
-        icon="la la-envelope"
-      />
+      <HeaderBar activeLink="Inbox" currentPage="Overview" icon="la la-envelope" />
       <div className="container-fluid mt--7" style={{ paddingTop: "6rem" }}>
         <div className="row">
           <div className="col">
@@ -38,14 +34,8 @@ export default function () {
                 marginBottom: "35px",
               }}
             >
-              <h1
-                style={{ fontSize: "24px", fontWeight: 550, color: "#111827" }}
-              >
-                Inbox
-              </h1>
-              <span
-                style={{ fontSize: "16px", color: "#717680", fontWeight: 500 }}
-              >
+              <h1 style={{ fontSize: "24px", fontWeight: 550, color: "#111827" }}>Inbox</h1>
+              <span style={{ fontSize: "16px", color: "#717680", fontWeight: 500 }}>
                 Easily keep track of all emails from all your career openings.
               </span>
             </div>

@@ -9,25 +9,17 @@ const BRAND_BLUE = "#5e39d6";
 const BORDER_COLOR = "#ddd";
 const TEXT_COLOR = "#333";
 
-export default function InviteMemberModal({
-  onClose,
-}: {
-  onClose: () => void;
-}) {
+export default function InviteMemberModal({ onClose }: { onClose: () => void }) {
   const { orgID } = useAppContext();
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<"admin" | "hiring_manager" | null>(null);
-  const [selectedCareers, setSelectedCareers] = useState<
-    { id: string; jobTitle: string }[]
-  >([]);
+  const [selectedCareers, setSelectedCareers] = useState<{ id: string; jobTitle: string }[]>([]);
   const [careerSearch, setCareerSearch] = useState("");
   const [careersLoading, setCareersLoading] = useState(true);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [careers, setCareers] = useState<{ id: string; jobTitle: string }[]>(
-    []
-  );
+  const [careers, setCareers] = useState<{ id: string; jobTitle: string }[]>([]);
 
   // Filter careers based on search
   const filteredCareers = careers.filter((career) =>
@@ -51,13 +43,9 @@ export default function InviteMemberModal({
     getCareers();
   }, []);
 
-  const handleCareerChange = (
-    career: { id: string; jobTitle: string } | "All Careers"
-  ) => {
+  const handleCareerChange = (career: { id: string; jobTitle: string } | "All Careers") => {
     if (career === "All Careers") {
-      setSelectedCareers(
-        selectedCareers.length === careers.length ? [] : [...careers]
-      );
+      setSelectedCareers(selectedCareers.length === careers.length ? [] : [...careers]);
     } else {
       setSelectedCareers((prev) =>
         prev.some((c) => c.id === career.id)
@@ -85,10 +73,7 @@ export default function InviteMemberModal({
         email: email.trim(),
         orgID: orgID,
         role: role,
-        careers:
-          role === "hiring_manager"
-            ? selectedCareers.map((c) => c.id)
-            : undefined,
+        careers: role === "hiring_manager" ? selectedCareers.map((c) => c.id) : undefined,
       });
       Swal.fire({
         title: "Member invited successfully",
@@ -244,9 +229,7 @@ export default function InviteMemberModal({
                   autoFocus
                 />
                 {error && (
-                  <div style={{ color: "salmon", marginTop: 6, fontSize: 14 }}>
-                    {error}
-                  </div>
+                  <div style={{ color: "salmon", marginTop: 6, fontSize: 14 }}>{error}</div>
                 )}
                 <div style={{ marginTop: 16 }}>
                   <label
@@ -376,22 +359,16 @@ export default function InviteMemberModal({
                                 borderRadius: 4,
                               }}
                               onMouseOver={(e) =>
-                                (e.currentTarget.style.backgroundColor =
-                                  "#f8f9fa")
+                                (e.currentTarget.style.backgroundColor = "#f8f9fa")
                               }
                               onMouseOut={(e) =>
-                                (e.currentTarget.style.backgroundColor =
-                                  "transparent")
+                                (e.currentTarget.style.backgroundColor = "transparent")
                               }
                             >
                               <input
                                 type="checkbox"
-                                checked={
-                                  selectedCareers.length === careers.length
-                                }
-                                onChange={() =>
-                                  handleCareerChange("All Careers")
-                                }
+                                checked={selectedCareers.length === careers.length}
+                                onChange={() => handleCareerChange("All Careers")}
                                 style={{ cursor: "pointer" }}
                               />
                               All Careers
@@ -411,19 +388,15 @@ export default function InviteMemberModal({
                                   borderRadius: 4,
                                 }}
                                 onMouseOver={(e) =>
-                                  (e.currentTarget.style.backgroundColor =
-                                    "#f8f9fa")
+                                  (e.currentTarget.style.backgroundColor = "#f8f9fa")
                                 }
                                 onMouseOut={(e) =>
-                                  (e.currentTarget.style.backgroundColor =
-                                    "transparent")
+                                  (e.currentTarget.style.backgroundColor = "transparent")
                                 }
                               >
                                 <input
                                   type="checkbox"
-                                  checked={selectedCareers.some(
-                                    (c) => c.id === career.id
-                                  )}
+                                  checked={selectedCareers.some((c) => c.id === career.id)}
                                   onChange={() => handleCareerChange(career)}
                                   style={{ cursor: "pointer" }}
                                 />
@@ -475,10 +448,7 @@ export default function InviteMemberModal({
                   padding: "0.5em 2em",
                   boxShadow: `0 2px 8px ${BRAND_BLUE}22`,
                   opacity: loading || !role || !email.trim() ? 0.5 : 1,
-                  cursor:
-                    loading || !role || !email.trim()
-                      ? "not-allowed"
-                      : "pointer",
+                  cursor: loading || !role || !email.trim() ? "not-allowed" : "pointer",
                   transition: "all 0.2s ease",
                 }}
                 disabled={loading || !role || !email.trim()}

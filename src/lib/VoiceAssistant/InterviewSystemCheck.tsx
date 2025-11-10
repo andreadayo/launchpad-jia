@@ -38,22 +38,17 @@ export default function InterviewSystemCheck({
   onSpeakerDeviceChange: (deviceId: string) => void;
 }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isMicrophoneDropdownOpen, setIsMicrophoneDropdownOpen] =
-    useState(false);
+  const [isMicrophoneDropdownOpen, setIsMicrophoneDropdownOpen] = useState(false);
   const [isVideoDropdownOpen, setIsVideoDropdownOpen] = useState(false);
-  const [selectedVideoDeviceLocal, setSelectedVideoDeviceLocal] =
-    useState(selectedVideoDevice);
+  const [selectedVideoDeviceLocal, setSelectedVideoDeviceLocal] = useState(selectedVideoDevice);
   const [selectedMicrophoneDeviceLocal, setSelectedMicrophoneDeviceLocal] =
     useState(selectedMicrophoneDevice);
-  const [selectedSpeakerDeviceLocal, setSelectedSpeakerDeviceLocal] = useState(
-    selectedSpeakerDevice
-  );
-  const [cameraDevicesLocal, setCameraDevices] =
-    useState<MediaDeviceInfo[]>(cameraDevices);
+  const [selectedSpeakerDeviceLocal, setSelectedSpeakerDeviceLocal] =
+    useState(selectedSpeakerDevice);
+  const [cameraDevicesLocal, setCameraDevices] = useState<MediaDeviceInfo[]>(cameraDevices);
   const [microphoneDevicesLocal, setMicrophoneDevices] =
     useState<MediaDeviceInfo[]>(microphoneDevices);
-  const [speakerDevicesLocal, setSpeakerDevices] =
-    useState<MediaDeviceInfo[]>(speakerDevices);
+  const [speakerDevicesLocal, setSpeakerDevices] = useState<MediaDeviceInfo[]>(speakerDevices);
 
   const [checkerNotice, setCheckerNotice] = useState({
     title: "Before you begin...",
@@ -199,11 +194,8 @@ export default function InterviewSystemCheck({
     dropdownType: "speaker" | "microphone" | "video";
   }) => {
     // Find the selected device to display its label
-    const selectedDeviceInfo = devices.find(
-      (device) => device.deviceId === selectedDevice
-    );
-    const displayText =
-      selectedDeviceInfo?.label || selectedDevice || placeholder;
+    const selectedDeviceInfo = devices.find((device) => device.deviceId === selectedDevice);
+    const displayText = selectedDeviceInfo?.label || selectedDevice || placeholder;
 
     return (
       <div className="device-picker mr-1">
@@ -397,10 +389,7 @@ export default function InterviewSystemCheck({
           setMicChecked(true);
           successToast("Great I can hear you well!", 2000);
         } else {
-          errorToast(
-            "Please check your microphone, Speak louder and try again",
-            "bottom-center"
-          );
+          errorToast("Please check your microphone, Speak louder and try again", "bottom-center");
           setMicChecked(false);
         }
       }, 5000); // Reduced to 10 seconds for better UX
@@ -444,11 +433,7 @@ export default function InterviewSystemCheck({
             justifyContent: "center",
           }}
         >
-          <img
-            src="/speaker-icon.png"
-            alt="speaker"
-            className="img-fluid mb-2 heartbeat"
-          />
+          <img src="/speaker-icon.png" alt="speaker" className="img-fluid mb-2 heartbeat" />
 
           {/* Title */}
           <h3
@@ -503,10 +488,7 @@ export default function InterviewSystemCheck({
           <button
             className="btn btn-dark btn-rounded-pill mt-5"
             onClick={() => {
-              successToast(
-                "Awesome!, double check your microphone next.",
-                3000
-              );
+              successToast("Awesome!, double check your microphone next.", 3000);
               setAudioChecked(true);
               stopAudioTest();
             }}
@@ -517,10 +499,7 @@ export default function InterviewSystemCheck({
           <button
             className="btn btn-outline-default btn-rounded-pill mt-2 ml-0"
             onClick={() => {
-              errorToast(
-                "Hmm, Check your speaker and volume.. and try again",
-                3000
-              );
+              errorToast("Hmm, Check your speaker and volume.. and try again", 3000);
               setAudioChecked(false);
               setShowAudioModal(false);
               stopAudioTest();
@@ -563,11 +542,7 @@ export default function InterviewSystemCheck({
             boxShadow: "0 10px 25px rgba(0, 0, 0, 0.2)",
           }}
         >
-          <img
-            src="/speaker-icon.png"
-            alt="speaker"
-            className="img-fluid mb-2 heartbeat"
-          />
+          <img src="/speaker-icon.png" alt="speaker" className="img-fluid mb-2 heartbeat" />
 
           {/* Title */}
           <h3
@@ -655,9 +630,7 @@ export default function InterviewSystemCheck({
                 </span>
               </div>
               <div className="system-check-video-group">
-                {!isStarted && (
-                  <video ref={videoElement} autoPlay muted playsInline />
-                )}
+                {!isStarted && <video ref={videoElement} autoPlay muted playsInline />}
               </div>
             </div>
             <div className="right-pane">
@@ -678,20 +651,14 @@ export default function InterviewSystemCheck({
                     <div className="system-check-rows">
                       <div className="check-item-row">
                         <div className="item-info">
-                          <div
-                            className={`check-node ${
-                              internetChecked ? "passed" : ""
-                            }`}
-                          >
+                          <div className={`check-node ${internetChecked ? "passed" : ""}`}>
                             {internetChecked && <i className="la la-check"></i>}
                           </div>
                           <strong>Internet</strong>
                         </div>
 
                         <div className="item-action">
-                          <NetworkMonitorTag
-                            setInternetChecked={setInternetChecked}
-                          />
+                          <NetworkMonitorTag setInternetChecked={setInternetChecked} />
                         </div>
                       </div>
 
@@ -702,11 +669,7 @@ export default function InterviewSystemCheck({
                             testAudio();
                           }}
                         >
-                          <div
-                            className={`check-node ${
-                              audioChecked ? "passed" : ""
-                            }`}
-                          >
+                          <div className={`check-node ${audioChecked ? "passed" : ""}`}>
                             {audioChecked && <i className="la la-check"></i>}
                           </div>
                           <strong>Audio</strong>
@@ -762,11 +725,7 @@ export default function InterviewSystemCheck({
                             testMic();
                           }}
                         >
-                          <div
-                            className={`check-node ${
-                              micChecked ? "passed" : ""
-                            }`}
-                          >
+                          <div className={`check-node ${micChecked ? "passed" : ""}`}>
                             {micChecked && <i className="la la-check"></i>}
                           </div>
                           <strong>Mic</strong>
@@ -802,10 +761,7 @@ export default function InterviewSystemCheck({
                           )}
 
                           {!micChecked && microphoneDevicesLocal.length > 0 && (
-                            <div
-                              className={`connection-status cursor-pointer`}
-                              onClick={testMic}
-                            >
+                            <div className={`connection-status cursor-pointer`} onClick={testMic}>
                               <span>Test</span>
                             </div>
                           )}
@@ -814,11 +770,7 @@ export default function InterviewSystemCheck({
 
                       <div className="check-item-row">
                         <div className="item-info">
-                          <div
-                            className={`check-node ${
-                              videoChecked ? "passed" : ""
-                            }`}
-                          >
+                          <div className={`check-node ${videoChecked ? "passed" : ""}`}>
                             {videoChecked && <i className="la la-check"></i>}
                           </div>
                           <strong>Video</strong>
@@ -866,8 +818,8 @@ export default function InterviewSystemCheck({
 
                 {!startInterview && (
                   <small className="text-dark mt-4 text-center">
-                    Please make sure the you have the 4 items above tested{" "}
-                    <br /> and checked in order to proceed.
+                    Please make sure the you have the 4 items above tested <br /> and checked in
+                    order to proceed.
                   </small>
                 )}
 

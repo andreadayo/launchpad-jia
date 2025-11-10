@@ -57,9 +57,7 @@ export default function () {
   // Load saved values from localStorage on component mount
   useEffect(() => {
     const savedJobTitle = localStorage.getItem("cvScreeningJobTitle");
-    const savedJobDescription = localStorage.getItem(
-      "cvScreeningJobDescription"
-    );
+    const savedJobDescription = localStorage.getItem("cvScreeningJobDescription");
 
     if (savedJobTitle) {
       setJobTitle(savedJobTitle);
@@ -260,13 +258,8 @@ export default function () {
               <div className="header-body">
                 <div className="row align-items-center py-4">
                   <div className="col-lg-6 col-7">
-                    <h6 className="h2 text-white d-inline-block mb-0">
-                      CV Screening Test
-                    </h6>
-                    <nav
-                      aria-label="breadcrumb"
-                      className="d-none d-md-inline-block ml-md-4"
-                    >
+                    <h6 className="h2 text-white d-inline-block mb-0">CV Screening Test</h6>
+                    <nav aria-label="breadcrumb" className="d-none d-md-inline-block ml-md-4">
                       <ol className="breadcrumb breadcrumb-links breadcrumb-dark">
                         <li className="breadcrumb-item">
                           <a href="#">
@@ -293,10 +286,7 @@ export default function () {
                       key={`loading-${loadingKey}-${index}`}
                     >
                       {/* Skeleton Loader */}
-                      <div
-                        className="skeleton-bar blink-2 mt-2"
-                        style={{ width: "60%" }}
-                      />
+                      <div className="skeleton-bar blink-2 mt-2" style={{ width: "60%" }} />
                       <div
                         className="skeleton-bar blink-2 ml-auto mt-3"
                         style={{ width: "40%", height: 32 }}
@@ -311,14 +301,10 @@ export default function () {
                         key={index}
                       >
                         <h4 className="mt-2">
-                          <i className={`la la-square ${x.iconColor}`} />{" "}
-                          {x.name}
+                          <i className={`la la-square ${x.iconColor}`} /> {x.name}
                         </h4>
                         <h1 className="ml-auto">
-                          <i
-                            className={`la la-cubes ${x.iconColor} ${x.icon}`}
-                          />{" "}
-                          {x.value}
+                          <i className={`la la-cubes ${x.iconColor} ${x.icon}`} /> {x.value}
                         </h1>
                       </div>
                     );
@@ -382,8 +368,7 @@ export default function () {
                   <div className="card-header">
                     <i className="la la-bars text-primary mr-2" />
                     <strong>
-                      Upload CV Files - Upload multiple (files, .pdf, .docx,
-                      .doc, .txt)
+                      Upload CV Files - Upload multiple (files, .pdf, .docx, .doc, .txt)
                     </strong>
                   </div>
                   <div className="card-body mx-auto">
@@ -414,10 +399,7 @@ export default function () {
 
                     <div className="card-body">
                       <div className="form-group">
-                        <label
-                          htmlFor="jobTitle"
-                          className="form-control-label"
-                        >
+                        <label htmlFor="jobTitle" className="form-control-label">
                           Job Title
                         </label>
                         <input
@@ -431,10 +413,7 @@ export default function () {
                       </div>
 
                       <div className="form-group">
-                        <label
-                          htmlFor="jobDescription"
-                          className="form-control-label"
-                        >
+                        <label htmlFor="jobDescription" className="form-control-label">
                           Job Description
                         </label>
                         <textarea

@@ -36,9 +36,7 @@ const JobDropDown: React.FC<JobDropDownProps> = ({
   const filteredOrgs = React.useMemo(() => {
     let filtered = orgList;
     if (orgSearch) {
-      filtered = orgList.filter((org) =>
-        org.name.toLowerCase().includes(orgSearch.toLowerCase())
-      );
+      filtered = orgList.filter((org) => org.name.toLowerCase().includes(orgSearch.toLowerCase()));
     }
     return [ALL_ORGS, ...filtered];
   }, [orgSearch, orgList]);
@@ -46,10 +44,7 @@ const JobDropDown: React.FC<JobDropDownProps> = ({
   // Close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (
-        orgDropdownRef.current &&
-        !orgDropdownRef.current.contains(event.target as Node)
-      ) {
+      if (orgDropdownRef.current && !orgDropdownRef.current.contains(event.target as Node)) {
         setOrgDropdownOpen(false);
       }
     }
@@ -64,10 +59,7 @@ const JobDropDown: React.FC<JobDropDownProps> = ({
   }, [orgDropdownOpen]);
 
   return (
-    <div
-      style={{ position: "relative", width: 220, marginRight: 16 }}
-      ref={orgDropdownRef}
-    >
+    <div style={{ position: "relative", width: 220, marginRight: 16 }} ref={orgDropdownRef}>
       <button
         className="form-control d-flex align-items-center"
         style={{
@@ -116,9 +108,7 @@ const JobDropDown: React.FC<JobDropDownProps> = ({
         />
       </button>
       <div
-        className={`dropdown-menu org-dropdown-anim${
-          orgDropdownOpen ? " show" : ""
-        }`}
+        className={`dropdown-menu org-dropdown-anim${orgDropdownOpen ? " show" : ""}`}
         style={{
           display: orgDropdownOpen ? "block" : "none",
           position: "absolute",
@@ -165,9 +155,7 @@ const JobDropDown: React.FC<JobDropDownProps> = ({
                 if (org._id === "all") {
                   setJobOpenings(allJobOpenings);
                 } else {
-                  setJobOpenings(
-                    allJobOpenings.filter((job) => job.orgID === org._id)
-                  );
+                  setJobOpenings(allJobOpenings.filter((job) => job.orgID === org._id));
                 }
               }}
             >

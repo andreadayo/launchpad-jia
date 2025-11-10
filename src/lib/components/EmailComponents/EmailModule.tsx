@@ -46,8 +46,7 @@ Office: +6322840633 | Mobile: +639392249224 | www.whitecloak.com`,
           signature: {
             name: "Sabine Beatrix Dy",
             title: "HR Manager | White Cloak Technologies",
-            contact:
-              "Office: +6322840633 | Mobile: +639392249224 | www.whitecloak.com",
+            contact: "Office: +6322840633 | Mobile: +639392249224 | www.whitecloak.com",
             logo: "W",
           },
         },
@@ -124,8 +123,7 @@ HR Manager | White Cloak Technologies`,
           signature: {
             name: "Sabine Beatrix Dy",
             title: "HR Manager | White Cloak Technologies",
-            contact:
-              "Office: +6322840633 | Mobile: +639392249224 | www.whitecloak.com",
+            contact: "Office: +6322840633 | Mobile: +639392249224 | www.whitecloak.com",
           },
         },
       ],
@@ -305,10 +303,7 @@ export default function EmailModule() {
 
   // Handle reply functionality
   const handleReply = (emailData: any) => {
-    const lastMessage =
-      emailData.emailContent.messages[
-        emailData.emailContent.messages.length - 1
-      ];
+    const lastMessage = emailData.emailContent.messages[emailData.emailContent.messages.length - 1];
 
     // Use the thread ID from Gmail API for proper threading
     const replyData = {
@@ -893,9 +888,7 @@ export default function EmailModule() {
     marginTop: "16px",
   };
 
-  const selectedEmailData = emailThreads.find(
-    (email) => email.id === selectedEmail
-  );
+  const selectedEmailData = emailThreads.find((email) => email.id === selectedEmail);
 
   // Show loading state
   if (isLoading) {
@@ -903,9 +896,7 @@ export default function EmailModule() {
       <div style={loadingStyle}>
         <div style={loadingContentStyle}>
           <div style={loadingSpinnerStyle}></div>
-          <h3 style={{ color: "#212529", marginBottom: "8px" }}>
-            Loading Email Module
-          </h3>
+          <h3 style={{ color: "#212529", marginBottom: "8px" }}>Loading Email Module</h3>
           <p style={{ color: "#6c757d" }}>Checking Gmail integration...</p>
         </div>
       </div>
@@ -920,9 +911,8 @@ export default function EmailModule() {
           <i className="la la-envelope" style={gmailIntegrationIconStyle}></i>
           <h2 style={gmailIntegrationTitleStyle}>Gmail Integration Required</h2>
           <p style={gmailIntegrationTextStyle}>
-            To access your emails, you need to enable Gmail integration. This
-            allows us to securely connect to your Gmail account and display your
-            emails.
+            To access your emails, you need to enable Gmail integration. This allows us to securely
+            connect to your Gmail account and display your emails.
           </p>
           <button
             className="btn btn-default"
@@ -931,10 +921,7 @@ export default function EmailModule() {
           >
             {isEnablingGmail ? (
               <>
-                <i
-                  className="la la-spinner la-spin"
-                  style={{ marginRight: "8px" }}
-                ></i>
+                <i className="la la-spinner la-spin" style={{ marginRight: "8px" }}></i>
                 Enabling...
               </>
             ) : (
@@ -957,9 +944,7 @@ export default function EmailModule() {
             style={tabButtonStyle(selectedTab === "inbox")}
           >
             Inbox
-            {inboxStats.unread > 0 && (
-              <span style={badgeStyle}>{inboxStats.unread}</span>
-            )}
+            {inboxStats.unread > 0 && <span style={badgeStyle}>{inboxStats.unread}</span>}
           </button>
           <button
             onClick={() => setSelectedTab("sent")}
@@ -1064,23 +1049,13 @@ export default function EmailModule() {
         {/* Email List */}
         <div style={emailListStyle}>
           {isLoadingEmails ? (
-            <div
-              style={{ padding: "20px", textAlign: "center", color: "#6c757d" }}
-            >
-              <i
-                className="la la-spinner la-spin la-2x"
-                style={{ marginBottom: "8px" }}
-              ></i>
+            <div style={{ padding: "20px", textAlign: "center", color: "#6c757d" }}>
+              <i className="la la-spinner la-spin la-2x" style={{ marginBottom: "8px" }}></i>
               <div>Loading emails...</div>
             </div>
           ) : emailThreads.length === 0 ? (
-            <div
-              style={{ padding: "20px", textAlign: "center", color: "#6c757d" }}
-            >
-              <i
-                className="la la-inbox la-2x"
-                style={{ marginBottom: "8px" }}
-              ></i>
+            <div style={{ padding: "20px", textAlign: "center", color: "#6c757d" }}>
+              <i className="la la-inbox la-2x" style={{ marginBottom: "8px" }}></i>
               <div>No emails found</div>
             </div>
           ) : (
@@ -1116,12 +1091,8 @@ export default function EmailModule() {
                     <div style={snippetStyle}>{email.snippet}</div>
                     <div style={tagsContainerStyle}>
                       <span style={tagStyle}>{email.stage}</span>
-                      <span style={tagStyle}>
-                        {email.messageCount} messages
-                      </span>
-                      {email.hasAttachment && (
-                        <span style={tagStyle}>1 attachment</span>
-                      )}
+                      <span style={tagStyle}>{email.messageCount} messages</span>
+                      {email.hasAttachment && <span style={tagStyle}>1 attachment</span>}
                     </div>
                   </div>
                 </div>
@@ -1178,15 +1149,10 @@ export default function EmailModule() {
                 )}
                 <div style={userTextStyle}>
                   <div style={userEmailStyle}>{user?.email}</div>
-                  <div style={userStatusStyle}>
-                    Gmail | Last sync: 2 minutes ago
-                  </div>
+                  <div style={userStatusStyle}>Gmail | Last sync: 2 minutes ago</div>
                 </div>
               </div>
-              <button
-                style={composeButtonStyle}
-                onClick={() => setIsComposeOpen(true)}
-              >
+              <button style={composeButtonStyle} onClick={() => setIsComposeOpen(true)}>
                 <svg
                   style={{ width: "12px", height: "12px" }}
                   fill="none"
@@ -1211,9 +1177,7 @@ export default function EmailModule() {
           <>
             {/* Email Content Header */}
             <div style={emailContentHeaderStyle}>
-              <div style={emailSubjectStyle}>
-                {selectedEmailData.emailContent.subject}
-              </div>
+              <div style={emailSubjectStyle}>{selectedEmailData.emailContent.subject}</div>
               <div style={emailActionsStyle}>
                 <button style={actionButtonStyle}>
                   <svg
@@ -1249,12 +1213,8 @@ export default function EmailModule() {
                     />
                     <div style={messageInfoStyle}>
                       <div style={senderInfoStyle}>
-                        <span style={senderNameStyle}>
-                          {message.sender.name}
-                        </span>
-                        <span style={senderEmailStyle}>
-                          &lt;{message.sender.email}&gt;
-                        </span>
+                        <span style={senderNameStyle}>{message.sender.name}</span>
+                        <span style={senderEmailStyle}>&lt;{message.sender.email}&gt;</span>
                       </div>
                       <div style={recipientInfoStyle}>
                         to {message.recipient.name} &lt;
@@ -1304,15 +1264,9 @@ export default function EmailModule() {
                   ></div>
                   {message.signature && (
                     <div style={signatureStyle}>
-                      <div style={signatureNameStyle}>
-                        {message.signature.name}
-                      </div>
-                      <div style={signatureTitleStyle}>
-                        {message.signature.title}
-                      </div>
-                      <div style={signatureContactStyle}>
-                        {message.signature.contact}
-                      </div>
+                      <div style={signatureNameStyle}>{message.signature.name}</div>
+                      <div style={signatureTitleStyle}>{message.signature.title}</div>
+                      <div style={signatureContactStyle}>{message.signature.contact}</div>
                       {message.signature.logo && (
                         <div style={logoStyle}>{message.signature.logo}</div>
                       )}
@@ -1323,10 +1277,7 @@ export default function EmailModule() {
 
               {/* Reply Button */}
               <div style={{ padding: "0 24px 24px" }}>
-                <button
-                  style={replyButtonStyle}
-                  onClick={() => handleReply(selectedEmailData)}
-                >
+                <button style={replyButtonStyle} onClick={() => handleReply(selectedEmailData)}>
                   <i className="la la-reply"></i>
                   Reply
                 </button>
@@ -1339,9 +1290,7 @@ export default function EmailModule() {
               <div style={emptyStateIconStyle}>
                 <i className="la la-envelope la-3x"></i>
               </div>
-              <h3 style={emptyStateTitleStyle}>
-                Select an email to view the conversation
-              </h3>
+              <h3 style={emptyStateTitleStyle}>Select an email to view the conversation</h3>
               <p style={emptyStateTextStyle}>
                 Choose an email from the inbox to read the full conversation
               </p>

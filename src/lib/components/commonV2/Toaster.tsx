@@ -27,12 +27,7 @@ export default function ({ toasterType, setToasterType }) {
           <div className={styles.textContainer}>
             <span className={styles.header}>Link copied to clipboard</span>
           </div>
-          <img
-            alt="x"
-            className={styles.xIcon}
-            src={assetConstants.x}
-            onClick={handleClose}
-          />
+          <img alt="x" className={styles.xIcon} src={assetConstants.x} onClick={handleClose} />
         </>
       )}
 

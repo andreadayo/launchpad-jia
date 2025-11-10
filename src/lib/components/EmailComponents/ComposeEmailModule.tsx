@@ -34,8 +34,7 @@ export default function ComposeEmailModule({
   // Update form data when replyData changes
   React.useEffect(() => {
     if (replyData) {
-      const originalMessage =
-        replyData.originalEmail?.emailContent?.messages?.[0]?.content || "";
+      const originalMessage = replyData.originalEmail?.emailContent?.messages?.[0]?.content || "";
       const replyPrefix = `\n\n--- Original Message ---\n${originalMessage}`;
 
       setFormData({
@@ -57,10 +56,7 @@ export default function ComposeEmailModule({
   const handleSend = async () => {
     // Validate required fields
     if (!formData.to || !formData.subject || !formData.message) {
-      errorToast(
-        "Please fill in all required fields (To, Subject, and Message)",
-        "top-center"
-      );
+      errorToast("Please fill in all required fields (To, Subject, and Message)", "top-center");
       return;
     }
 
@@ -94,10 +90,7 @@ export default function ComposeEmailModule({
           successToast("Email sent successfully!", "top-center");
           onClose();
         } else {
-          errorToast(
-            "Failed to send email: " + (data.error || "Unknown error"),
-            "top-center"
-          );
+          errorToast("Failed to send email: " + (data.error || "Unknown error"), "top-center");
         }
       } else {
         const errorData = await response.json();
@@ -384,19 +377,12 @@ export default function ComposeEmailModule({
   };
 
   return (
-    <div
-      style={modalOverlayStyle}
-      onClick={onClose}
-      className="compose-email-modal"
-    >
+    <div style={modalOverlayStyle} onClick={onClose} className="compose-email-modal">
       <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div style={headerStyle}>
           <div style={headerLeftStyle}>
-            <i
-              className="la la-envelope"
-              style={{ fontSize: "18px", color: "#6c757d" }}
-            ></i>
+            <i className="la la-envelope" style={{ fontSize: "18px", color: "#6c757d" }}></i>
             <h3 style={headerTitleStyle}>
               {replyData?.isReply ? "Reply to Email" : "Compose Email"}
             </h3>
@@ -417,18 +403,13 @@ export default function ComposeEmailModule({
             <label style={labelStyle}>From</label>
             <div style={fromContainerStyle}>
               <AvatarImage
-                src={
-                  user?.image ||
-                  "https://api.dicebear.com/9.x/glass/svg?seed=sabine"
-                }
+                src={user?.image || "https://api.dicebear.com/9.x/glass/svg?seed=sabine"}
                 className="rounded-circle"
                 alt={user?.name || "jia"}
                 style={{ width: "32px", height: "32px" }}
               />
               <div style={fromInfoStyle}>
-                <div style={fromEmailStyle}>
-                  {user?.email || "jia@whitecloak.com"}
-                </div>
+                <div style={fromEmailStyle}>{user?.email || "jia@whitecloak.com"}</div>
                 <div style={fromSubtextStyle}>Sending via Gmail account</div>
               </div>
             </div>
@@ -456,9 +437,7 @@ export default function ComposeEmailModule({
               <option value="">Choose related job</option>
               <option value="software-engineer">Software Engineer</option>
               <option value="product-manager">Product Manager</option>
-              <option value="business-developer">
-                Business Development Associate
-              </option>
+              <option value="business-developer">Business Development Associate</option>
             </select>
           </div>
 

@@ -3,12 +3,7 @@
 import CardTypingLoader from "@/lib/components/AnalysisComponents/CardTypingLoader";
 import CVSectionItem from "@/lib/components/ApplicantComponents/CVSectionItem";
 import { useAppContext } from "@/lib/context/AppContext";
-import {
-  CORE_API_URL,
-  errorToast,
-  loadingToast,
-  successToast,
-} from "@/lib/Utils";
+import { CORE_API_URL, errorToast, loadingToast, successToast } from "@/lib/Utils";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -154,9 +149,7 @@ export default function page() {
           return res.data.result;
         });
 
-      let parsedOutput = JSON.parse(
-        codeOutput.replace("```json", "").replace("```", "")
-      );
+      let parsedOutput = JSON.parse(codeOutput.replace("```json", "").replace("```", ""));
       console.log(parsedOutput);
       setCvData(parsedOutput);
 
@@ -264,24 +257,12 @@ export default function page() {
       digitlizeCV(event.detail);
     };
 
-    window.addEventListener(
-      "updateCVData",
-      handleLinkedInUpdate as EventListener
-    );
-    window.addEventListener(
-      "processCVChunks",
-      handleProcessCVChunks as EventListener
-    );
+    window.addEventListener("updateCVData", handleLinkedInUpdate as EventListener);
+    window.addEventListener("processCVChunks", handleProcessCVChunks as EventListener);
 
     return () => {
-      window.removeEventListener(
-        "updateCVData",
-        handleLinkedInUpdate as EventListener
-      );
-      window.removeEventListener(
-        "processCVChunks",
-        handleProcessCVChunks as EventListener
-      );
+      window.removeEventListener("updateCVData", handleLinkedInUpdate as EventListener);
+      window.removeEventListener("processCVChunks", handleProcessCVChunks as EventListener);
     };
   }, [user]);
 
@@ -298,9 +279,7 @@ export default function page() {
       return false;
     }
 
-    let sectionContents: any = document.querySelectorAll(
-      ".markdown-cv-content"
-    );
+    let sectionContents: any = document.querySelectorAll(".markdown-cv-content");
     let sectionNames: any = document.querySelectorAll(".cv-section-name");
 
     let digitalContent = [];
@@ -361,8 +340,7 @@ export default function page() {
                 <div className="card shadow-1">
                   <div className="card-header">
                     <h3 className="mb-0 mr-auto">
-                      <i className="la la-edit text-primary mr-2" /> Processing
-                      CV...
+                      <i className="la la-edit text-primary mr-2" /> Processing CV...
                     </h3>
                   </div>
 
@@ -395,15 +373,14 @@ export default function page() {
               <div className="card shadow-1">
                 <div className="card-header">
                   <h3 className="mb-0 mr-auto">
-                    <i className="la la-square text-red mr-2" /> Upload Error
-                    Remarks
+                    <i className="la la-square text-red mr-2" /> Upload Error Remarks
                   </h3>
                 </div>
 
                 <div className="card-body">
                   <p>
-                    {cvData.errorRemarks} Please upload proper CV / Resume file
-                    in PDF or Docs Format.
+                    {cvData.errorRemarks} Please upload proper CV / Resume file in PDF or Docs
+                    Format.
                   </p>
                 </div>
               </div>
@@ -429,8 +406,7 @@ export default function page() {
               <div className="card shadow-1 ">
                 <div className="card-header">
                   <h3 className="mb-0 mr-auto">
-                    <i className="la la-edit text-primary mr-2" /> Manage
-                    Curriculum Vitae
+                    <i className="la la-edit text-primary mr-2" /> Manage Curriculum Vitae
                   </h3>
 
                   <i className="la la-bars text-primary mr-2" />
@@ -439,16 +415,14 @@ export default function page() {
                 <div className="card-body">
                   <div className="notice">
                     <span>
-                      <i className="la la-info-circle"></i> Managing your CV
-                      helps you apply to Jobs in JIA faster. You only have to
-                      manage it one place.
+                      <i className="la la-info-circle"></i> Managing your CV helps you apply to Jobs
+                      in JIA faster. You only have to manage it one place.
                     </span>
                   </div>
 
                   <div className="section-header">
                     <strong>
-                      <i className="la la-file text-primary" /> Upload CV & Auto
-                      Fill
+                      <i className="la la-file text-primary" /> Upload CV & Auto Fill
                     </strong>
 
                     <i className="la la-braille" />
@@ -466,8 +440,7 @@ export default function page() {
                       <div className="file-info">
                         <span>{file.name}</span>
                         <small>
-                          <i className="la la-square" /> Selected CV - Click to
-                          Replace
+                          <i className="la la-square" /> Selected CV - Click to Replace
                         </small>
                       </div>
                     </div>
@@ -475,8 +448,8 @@ export default function page() {
 
                   <div className="notice fade-in">
                     <span>
-                      <i className="la la-info-circle text-primary"></i> Upload
-                      a file to prefill your Curiculum Vitae.
+                      <i className="la la-info-circle text-primary"></i> Upload a file to prefill
+                      your Curiculum Vitae.
                     </span>
                   </div>
 
@@ -508,8 +481,7 @@ export default function page() {
                     <>
                       <div className="section-header">
                         <strong>
-                          <i className="la la-square text-primary" /> Save
-                          Changes
+                          <i className="la la-square text-primary" /> Save Changes
                         </strong>
 
                         <i className="la la-braille" />
@@ -517,9 +489,8 @@ export default function page() {
 
                       <div className="notice fade-in">
                         <span>
-                          <i className="la la-info-circle text-primary"></i>{" "}
-                          Mare sure you reviewed and apply your changes before
-                          apply to a job.
+                          <i className="la la-info-circle text-primary"></i> Mare sure you reviewed
+                          and apply your changes before apply to a job.
                         </span>
                       </div>
 

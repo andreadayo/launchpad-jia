@@ -79,11 +79,7 @@ export default function ({ params }) {
     setModalType("loading");
 
     if (type == "back") {
-      if (
-        typeof window !== "undefined" &&
-        window.innerWidth < 768 &&
-        user != null
-      ) {
+      if (typeof window !== "undefined" && window.innerWidth < 768 && user != null) {
         window.location.href = "/whitecloak/applicant/job-openings";
       } else {
         window.location.href = "/whitecloak/job-openings";
@@ -158,9 +154,7 @@ export default function ({ params }) {
   return (
     <div className={styles.jobOpenings}>
       <div className={styles.backContainer}>
-        <a onClick={() => handleRedirection("back")}>
-          {"< "}Back to Job Openings
-        </a>
+        <a onClick={() => handleRedirection("back")}>{"< "}Back to Job Openings</a>
       </div>
 
       <div className={styles.resultContainer}>
@@ -193,9 +187,7 @@ export default function ({ params }) {
               ))}
             </div> */}
 
-            {!interviews.some(
-              (interview) => interview.id === selectedCareer.id
-            ) ? (
+            {!interviews.some((interview) => interview.id === selectedCareer.id) ? (
               <div className={styles.buttonContainer}>
                 <button className={styles.apply} onClick={handleApply}>
                   <img alt="zap" src="/icons/zapV2.svg" />
@@ -213,22 +205,16 @@ export default function ({ params }) {
                   <span>
                     Applied{" "}
                     {processDate(
-                      interviews.find(
-                        (interview) => interview.id === selectedCareer.id
-                      ).createdAt
+                      interviews.find((interview) => interview.id === selectedCareer.id).createdAt
                     )}
                   </span>
                 </div>
                 <hr className="webView" />
-                <a onClick={() => handleRedirection("dashboard")}>
-                  View Application {">"}
-                </a>
+                <a onClick={() => handleRedirection("dashboard")}>View Application {">"}</a>
               </div>
             )}
 
-            <p
-              dangerouslySetInnerHTML={{ __html: selectedCareer.description }}
-            />
+            <p dangerouslySetInnerHTML={{ __html: selectedCareer.description }} />
           </div>
         )}
 

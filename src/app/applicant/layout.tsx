@@ -33,8 +33,8 @@ export default function Layout({ children }) {
   ];
   // Check active link from the url
   useEffect(() => {
-    window.location.href = "https://www.hellojia.ai"
-    
+    window.location.href = "https://www.hellojia.ai";
+
     if (pathname) {
       let pathSplit = pathname.split("/");
 
@@ -99,13 +99,8 @@ export default function Layout({ children }) {
               <div className="header-body">
                 <div className="row align-items-center py-4">
                   <div className="col-lg-6 col-7">
-                    <h6 className="h2 text-white d-inline-block mb-0">
-                      {activeLink}
-                    </h6>
-                    <nav
-                      aria-label="breadcrumb"
-                      className="d-none d-md-inline-block ml-md-4"
-                    >
+                    <h6 className="h2 text-white d-inline-block mb-0">{activeLink}</h6>
+                    <nav aria-label="breadcrumb" className="d-none d-md-inline-block ml-md-4">
                       <ol className="breadcrumb breadcrumb-links breadcrumb-dark">
                         <li className="breadcrumb-item">
                           <a href="#">
@@ -168,9 +163,7 @@ export default function Layout({ children }) {
                                   alignItems: "center",
                                 }}
                               >
-                                <p className="text-sm text-muted mb-0">
-                                  No notifications yet.
-                                </p>
+                                <p className="text-sm text-muted mb-0">No notifications yet.</p>
                               </div>
                               {/* TODO: Display notifcations once implemented */}
                               {/* {notifications.map((item) => (

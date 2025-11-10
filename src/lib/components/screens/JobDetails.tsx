@@ -176,9 +176,7 @@ export default function ({ params }) {
           )}
 
           {selectedCareer.organization && selectedCareer.organization.name && (
-            <span className={styles.companyName}>
-              {selectedCareer.organization.name}
-            </span>
+            <span className={styles.companyName}>{selectedCareer.organization.name}</span>
           )}
 
           {selectedCareer.location && (
@@ -217,11 +215,7 @@ export default function ({ params }) {
               </span>
             </div>
           ) : (
-            <button
-              className={styles.btnApply}
-              name="btn-apply"
-              onClick={handleApply}
-            >
+            <button className={styles.btnApply} name="btn-apply" onClick={handleApply}>
               Apply Now
             </button>
           )}
@@ -256,29 +250,22 @@ export default function ({ params }) {
                   )}
 
                   {selectedCareer.location && (
-                    <span className={styles.details}>
-                      {selectedCareer.location}
-                    </span>
+                    <span className={styles.details}>{selectedCareer.location}</span>
                   )}
 
                   {selectedCareer.organization.name.includes("White Cloak") && (
                     <>
-                      <span
-                        className={`${styles.details} ${styles.withMargin}`}
-                      >
-                        Founded in 2014, White Cloak continues to be the
-                        innovation partner of choice for many major
-                        corporations, leveraging technology to take its client’s
-                        business to the next level. This technical superiority
-                        and commitment to our clients have brought numerous
-                        recognition and awards to White Cloak.
+                      <span className={`${styles.details} ${styles.withMargin}`}>
+                        Founded in 2014, White Cloak continues to be the innovation partner of
+                        choice for many major corporations, leveraging technology to take its
+                        client’s business to the next level. This technical superiority and
+                        commitment to our clients have brought numerous recognition and awards to
+                        White Cloak.
                       </span>
 
                       <button
                         className="secondaryBtn"
-                        onClick={() =>
-                          handleRedirection(pathConstants.whitecloak)
-                        }
+                        onClick={() => handleRedirection(pathConstants.whitecloak)}
                       >
                         Learn More
                         <img alt="" src={assetConstants.arrowV3} />

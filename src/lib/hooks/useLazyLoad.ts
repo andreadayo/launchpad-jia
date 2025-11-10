@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 interface UseLazyLoadOptions {
   threshold?: number;
@@ -9,12 +9,12 @@ interface UseLazyLoadOptions {
 }
 
 export const useLazyLoad = (options: UseLazyLoadOptions = {}) => {
-  const { 
-    threshold = 0.1, 
-    rootMargin = '0px', 
+  const {
+    threshold = 0.1,
+    rootMargin = "0px",
     delay = 0,
     stagger = false,
-    staggerDelay = 100
+    staggerDelay = 100,
   } = options;
   const [isVisible, setIsVisible] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -28,11 +28,11 @@ export const useLazyLoad = (options: UseLazyLoadOptions = {}) => {
           setTimeout(() => {
             setIsVisible(true);
             setHasAnimated(true);
-            
+
             // If stagger is enabled, add the stagger class after a short delay
             if (stagger && elementRef.current) {
               setTimeout(() => {
-                elementRef.current?.classList.add('lazy-load-stagger-visible');
+                elementRef.current?.classList.add("lazy-load-stagger-visible");
               }, staggerDelay);
             }
           }, delay);
@@ -57,4 +57,4 @@ export const useLazyLoad = (options: UseLazyLoadOptions = {}) => {
   }, [threshold, rootMargin, delay, hasAnimated, stagger, staggerDelay]);
 
   return { elementRef, isVisible };
-}; 
+};

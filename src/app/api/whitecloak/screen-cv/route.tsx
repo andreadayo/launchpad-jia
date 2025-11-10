@@ -40,8 +40,7 @@ export async function POST(request: Request) {
       },
     }
   );
-  const cvScreeningPromptText =
-    cvScreeningPromptData?.cv_screening_prompt?.prompt;
+  const cvScreeningPromptText = cvScreeningPromptData?.cv_screening_prompt?.prompt;
 
   let parsedCV = "";
 
@@ -209,10 +208,7 @@ export async function POST(request: Request) {
     screeningData.cvSettingResult = "Passed";
   }
 
-  if (
-    result.result === "Ineligible CV" ||
-    result.result === "Insufficient Data"
-  ) {
+  if (result.result === "Ineligible CV" || result.result === "Insufficient Data") {
     screeningData.stateClass = "state-rejected";
     screeningData.cvSettingResult = "Failed";
   }
@@ -259,10 +255,7 @@ export async function POST(request: Request) {
   // Update career lastActivityAt to current date
   await db
     .collection("careers")
-    .updateOne(
-      { id: interviewData.id },
-      { $set: { lastActivityAt: new Date() } }
-    );
+    .updateOne({ id: interviewData.id }, { $set: { lastActivityAt: new Date() } });
 
   return NextResponse.json(screeningData);
 }

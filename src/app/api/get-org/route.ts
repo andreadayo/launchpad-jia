@@ -21,11 +21,8 @@ export async function POST(req: Request) {
             },
             {
               $match: {
-                $expr: { 
-                  $and: [
-                    { $eq: ["$_idStr", "$$orgIdStr"] },
-                    { $eq: ["$status", "active"] }
-                  ]
+                $expr: {
+                  $and: [{ $eq: ["$_idStr", "$$orgIdStr"] }, { $eq: ["$status", "active"] }],
                 },
               },
             },

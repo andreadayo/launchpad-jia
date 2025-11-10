@@ -81,23 +81,12 @@
             background: #d9d9d9;
           }
           &.completed {
-            background: linear-gradient(
-              90deg,
-              #fccec0 0%,
-              #ebacc9 33%,
-              #ceb6da 66%,
-              #9fcaed 100%
-            );
+            background: linear-gradient(90deg, #fccec0 0%, #ebacc9 33%, #ceb6da 66%, #9fcaed 100%);
           }
           &.in_progress {
-            background: linear-gradient(
-                  90deg,
-                  #fccec0 0%,
-                  #ebacc9 33%,
-                  #ceb6da 66%,
-                  #9fcaed 100%
-                )
-                0 0 / 50% 100% no-repeat,
+            background:
+              linear-gradient(90deg, #fccec0 0%, #ebacc9 33%, #ceb6da 66%, #9fcaed 100%) 0 0 / 50%
+                100% no-repeat,
               #d9d9d9;
           }
         }
@@ -162,7 +151,9 @@
       .cvDetailsCard {
         background: var(--Surface-dashboard-bg_light, #f8f9fc);
         border-radius: 24px;
-        box-shadow: 0px 4px 6px -2px #0a0d1208, 0px 12px 16px -4px #0a0d1214;
+        box-shadow:
+          0px 4px 6px -2px #0a0d1208,
+          0px 12px 16px -4px #0a0d1214;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;

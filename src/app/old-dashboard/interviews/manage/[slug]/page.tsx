@@ -99,9 +99,7 @@ export default function Dashboard() {
     let intSummary = "";
 
     trData.forEach((msg) => {
-      intSummary += `${msg.type === user ? "interviewer" : "applicant"}: ${
-        msg.content
-      }\n`;
+      intSummary += `${msg.type === user ? "interviewer" : "applicant"}: ${msg.content}\n`;
     });
 
     let llmPrompt = `
@@ -131,9 +129,7 @@ export default function Dashboard() {
     let codeOuput: any = {};
 
     try {
-      codeOuput = JSON.parse(
-        response.replace("```json", "").replace("```", "")
-      );
+      codeOuput = JSON.parse(response.replace("```json", "").replace("```", ""));
       console.log(codeOuput);
 
       // save analysis
@@ -159,9 +155,7 @@ export default function Dashboard() {
     let intSummary = "";
 
     trData.forEach((msg) => {
-      intSummary += `${msg.type === user ? "interviewer" : "applicant"}: ${
-        msg.content
-      }`;
+      intSummary += `${msg.type === user ? "interviewer" : "applicant"}: ${msg.content}`;
     });
 
     let llmPrompt = `
@@ -187,9 +181,7 @@ export default function Dashboard() {
         return res.data.result;
       });
 
-    let formattedSummary = response
-      .replace("```markdown", "")
-      .replace("```", "");
+    let formattedSummary = response.replace("```markdown", "").replace("```", "");
 
     // save summary
     updateInterview(details._id, {
@@ -220,21 +212,24 @@ export default function Dashboard() {
   }
 
   async function finishUpload(interviewData: any) {
-    axios.post("/api/finish-upload", {
-      uploadId: interviewData.interviewUpload.uploadId,
-      parts: interviewData.interviewParts,
-      fileName: interviewData.interviewUpload.key,
-      filetype: interviewData.interviewUpload.filetype,
-      uid: interviewData._id,
-    }).then((res) => {
-      // Update state
-      setInterviewRecording({
-        filename: interviewData.interviewUpload.key,
+    axios
+      .post("/api/finish-upload", {
+        uploadId: interviewData.interviewUpload.uploadId,
+        parts: interviewData.interviewParts,
+        fileName: interviewData.interviewUpload.key,
         filetype: interviewData.interviewUpload.filetype,
+        uid: interviewData._id,
+      })
+      .then((res) => {
+        // Update state
+        setInterviewRecording({
+          filename: interviewData.interviewUpload.key,
+          filetype: interviewData.interviewUpload.filetype,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    }).catch((err) => {
-      console.log(err);
-    });
   }
 
   async function fetchData(id: string) {
@@ -258,7 +253,11 @@ export default function Dashboard() {
       });
       window.interviewObjID = response.data._id;
 
-      if (!response.data?.interviewRecording && response.data?.interviewUpload && response.data?.interviewParts?.length > 0) {
+      if (
+        !response.data?.interviewRecording &&
+        response.data?.interviewUpload &&
+        response.data?.interviewParts?.length > 0
+      ) {
         finishUpload(response.data);
       }
 
@@ -299,9 +298,7 @@ export default function Dashboard() {
           orgID,
         });
         // Find feedback for this interviewID
-        const fb = res.data.find(
-          (item) => item.interviewID === interviewDetails.interviewID
-        );
+        const fb = res.data.find((item) => item.interviewID === interviewDetails.interviewID);
         setFeedback(fb || null);
       } catch (err) {
         setFeedback(null);
@@ -465,13 +462,8 @@ export default function Dashboard() {
               <div className="header-body">
                 <div className="row align-items-center py-4">
                   <div className="col-lg-6 col-7">
-                    <h6 className="h2 text-white d-inline-block mb-0">
-                      Manage Interview
-                    </h6>
-                    <nav
-                      aria-label="breadcrumb"
-                      className="d-none d-md-inline-block ml-md-4"
-                    >
+                    <h6 className="h2 text-white d-inline-block mb-0">Manage Interview</h6>
+                    <nav aria-label="breadcrumb" className="d-none d-md-inline-block ml-md-4">
                       <ol className="breadcrumb breadcrumb-links breadcrumb-dark">
                         <li className="breadcrumb-item">
                           <a href="#">
@@ -499,8 +491,7 @@ export default function Dashboard() {
                 <div className="card shadow-1">
                   <div className="card-header">
                     <h3 className="mb-0 mr-auto">
-                      <i className="la la-list text-primary mr-2" /> Interview
-                      Analysis
+                      <i className="la la-list text-primary mr-2" /> Interview Analysis
                     </h3>
 
                     <button
@@ -511,8 +502,7 @@ export default function Dashboard() {
                       id="regen-analysis"
                     >
                       <span>
-                        <i className="la la-refresh text-info mr-2"></i>{" "}
-                        Regenerate Analysis
+                        <i className="la la-refresh text-info mr-2"></i> Regenerate Analysis
                       </span>
                     </button>
                   </div>
@@ -545,17 +535,11 @@ export default function Dashboard() {
                         <div className="progress-block">
                           <div className="section-header mt-2">
                             <strong>
-                              <i className="la la-square text-primary" />{" "}
-                              Overall Score:
-                              <span className="ml-2">
-                                {analysis.overall_score}%
-                              </span>
+                              <i className="la la-square text-primary" /> Overall Score:
+                              <span className="ml-2">{analysis.overall_score}%</span>
                             </strong>
 
-                            <div
-                              className="score-progress progress"
-                              style={{ height: "12px" }}
-                            >
+                            <div className="score-progress progress" style={{ height: "12px" }}>
                               <div
                                 className="bar bg-gradient-info"
                                 style={{
@@ -570,8 +554,7 @@ export default function Dashboard() {
                         <JobFitBadge data={analysis} />
                         <div className="section-header mt-2">
                           <strong>
-                            <i className="la la-cubes text-primary" /> Applicant
-                            Qualities Breakdown
+                            <i className="la la-cubes text-primary" /> Applicant Qualities Breakdown
                           </strong>
                           <i className="la la-bars" />
                         </div>
@@ -587,8 +570,7 @@ export default function Dashboard() {
                 <div className="card shadow-1">
                   <div className="card-header">
                     <h3 className="mb-0 mr-auto">
-                      <i className="la la-cubes text-primary mr-2" /> Interview
-                      Summary
+                      <i className="la la-cubes text-primary mr-2" /> Interview Summary
                     </h3>
 
                     <button
@@ -599,8 +581,7 @@ export default function Dashboard() {
                       id="regen-summary"
                     >
                       <span>
-                        <i className="la la-refresh text-info mr-2"></i>{" "}
-                        Regenerate Summary
+                        <i className="la la-refresh text-info mr-2"></i> Regenerate Summary
                       </span>
                     </button>
                   </div>
@@ -630,26 +611,19 @@ export default function Dashboard() {
                 <div className="card shadow-1">
                   <div className="card-header">
                     <h3 className="mb-0 mr-auto">
-                      <i className="la la-file-text text-primary mr-2" />{" "}
-                      Interview Transcript
+                      <i className="la la-file-text text-primary mr-2" /> Interview Transcript
                     </h3>
 
                     {transcripts && transcripts.length > 0 && (
                       <span>
-                        <i className="la la-clock text-primary" /> Interview
-                        Duration:{" "}
+                        <i className="la la-clock text-primary" /> Interview Duration:{" "}
                         <strong>
                           {(() => {
                             const startTime = new Date(transcripts[0].time);
-                            const endTime = new Date(
-                              transcripts[transcripts.length - 1].time
-                            );
-                            const durationMs =
-                              endTime.getTime() - startTime.getTime();
+                            const endTime = new Date(transcripts[transcripts.length - 1].time);
+                            const durationMs = endTime.getTime() - startTime.getTime();
                             const minutes = Math.floor(durationMs / 60000);
-                            const seconds = Math.floor(
-                              (durationMs % 60000) / 1000
-                            );
+                            const seconds = Math.floor((durationMs % 60000) / 1000);
                             return `${minutes}m ${seconds}s`;
                           })()}
                         </strong>
@@ -676,8 +650,7 @@ export default function Dashboard() {
                       {transcripts && transcripts.length === 0 && (
                         <>
                           <h2>
-                            <i className="la la-list text-muted" /> No
-                            Transcript Available.
+                            <i className="la la-list text-muted" /> No Transcript Available.
                           </h2>
                         </>
                       )}
@@ -696,11 +669,7 @@ export default function Dashboard() {
                                 >
                                   <strong>
                                     {msg.type === "user"
-                                      ? `${
-                                          interviewDetails
-                                            ? interviewDetails.name
-                                            : "Applicant"
-                                        }`
+                                      ? `${interviewDetails ? interviewDetails.name : "Applicant"}`
                                       : "Jia"}
                                     :
                                   </strong>{" "}
@@ -714,29 +683,18 @@ export default function Dashboard() {
                                   </small>
 
                                   <div className="line-div"></div>
-                                  <small
-                                    title={
-                                      "Amout of time from the last message"
-                                    }
-                                  >
+                                  <small title={"Amout of time from the last message"}>
                                     <i className="la la-square text-primary" />{" "}
                                     <i className="la la-clock" />{" "}
                                     {idx > 0
                                       ? (() => {
                                           const duration = moment.duration(
-                                            moment(msg.time).diff(
-                                              moment(transcripts[idx - 1].time)
-                                            )
+                                            moment(msg.time).diff(moment(transcripts[idx - 1].time))
                                           );
                                           const seconds = duration.asSeconds();
-                                          const minutes = Math.floor(
-                                            seconds / 60
-                                          );
+                                          const minutes = Math.floor(seconds / 60);
                                           return seconds >= 60
-                                            ? `${minutes}m ${(
-                                                seconds -
-                                                minutes * 60
-                                              ).toFixed(1)}s`
+                                            ? `${minutes}m ${(seconds - minutes * 60).toFixed(1)}s`
                                             : `${seconds.toFixed(1)}s`;
                                         })()
                                       : "0.0s"}
@@ -756,9 +714,7 @@ export default function Dashboard() {
                     <div className="card-header">
                       <h3 className="mb-0 mr-auto">
                         <i className="la la-file-text text-primary mr-2" />{" "}
-                        {interviewRecording.filetype.includes(
-                          "audio"
-                        )
+                        {interviewRecording.filetype.includes("audio")
                           ? "Audio Recording"
                           : "Video Recording"}
                       </h3>
@@ -766,9 +722,7 @@ export default function Dashboard() {
 
                     {/* Audio/Video Player */}
                     <div className="card-body">
-                      {interviewRecording.filetype.includes(
-                        "audio"
-                      ) ? (
+                      {interviewRecording.filetype.includes("audio") ? (
                         <audio
                           style={{ width: "100%" }}
                           className="shadow-sm"
@@ -800,8 +754,7 @@ export default function Dashboard() {
                   <div className="card shadow-1 ">
                     <div className="card-header">
                       <h3 className="mb-0 mr-auto">
-                        <i className="la la-edit text-primary mr-2" />{" "}
-                        Application Information
+                        <i className="la la-edit text-primary mr-2" /> Application Information
                       </h3>
 
                       <i className="la la-bars text-primary mr-2" />
@@ -819,8 +772,8 @@ export default function Dashboard() {
                           <div className="app-info">
                             <strong>{interviewDetails.name}</strong>
                             <small>
-                              <i className="la la-square text-primary"> </i>{" "}
-                              Applicant | {interviewDetails.email}
+                              <i className="la la-square text-primary"> </i> Applicant |{" "}
+                              {interviewDetails.email}
                             </small>
                           </div>
                         </div>
@@ -828,23 +781,19 @@ export default function Dashboard() {
 
                       <div className="section-header">
                         <strong>
-                          <i className="la la-cube text-primary" /> Set
-                          Interview Status:
+                          <i className="la la-cube text-primary" /> Set Interview Status:
                         </strong>
 
                         <i className=" la la-bars" />
                       </div>
 
                       <button
-                        className={`btn ${
-                          status === "Rejected" ? " btn-danger" : ""
-                        }
+                        className={`btn ${status === "Rejected" ? " btn-danger" : ""}
 
                         ${status === "Accepted" ? " btn-success" : ""}
                         `}
                       >
-                        <i className="la la-square text-info"></i> Current
-                        Status: {status}
+                        <i className="la la-square text-info"></i> Current Status: {status}
                       </button>
 
                       <div className="form-group">
@@ -883,8 +832,7 @@ export default function Dashboard() {
                   <div className="card shadow-1 mt-4">
                     <div className="card-header">
                       <h3 className="mb-0 mr-auto">
-                        <i className="la la-edit text-primary mr-2" /> Advanced
-                        Settings
+                        <i className="la la-edit text-primary mr-2" /> Advanced Settings
                       </h3>
 
                       <i className="la la-bars text-primary mr-2" />
@@ -892,10 +840,9 @@ export default function Dashboard() {
 
                     <div className="card-body">
                       <small className="text-black">
-                        <i className="la la-exclamation-triangle text-danger"></i>{" "}
-                        Be Careful, This Action cannot be undone. Trigger the
-                        button below to delete the interview transcript and set
-                        the status to "For Interview".
+                        <i className="la la-exclamation-triangle text-danger"></i> Be Careful, This
+                        Action cannot be undone. Trigger the button below to delete the interview
+                        transcript and set the status to "For Interview".
                       </small>
                       <button
                         className="btn btn-default"
@@ -903,13 +850,12 @@ export default function Dashboard() {
                           resetInterviewData();
                         }}
                       >
-                        <i className="la la-refresh text-warning"></i> Reset
-                        Interview Data
+                        <i className="la la-refresh text-warning"></i> Reset Interview Data
                       </button>
 
                       <small className="text-black">
-                        <i className="la la-exclamation-triangle text-danger"></i>{" "}
-                        Be Careful, This Action cannot be undone.
+                        <i className="la la-exclamation-triangle text-danger"></i> Be Careful, This
+                        Action cannot be undone.
                       </small>
                       <button
                         className="btn btn-default"
@@ -917,8 +863,7 @@ export default function Dashboard() {
                           deleteInterview();
                         }}
                       >
-                        <i className="la la-trash text-danger"></i> Delete this
-                        Interview
+                        <i className="la la-trash text-danger"></i> Delete this Interview
                       </button>
                     </div>
                   </div>

@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 export default function NetworkMonitorTag(props: any) {
   const { setInternetChecked } = props;
 
-  const [connectionStatus, setConnectionStatus] =
-    useState<string>("Checking..");
+  const [connectionStatus, setConnectionStatus] = useState<string>("Checking..");
   const [latency, setLatency] = useState<number>(0);
   const [conState, setConState] = useState<string>("checking");
 
