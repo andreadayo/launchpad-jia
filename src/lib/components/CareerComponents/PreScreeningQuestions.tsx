@@ -12,10 +12,15 @@ export default function PreScreeningQuestions({
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [text, setText] = useState("");
-  const [type, setType] = useState<"dropdown" | "range">("dropdown");
+  const [type, setType] = useState<"dropdown" | "range" | "short" | "long" | "checkboxes">(
+    "dropdown"
+  );
   const [options, setOptions] = useState<string[]>([]);
   const [rangeMin, setRangeMin] = useState<number | "">("");
   const [rangeMax, setRangeMax] = useState<number | "">("");
+  const [minChecked, setMinChecked] = useState<number | "">("");
+  const [maxChecked, setMaxChecked] = useState<number | "">("");
+  const [modalError, setModalError] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   function displayText(q: any) {
@@ -30,6 +35,8 @@ export default function PreScreeningQuestions({
     setOptions([]);
     setRangeMin("");
     setRangeMax("");
+    setMinChecked("");
+    setMaxChecked("");
     setShowModal(true);
     setTimeout(() => textareaRef.current?.focus(), 50);
   }
@@ -41,6 +48,8 @@ export default function PreScreeningQuestions({
     setOptions(Array.isArray(q.options) ? q.options.slice() : []);
     setRangeMin(q.rangeMin ?? "");
     setRangeMax(q.rangeMax ?? "");
+    setMinChecked(q.minChecked ?? "");
+    setMaxChecked(q.maxChecked ?? "");
     setShowModal(true);
     setTimeout(() => textareaRef.current?.focus(), 50);
   }
@@ -52,35 +61,125 @@ export default function PreScreeningQuestions({
   function addOrUpdateQuestion() {
     const trimmed = (text || "").trim();
     if (!trimmed) return;
-    if (type === "dropdown" && (!options || options.length === 0)) return;
+    if (type === "dropdown" && (!options || options.length === 0)) {
+      setModalError("Please add at least one option");
+      return;
+    }
+    // validate checkboxes min/max relative to options (user-visible error, do not auto-correct)
+    if (type === "checkboxes") {
+      const len = Array.isArray(options) ? options.length : 0;
+      const minN = minChecked === "" ? 0 : Number(minChecked);
+      const maxN = maxChecked === "" ? len : Number(maxChecked);
 
-    if (editingId) {
-      const updated = [...(questions || [])];
-      const qi = updated.findIndex((it: any) => it.id === editingId);
-      if (qi !== -1) {
-        updated[qi] = {
-          ...updated[qi],
+      if (isNaN(minN) || isNaN(maxN)) {
+        setModalError("Min and Max must be valid numbers");
+        return;
+      }
+
+      if (len === 0) {
+        if (minN !== 0 || maxN !== 0) {
+          setModalError("With no options, Min and Max must both be 0");
+          return;
+        }
+      } else {
+        if (minN < 0 || maxN < 0 || minN > maxN || maxN > len) {
+          setModalError(
+            `Invalid range: require 0 \u2264 min \u2264 max \u2264 number of options (${len})`
+          );
+          return;
+        }
+      }
+      // passed validation — clear any previous error
+      setModalError(null);
+
+      const minToSave = minN;
+      const maxToSave = maxN;
+
+      if (editingId) {
+        const updated = [...(questions || [])];
+        const qi = updated.findIndex((it: any) => it.id === editingId);
+        if (qi !== -1) {
+          const newItem: any = {
+            ...updated[qi],
+            text: trimmed,
+            type,
+            options: options.slice(),
+            minChecked: minToSave,
+            maxChecked: maxToSave,
+          };
+          updated[qi] = newItem;
+          setQuestions(updated);
+        }
+      } else {
+        const q: any = {
+          id: `q_${Date.now()}`,
           text: trimmed,
           type,
-          options: type === "dropdown" ? options : undefined,
-          rangeMin: type === "range" ? rangeMin : undefined,
-          rangeMax: type === "range" ? rangeMax : undefined,
+          options: options.slice(),
+          minChecked: minToSave,
+          maxChecked: maxToSave,
         };
-        setQuestions(updated);
+        setQuestions([...(questions || []), q]);
       }
     } else {
-      const q = {
-        id: `q_${Date.now()}`,
-        text: trimmed,
-        type,
-        options: type === "dropdown" ? options.slice() : [],
-        rangeMin: type === "range" ? rangeMin : undefined,
-        rangeMax: type === "range" ? rangeMax : undefined,
-      };
-      setQuestions([...(questions || []), q]);
+      // non-checkbox types: clear any modal error and proceed
+      setModalError(null);
+
+      if (editingId) {
+        const updated = [...(questions || [])];
+        const qi = updated.findIndex((it: any) => it.id === editingId);
+        if (qi !== -1) {
+          const newItem: any = {
+            ...updated[qi],
+            text: trimmed,
+            type,
+          };
+          if (type === "range") {
+            newItem.rangeMin = rangeMin;
+            newItem.rangeMax = rangeMax;
+          }
+          if (type === "dropdown") newItem.options = options.slice();
+          updated[qi] = newItem;
+          setQuestions(updated);
+        }
+      } else {
+        const q: any = {
+          id: `q_${Date.now()}`,
+          text: trimmed,
+          type,
+        };
+        if (type === "range") {
+          q.rangeMin = rangeMin;
+          q.rangeMax = rangeMax;
+        }
+        if (type === "dropdown") q.options = options.slice();
+        setQuestions([...(questions || []), q]);
+      }
     }
 
     closeModal();
+  }
+
+  // Helpers to coerce min/max to valid bounds relative to options length
+  function normalizeMinChecked(minVal: number | "", optionsArr: string[]) {
+    const len = Array.isArray(optionsArr) ? optionsArr.length : 0;
+    if (len === 0) return 0;
+    if (minVal === "" || minVal === null || minVal === undefined) return 0;
+    const n = Number(minVal);
+    if (isNaN(n)) return 0;
+    return Math.max(0, Math.min(n, len));
+  }
+
+  function normalizeMaxChecked(maxVal: number | "", minVal: number | "", optionsArr: string[]) {
+    const len = Array.isArray(optionsArr) ? optionsArr.length : 0;
+    if (len === 0) return 0;
+    let m: number;
+    if (maxVal === "" || maxVal === null || maxVal === undefined) m = len;
+    else m = Number(maxVal);
+    if (isNaN(m)) m = len;
+    const minN = normalizeMinChecked(minVal, optionsArr);
+    m = Math.max(minN, Math.min(m, len));
+    return m;
   }
 
   function deleteQuestion(id: string) {
@@ -343,7 +442,7 @@ export default function PreScreeningQuestions({
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 700 }}>{displayText(q)}</div>
                     <div style={{ color: "#6b7280", fontSize: 13, marginTop: 8 }}>
-                      {q.type === "dropdown" && (
+                      {(q.type === "dropdown" || q.type === "checkboxes") && (
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                           <div style={{ fontWeight: 600 }}>Options</div>
                           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
@@ -462,6 +561,19 @@ export default function PreScreeningQuestions({
                           </div>
                         </div>
                       )}
+                      {q.type === "checkboxes" && (
+                        <div style={{ marginTop: 8, color: "#374151", fontSize: 13 }}>
+                          {typeof q.minChecked !== "undefined" ||
+                          typeof q.maxChecked !== "undefined" ? (
+                            <div>
+                              Selected: {q.minChecked ?? 0} to{" "}
+                              {q.maxChecked ?? q.options?.length ?? 0}
+                            </div>
+                          ) : (
+                            <div style={{ color: "#6b7280" }}>No min/max selection constraints</div>
+                          )}
+                        </div>
+                      )}
                       {q.type === "range" && (
                         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                           <div style={{ display: "flex", flexDirection: "column" }}>
@@ -496,6 +608,16 @@ export default function PreScreeningQuestions({
                               style={{ padding: 6, width: 100 }}
                             />
                           </div>
+                        </div>
+                      )}
+                      {q.type === "short" && (
+                        <div style={{ marginTop: 8, color: "#374151", fontSize: 13 }}>
+                          Short answer
+                        </div>
+                      )}
+                      {q.type === "long" && (
+                        <div style={{ marginTop: 8, color: "#374151", fontSize: 13 }}>
+                          Long answer
                         </div>
                       )}
                     </div>
@@ -588,9 +710,12 @@ export default function PreScreeningQuestions({
               <select value={type} onChange={(e) => setType(e.target.value as any)}>
                 <option value="dropdown">Dropdown</option>
                 <option value="range">Range</option>
+                <option value="short">Short answer</option>
+                <option value="long">Long answer</option>
+                <option value="checkboxes">Checkboxes</option>
               </select>
 
-              {type === "dropdown" && (
+              {(type === "dropdown" || type === "checkboxes") && (
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   <div style={{ display: "flex", gap: 8 }}>
                     <input
@@ -627,6 +752,33 @@ export default function PreScreeningQuestions({
                 </div>
               )}
 
+              {type === "checkboxes" && (
+                <div style={{ display: "flex", gap: 12, alignItems: "center", marginTop: 8 }}>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <label>Min checked</label>
+                    <input
+                      type="number"
+                      value={minChecked}
+                      onChange={(e) =>
+                        setMinChecked(e.target.value === "" ? "" : Number(e.target.value))
+                      }
+                      style={{ width: 120 }}
+                    />
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <label>Max checked</label>
+                    <input
+                      type="number"
+                      value={maxChecked}
+                      onChange={(e) =>
+                        setMaxChecked(e.target.value === "" ? "" : Number(e.target.value))
+                      }
+                      style={{ width: 120 }}
+                    />
+                  </div>
+                </div>
+              )}
+
               {type === "range" && (
                 <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                   <div style={{ display: "flex", flexDirection: "column" }}>
@@ -650,6 +802,10 @@ export default function PreScreeningQuestions({
                     />
                   </div>
                 </div>
+              )}
+
+              {modalError && (
+                <div style={{ color: "#ef4444", marginTop: 6, fontSize: 13 }}>{modalError}</div>
               )}
 
               <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 12 }}>

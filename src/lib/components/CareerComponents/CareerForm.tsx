@@ -1005,21 +1005,6 @@ export default function CareerForm({
       >
         {currentStep === 4 && (
           <>
-            {draftId && (
-              <CollapsibleLayeredCard
-                title={<span>Job Description (saved)</span>}
-                defaultExpanded={false}
-                showEdit={true}
-                onEdit={() => setCurrentStep(1)}
-              >
-                <h4>{jobTitle}</h4>
-                <div dangerouslySetInnerHTML={{ __html: description }} />
-                <div style={{ marginTop: 8 }}>
-                  <a href={`/recruiter-dashboard/careers/manage/${draftId}`}>Open saved career</a>
-                </div>
-              </CollapsibleLayeredCard>
-            )}
-
             {/* STEP 1: Review */}
             <CollapsibleLayeredCard
               title={<span>Career Details & Team Access</span>}
@@ -1077,6 +1062,43 @@ export default function CareerForm({
                             <div>
                               Range: {pq.rangeMin ?? ""} - {pq.rangeMax ?? ""}
                             </div>
+                          ) : pq.type === "checkboxes" ? (
+                            <div>
+                              {Array.isArray(pq.options) && pq.options.length > 0 ? (
+                                <div>
+                                  <div style={{ fontWeight: 600, marginBottom: 6 }}>Options</div>
+                                  <ul style={{ marginLeft: 16, marginTop: 6 }}>
+                                    {pq.options.map((opt: any, oi: number) => {
+                                      const label =
+                                        typeof opt === "string"
+                                          ? opt
+                                          : (opt?.label ??
+                                            opt?.text ??
+                                            opt?.value ??
+                                            JSON.stringify(opt));
+                                      return (
+                                        <li key={oi} style={{ marginBottom: 4 }}>
+                                          {label}
+                                        </li>
+                                      );
+                                    })}
+                                  </ul>
+                                  <div style={{ marginTop: 6 }}>
+                                    Selected:{" "}
+                                    {typeof pq.minChecked !== "undefined" ? pq.minChecked : 0} to{" "}
+                                    {typeof pq.maxChecked !== "undefined"
+                                      ? pq.maxChecked
+                                      : (pq.options?.length ?? 0)}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div style={{ color: "#9CA3AF" }}>No options yet</div>
+                              )}
+                            </div>
+                          ) : pq.type === "short" ? (
+                            <div>Short answer</div>
+                          ) : pq.type === "long" ? (
+                            <div>Long answer</div>
                           ) : null}
                         </div>
                       </li>

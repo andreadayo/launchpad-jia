@@ -361,6 +361,42 @@ export default function JobDescription({
                             <div>
                               Range: {pq.rangeMin ?? ""} - {pq.rangeMax ?? ""}
                             </div>
+                          ) : pq.type === "checkboxes" ? (
+                            <div>
+                              {Array.isArray(pq.options) && pq.options.length > 0 ? (
+                                <div>
+                                  <ul style={{ marginTop: 6, marginLeft: 18 }}>
+                                    {pq.options.map((opt: any, idx: number) => {
+                                      const label =
+                                        typeof opt === "string"
+                                          ? opt
+                                          : (opt?.label ??
+                                            opt?.text ??
+                                            opt?.value ??
+                                            JSON.stringify(opt));
+                                      return (
+                                        <li key={idx} style={{ marginBottom: 4 }}>
+                                          {label}
+                                        </li>
+                                      );
+                                    })}
+                                  </ul>
+                                  <div style={{ marginTop: 6 }}>
+                                    Selected:{" "}
+                                    {typeof pq.minChecked !== "undefined" ? pq.minChecked : 0} to{" "}
+                                    {typeof pq.maxChecked !== "undefined"
+                                      ? pq.maxChecked
+                                      : (pq.options?.length ?? 0)}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div style={{ color: "#9CA3AF" }}>No options yet</div>
+                              )}
+                            </div>
+                          ) : pq.type === "short" ? (
+                            <div>Short answer</div>
+                          ) : pq.type === "long" ? (
+                            <div>Long answer</div>
                           ) : (
                             <div style={{ color: "#6b7280" }}>No additional data</div>
                           )}
