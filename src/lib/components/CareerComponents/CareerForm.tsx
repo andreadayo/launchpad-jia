@@ -98,6 +98,49 @@ const employmentTypeOptions = [
   },
 ];
 
+// Structured tips per step
+const tipsByStep = {
+  1: [
+    {
+      part1: "Use clear, standard job titles",
+      part2:
+        "for better searchability (e.g., “Software Engineer” instead of “Code Ninja” or “Tech Rockstar”).",
+    },
+    {
+      part1: "Avoid abbreviations",
+      part2:
+        "or internal role codes that applicants may not understand (e.g., use “QA Engineer” instead of “QE II” or “QA-TL”).",
+    },
+    {
+      part1: "Keep it concise",
+      part2:
+        "- job titles should be no more than a few words (2-4 max), avoiding fluff or marketing terms.",
+    },
+  ],
+  2: [
+    {
+      part1: "Add a Secret Prompt",
+      part2: "to fine-tune how Jia scores and evaluates submitted CVs.",
+    },
+    {
+      part1: "Add Pre-Screening questions",
+      part2:
+        "to collect key details such as notice period, work setup, or salary expectations to guide your review and candidate discussions.",
+    },
+  ],
+  3: [
+    {
+      part1: "Add a Secret Prompt",
+      part2: "to fine-tune how Jia scores and evaluates the interview responses.",
+    },
+    {
+      part1: "Use “Generate Questions”",
+      part2:
+        "to quickly create tailored interview questions, then refine or mix them with your own for balanced results.",
+    },
+  ],
+};
+
 export default function CareerForm({
   career,
   formType,
@@ -816,7 +859,7 @@ export default function CareerForm({
         {/* Left Side */}
         <div
           style={{
-            width: "60%",
+            width: currentStep === 4 ? "100%" : "60%",
             display: "flex",
             flexDirection: "column",
             gap: 8,
@@ -1398,30 +1441,39 @@ export default function CareerForm({
         </div>
 
         {/* Right Side */}
-        <div
-          style={{
-            width: "40%",
-            display: "flex",
-            flexDirection: "column",
-            gap: 8,
-          }}
-        >
-          <div className="layered-card-outer">
-            <div className="layered-card-middle">
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 8,
-                }}
-              >
-                <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>Tips</span>
+        {currentStep !== 4 && (
+          <div
+            style={{
+              width: "40%",
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+            }}
+          >
+            <div className="layered-card-outer">
+              <div className="layered-card-middle">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <span style={{ fontSize: 16, color: "#181D27", fontWeight: 700 }}>Tips</span>
+                </div>
+                <div className="layered-card-content">
+                  {(tipsByStep[currentStep] || []).map((tip, i) => (
+                    <div className="career-tip" key={i}>
+                      <span className="career-tip-part1">{tip.part1}</span>{" "}
+                      {tip.part2 && <span className="career-tip-part2">{tip.part2}</span>}
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="layered-card-content">{/* Tips */}</div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       {showSaveModal && (
         <CareerActionModal action={showSaveModal} onAction={(action) => saveCareer(action)} />
