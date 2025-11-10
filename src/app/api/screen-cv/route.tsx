@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
 import connectMongoDB from "@/lib/mongoDB/mongoDB";
-import OpenAI from "openai";
+import { GoogleGenAI } from "@google/genai";
 import { sendEmail } from "@/lib/Email";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const ai = new GoogleGenAI({ apiKey: process.env.GENAI_API_KEY });
 
 export async function POST(request: Request) {
   const { interviewID, userEmail, testMode, testInterviewData, testCVData } = await request.json();
@@ -71,6 +69,10 @@ export async function POST(request: Request) {
   }
 
   let parsedCV = "";
+  if (!cvData.digitalCV || !Array.isArray(cvData.digitalCV)) {
+    console.error("screen-cv: applicant-cv.digitalCV missing or invalid", cvData);
+    return NextResponse.json({ error: "Invalid CV data" }, { status: 500 });
+  }
 
   cvData.digitalCV.forEach((section) => {
     parsedCV += `${section.name}\n${section.content}\n`;
@@ -134,27 +136,32 @@ export async function POST(request: Request) {
 
   // console.log(screeningPrompt);
 
-  const completion = await openai.responses.create({
-    model: "o4-mini",
-    reasoning: { effort: "high" },
-    input: [
-      {
-        role: "user",
-        content: screeningPrompt,
-      },
-    ],
-  });
-
-  let result: any = completion.output_text;
-
+  let result: any = "";
   try {
-    result = result.replace("```json", "").replace("```", "");
-    result = JSON.parse(result);
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({
-      message: "[Error] Invalid JSON",
+    const completion: any = await ai.models.generateContent({
+      model: "gemini-2.5-flash-lite",
+      contents: screeningPrompt,
     });
+
+    result = completion?.text ?? "";
+
+    // sanitize code fences then parse
+    if (typeof result === "string") {
+      result = result
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+    }
+
+    if (typeof result === "string") {
+      result = JSON.parse(result);
+    }
+  } catch (error) {
+    console.error("screen-cv: AI screening failed", error);
+    return NextResponse.json(
+      { error: "CV Screening Failed", message: String(error) },
+      { status: 500 }
+    );
   }
 
   let screeningData: any = {

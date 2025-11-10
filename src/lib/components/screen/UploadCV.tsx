@@ -121,8 +121,23 @@ export default function () {
   }
 
   function handleReviewCV() {
-    const parsedUserCV = JSON.parse(digitalCV);
-    const formattedCV = {};
+    let parsedUserCV: any = null;
+    try {
+      const text =
+        typeof digitalCV === "string"
+          ? digitalCV
+              .replace(/```json/g, "")
+              .replace(/```/g, "")
+              .trim()
+          : digitalCV;
+      parsedUserCV = typeof text === "string" ? JSON.parse(text) : text;
+    } catch (err) {
+      console.error("Error parsing saved digitalCV:", err, digitalCV);
+      alert("Unable to parse saved CV data. Please re-upload your CV.");
+      return;
+    }
+
+    const formattedCV: any = {};
 
     cvSections.map((section, index) => {
       formattedCV[section] = parsedUserCV.digitalCV[index].content?.trim();
@@ -203,7 +218,20 @@ export default function () {
     };
 
     if (digitalCV) {
-      parsedDigitalCV = JSON.parse(digitalCV);
+      try {
+        const text =
+          typeof digitalCV === "string"
+            ? digitalCV
+                .replace(/```json/g, "")
+                .replace(/```/g, "")
+                .trim()
+            : digitalCV;
+        parsedDigitalCV = typeof text === "string" ? JSON.parse(text) : text;
+      } catch (err) {
+        console.error("Error parsing existing digitalCV before screening:", err, digitalCV);
+        alert("Unable to parse existing CV data. Please re-upload your CV.");
+        return false;
+      }
 
       if (parsedDigitalCV.errorRemarks) {
         alert("Please fix the errors in the CV first.\n\n" + parsedDigitalCV.errorRemarks);
@@ -270,9 +298,13 @@ export default function () {
         setCurrentStep(step[2]);
       })
       .catch((err) => {
-        alert("Error screening CV. Please try again.");
+        const serverMsg = err?.response?.data || err?.message || err;
+        console.error("Error screening CV:", serverMsg);
+        alert(
+          "Error screening CV. " +
+            (err?.response?.data?.message || err?.message || "Please try again.")
+        );
         setCurrentStep(step[0]);
-        console.log(err);
       });
   }
 
@@ -297,8 +329,23 @@ export default function () {
         })
           .then(async (res) => {
             const result = await res.data.result;
-            const parsedUserCV = JSON.parse(result);
-            const formattedCV = {};
+            let parsedUserCV: any = null;
+            try {
+              const text =
+                typeof result === "string"
+                  ? result
+                      .replace(/```json/g, "")
+                      .replace(/```/g, "")
+                      .trim()
+                  : result;
+              parsedUserCV = typeof text === "string" ? JSON.parse(text) : text;
+            } catch (err) {
+              console.error("Error parsing digitalize-cv response:", err, result);
+              alert("Error building CV: received invalid CV data from server.");
+              return;
+            }
+
+            const formattedCV: any = {};
 
             cvSections.map((section, index) => {
               formattedCV[section] = parsedUserCV.digitalCV[index].content?.trim();
@@ -309,16 +356,24 @@ export default function () {
             setUserCV(formattedCV);
           })
           .catch((err) => {
-            alert("Error building CV. Please try again.");
-            console.log(err);
+            const serverMsg = err?.response?.data || err?.message || err;
+            console.error("Error building CV (digitalize):", serverMsg);
+            alert(
+              "Error building CV. " +
+                (err?.response?.data?.message || err?.message || "Please try again.")
+            );
           })
           .finally(() => {
             setBuildingCV(false);
           });
       })
       .catch((err) => {
-        alert("Error building CV. Please try again.");
-        console.log(err);
+        const serverMsg = err?.response?.data || err?.message || err;
+        console.error("Error building CV (upload):", serverMsg);
+        alert(
+          "Error building CV. " +
+            (err?.response?.data?.message || err?.message || "Please try again.")
+        );
       })
       .finally(() => {
         setBuildingCV(false);

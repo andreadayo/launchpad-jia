@@ -112,11 +112,26 @@ export default function () {
   }
 
   function handleReviewCV() {
-    const parsedUserCV = JSON.parse(digitalCV);
-    const formattedCV = {};
+    let parsedUserCV: any = null;
+    try {
+      const text =
+        typeof digitalCV === "string"
+          ? digitalCV
+              .replace(/```json/g, "")
+              .replace(/```/g, "")
+              .trim()
+          : digitalCV;
+      parsedUserCV = typeof text === "string" ? JSON.parse(text) : text;
+    } catch (err) {
+      console.error("Error parsing saved digitalCV:", err, digitalCV);
+      alert("Unable to parse saved CV data. Please re-upload your CV.");
+      return;
+    }
+
+    const formattedCV: any = {};
 
     cvSections.forEach((section, index) => {
-      formattedCV[section] = parsedUserCV.digitalCV[index].content.trim() || "";
+      formattedCV[section] = parsedUserCV.digitalCV[index].content?.trim() || "";
     });
 
     setFile(parsedUserCV.fileInfo);
@@ -215,7 +230,20 @@ export default function () {
     };
 
     if (digitalCV) {
-      parsedDigitalCV = JSON.parse(digitalCV);
+      try {
+        const text =
+          typeof digitalCV === "string"
+            ? digitalCV
+                .replace(/```json/g, "")
+                .replace(/```/g, "")
+                .trim()
+            : digitalCV;
+        parsedDigitalCV = typeof text === "string" ? JSON.parse(text) : text;
+      } catch (err) {
+        console.error("Error parsing existing digitalCV before screening:", err, digitalCV);
+        alert("Unable to parse existing CV data. Please re-upload your CV.");
+        return false;
+      }
 
       if (parsedDigitalCV.errorRemarks) {
         alert("Please fix the errors in the CV first.\n\n" + parsedDigitalCV.errorRemarks);
@@ -316,11 +344,26 @@ export default function () {
         })
           .then((res) => {
             const result = res.data.result;
-            const parsedUserCV = JSON.parse(result);
-            const formattedCV = {};
+            let parsedUserCV: any = null;
+            try {
+              const text =
+                typeof result === "string"
+                  ? result
+                      .replace(/```json/g, "")
+                      .replace(/```/g, "")
+                      .trim()
+                  : result;
+              parsedUserCV = typeof text === "string" ? JSON.parse(text) : text;
+            } catch (err) {
+              console.error("Error parsing digitalize-cv response:", err, result);
+              alert("Error building CV: received invalid CV data from server.");
+              return;
+            }
+
+            const formattedCV: any = {};
 
             cvSections.forEach((section, index) => {
-              formattedCV[section] = parsedUserCV.digitalCV[index].content.trim();
+              formattedCV[section] = parsedUserCV.digitalCV[index].content?.trim() || "";
             });
 
             setDigitalCV(result);

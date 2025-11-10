@@ -1,7 +1,7 @@
 // TODO (Vince) - For Merging
 
 import { NextRequest, NextResponse } from "next/server";
-import OpenAI from "openai";
+import { GoogleGenAI } from "@google/genai";
 
 export async function POST(req: NextRequest) {
   const { chunks } = await req.json();
@@ -49,21 +49,13 @@ export async function POST(req: NextRequest) {
       - Only return the JSON output.
       - DO NOT include \`\`\`json or \`\`\` around the response.
     `;
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-  const completion = await openai.responses.create({
-    model: "o4-mini",
-    reasoning: { effort: "high" },
-    input: [
-      {
-        role: "user",
-        content: corePrompt,
-      },
-    ],
+  const ai = new GoogleGenAI({ apiKey: process.env.GENAI_API_KEY });
+  const completion: any = await ai.models.generateContent({
+    model: "gemini-2.5-flash-lite",
+    contents: corePrompt,
   });
 
   return NextResponse.json({
-    result: completion.output_text,
+    result: completion?.text ?? "",
   });
 }

@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
+import { GoogleGenAI } from "@google/genai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const ai = new GoogleGenAI({ apiKey: process.env.GENAI_API_KEY });
 
 export async function POST(request: Request) {
   try {
@@ -13,26 +11,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
     }
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system",
-          content: systemPrompt
-            ? systemPrompt
-            : "You are a helpful assistant that can answer questions and help with tasks.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      temperature: 0.7,
-      max_tokens: 1000,
+    const fullPrompt = `${systemPrompt ?? "You are a helpful assistant that can answer questions and help with tasks."}\n\n${prompt}`;
+
+    const completion: any = await ai.models.generateContent({
+      model: "gemini-2.5-flash-lite",
+      contents: fullPrompt,
     });
 
     return NextResponse.json({
-      result: completion.choices[0].message.content,
+      result: completion?.text ?? "",
     });
   } catch (error) {
     console.error("Error in LLM engine:", error);

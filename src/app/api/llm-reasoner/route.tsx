@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
+import { GoogleGenAI } from "@google/genai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const ai = new GoogleGenAI({ apiKey: process.env.GENAI_API_KEY });
 
 export async function POST(request: Request) {
   try {
@@ -13,19 +11,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "corePrompt is required" }, { status: 400 });
     }
 
-    const completion = await openai.responses.create({
-      model: "o4-mini",
-      reasoning: { effort: "high" },
-      input: [
-        {
-          role: "user",
-          content: corePrompt,
-        },
-      ],
+    const completion: any = await ai.models.generateContent({
+      model: "gemini-2.5-flash-lite",
+      contents: corePrompt,
     });
 
     return NextResponse.json({
-      result: completion.output_text,
+      result: completion?.text ?? "",
     });
   } catch (error) {
     console.error("Error in LLM reasoner:", error);
