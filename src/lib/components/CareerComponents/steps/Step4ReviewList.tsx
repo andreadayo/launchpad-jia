@@ -16,6 +16,7 @@ type Props = {
   province: string;
   city: string;
   questions: any[];
+  preScreeningQuestions?: any[];
   onEditStep: (step: number) => void;
 };
 
@@ -34,6 +35,7 @@ export default function Step4ReviewList({
   province,
   city,
   questions,
+  preScreeningQuestions,
   onEditStep,
 }: Props) {
   return (
@@ -78,6 +80,29 @@ export default function Step4ReviewList({
       >
         <div>
           <strong>CV Screening:</strong> {cvScreeningSetting}
+        </div>
+        <div style={{ marginTop: 12 }}>
+          <strong>Pre-Screening Questions</strong>
+          {preScreeningQuestions && preScreeningQuestions.length > 0 ? (
+            <ol style={{ marginLeft: 16, marginTop: 8 }}>
+              {preScreeningQuestions.map((pq: any, i: number) => (
+                <li key={pq.id || i} style={{ marginBottom: 6 }}>
+                  <div style={{ fontWeight: 600 }}>{pq.text || pq.question || pq.title}</div>
+                  <div style={{ color: "#6b7280", fontSize: 13 }}>
+                    {pq.type === "dropdown" && Array.isArray(pq.options) ? (
+                      <div>Options: {pq.options.join(", ")}</div>
+                    ) : pq.type === "range" ? (
+                      <div>
+                        Range: {pq.rangeMin ?? ""} - {pq.rangeMax ?? ""}
+                      </div>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <div style={{ color: "#6b7280", marginTop: 8 }}>No pre-screening questions added</div>
+          )}
         </div>
       </CollapsibleLayeredCard>
 

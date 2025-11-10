@@ -1,5 +1,6 @@
 import React from "react";
 import CustomDropdown from "@/lib/components/CareerComponents/CustomDropdown";
+import PreScreeningQuestions from "@/lib/components/CareerComponents/PreScreeningQuestions";
 
 type Props = {
   cvScreeningSetting: string;
@@ -7,6 +8,8 @@ type Props = {
   errors: Record<string, string>;
   clearError: (k: string) => void;
   screeningSettingList: { name: string; icon?: string }[];
+  preScreeningQuestions?: any[];
+  setPreScreeningQuestions?: (q: any[]) => void;
 };
 
 export default function Step2CVReview({
@@ -15,6 +18,8 @@ export default function Step2CVReview({
   errors,
   clearError,
   screeningSettingList,
+  preScreeningQuestions,
+  setPreScreeningQuestions,
 }: Props) {
   return (
     <>
@@ -70,7 +75,11 @@ export default function Step2CVReview({
             </span>
           </div>
           <div className="layered-card-content">
-            <span>No pre-screening questions added yet. </span>
+            <PreScreeningQuestions
+              questions={preScreeningQuestions || []}
+              setQuestions={setPreScreeningQuestions || (() => {})}
+              error={errors.prescreening}
+            />
           </div>
         </div>
       </div>
