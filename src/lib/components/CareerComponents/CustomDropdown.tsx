@@ -1,35 +1,76 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function CustomDropdown(props) {
-  const { onSelectSetting, screeningSetting, settingList, placeholder, invalid = false } = props;
+  const {
+    onSelectSetting,
+    screeningSetting,
+    settingList,
+    placeholder,
+    invalid = false,
+    fitContent = false,
+  } = props;
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const measureRef = useRef<HTMLSpanElement | null>(null);
+  const [minWidth, setMinWidth] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (fitContent && measureRef.current) {
+      // measure placeholder width and add padding so the button doesn't shrink below this
+      const w = measureRef.current.offsetWidth;
+      const extra = 24; // left+right padding + icon space
+      setMinWidth(w + extra);
+    }
+  }, [fitContent, placeholder]);
 
   return (
-    <div className="dropdown w-100">
+    <div
+      className={`dropdown ${fitContent ? "" : "w-100"}`}
+      style={{ position: "relative", display: fitContent ? "inline-block" : undefined }}
+    >
+      {fitContent && (
+        <span
+          ref={measureRef}
+          style={{
+            position: "absolute",
+            visibility: "hidden",
+            whiteSpace: "nowrap",
+            pointerEvents: "none",
+            top: 0,
+            left: 0,
+            fontSize: "1rem",
+          }}
+        >
+          {placeholder}
+        </span>
+      )}
       <button
         disabled={settingList.length === 0}
         className="dropdown-btn fade-in-bottom"
         style={{
-          width: "100%",
+          width: fitContent ? "fit-content" : "100%",
+          minWidth: fitContent && minWidth ? `${minWidth}px` : undefined,
           textTransform: "capitalize",
           border: invalid ? "1px solid #ef4444" : undefined,
+          paddingLeft: fitContent ? 12 : undefined,
+          paddingRight: fitContent ? 12 : undefined,
         }}
         type="button"
         onClick={() => setDropdownOpen((v) => !v)}
       >
-        <span>
+        <span style={{ color: screeningSetting ? undefined : "#717680" }}>
           <i className={settingList.find((setting) => setting.name === screeningSetting)?.icon}></i>{" "}
-          {screeningSetting?.replace("_", " ") || placeholder}
+          {screeningSetting ? screeningSetting.replace("_", " ") : placeholder}
         </span>
         <i className="la la-angle-down ml-10"></i>
       </button>
       <div
-        className={`dropdown-menu w-100 mt-1 org-dropdown-anim${dropdownOpen ? " show" : ""}`}
+        className={`dropdown-menu ${fitContent ? "" : "w-100"} mt-1 org-dropdown-anim${dropdownOpen ? " show" : ""}`}
         style={{
           padding: "10px",
           maxHeight: 200,
           overflowY: "auto",
+          minWidth: fitContent && minWidth ? `${minWidth}px` : undefined,
         }}
       >
         {settingList.map((setting, index) => (

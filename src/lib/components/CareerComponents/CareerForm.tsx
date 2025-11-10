@@ -161,7 +161,7 @@ export default function CareerForm({
   const [aiScreeningSetting, setAiScreeningSetting] = useState(
     career?.aiScreeningSetting || career?.screeningSetting || "Good Fit and above"
   );
-  const [employmentType, setEmploymentType] = useState(career?.employmentType || "Full-Time");
+  const [employmentType, setEmploymentType] = useState(career?.employmentType || "");
   const [requireVideo, setRequireVideo] = useState(career?.requireVideo || true);
   const [salaryNegotiable, setSalaryNegotiable] = useState(career?.salaryNegotiable || true);
   const [minimumSalary, setMinimumSalary] = useState(career?.minimumSalary || "");
@@ -232,13 +232,13 @@ export default function CareerForm({
 
   // Zod schemas per step
   const step1Schema = z.object({
-    jobTitle: z.string().min(1, "This is a required field"),
-    description: z.string().min(1, "This is a required field"),
-    employmentType: z.string().min(1, "Please select an employment type"),
-    workSetup: z.string().min(1, "Please select a work arrangement"),
-    country: z.string().min(1, "Please select a country"),
-    province: z.string().min(1, "Please select a state / province"),
-    city: z.string().min(1, "Please select a city"),
+    jobTitle: z.string().min(1, "This is a required field."),
+    description: z.string().min(1, "This is a required field."),
+    employmentType: z.string().min(1, "This is a required field."),
+    workSetup: z.string().min(1, "This is a required field."),
+    country: z.string().min(1, "This is a required field."),
+    province: z.string().min(1, "This is a required field."),
+    city: z.string().min(1, "This is a required field."),
     minimumSalary: z.preprocess(
       (val) => (val === "" || val === null || val === undefined ? null : Number(val)),
       z.number({ invalid_type_error: "Minimum salary is required" }).nonnegative()
@@ -729,17 +729,26 @@ export default function CareerForm({
 
   useEffect(() => {
     const parseProvinces = () => {
-      setProvinceList(philippineCitiesAndProvinces.provinces);
-      const defaultProvince = philippineCitiesAndProvinces.provinces[0];
-      if (!career?.province) {
-        setProvince(defaultProvince.name);
-      }
-      const cities = philippineCitiesAndProvinces.cities.filter(
-        (city) => city.province === defaultProvince.key
-      );
-      setCityList(cities);
-      if (!career?.location) {
-        setCity(cities[0].name);
+      const provinces = philippineCitiesAndProvinces.provinces;
+      setProvinceList(provinces);
+
+      // If editing an existing career, populate province and city from the career values.
+      if (career?.province) {
+        setProvince(career.province);
+        // Find province key to filter cities
+        const provinceObj = provinces.find(
+          (p) => p.name === career.province || p.key === career.province
+        );
+        const cities = provinceObj
+          ? philippineCitiesAndProvinces.cities.filter((city) => city.province === provinceObj.key)
+          : [];
+        setCityList(cities);
+        setCity(career?.location || (cities[0] ? cities[0].name : ""));
+      } else {
+        // New form: leave province and city empty so placeholder shows; no default selection
+        setProvince("");
+        setCityList([]);
+        setCity("");
       }
     };
     parseProvinces();
@@ -981,7 +990,12 @@ export default function CareerForm({
                         )}
                       </div>
                       <div
-                        style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}
+                        style={{
+                          minWidth: "fit-content",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 6,
+                        }}
                       >
                         <span>State / Province</span>
                         <div data-field="province">
@@ -1000,6 +1014,7 @@ export default function CareerForm({
                             settingList={provinceList}
                             placeholder="Select State / Province"
                             invalid={!!errors.province}
+                            fitContent={true}
                           />
                         </div>
                         {errors.province && (
