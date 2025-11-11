@@ -9,8 +9,17 @@ export const CareerInputSchema = z.object({
   location: z.string().optional(),
   workSetup: z.string().optional(),
   workSetupRemarks: z.string().optional(),
-  lastEditedBy: z.string().optional(),
-  createdBy: z.string().optional(),
+  lastEditedBy: z.preprocess((val: any) => {
+    // accept a user object or string; prefer id/_id/email when present
+    if (val && typeof val === "object")
+      return (val as any).id ?? (val as any)._id ?? (val as any).email ?? JSON.stringify(val);
+    return val;
+  }, z.string().optional()),
+  createdBy: z.preprocess((val: any) => {
+    if (val && typeof val === "object")
+      return (val as any).id ?? (val as any)._id ?? (val as any).email ?? JSON.stringify(val);
+    return val;
+  }, z.string().optional()),
   status: z.string().optional(),
   cvScreeningSetting: z.any().optional(),
   screeningSetting: z.any().optional(),
@@ -58,8 +67,9 @@ const SANITIZE_CFG: sanitizeHtml.IOptions = {
 };
 
 // Helper: strip all HTML tags (for plain text fields)
-function stripTags(input?: string) {
-  return sanitizeHtml(input || "", { allowedTags: [], allowedAttributes: {} }).trim();
+function stripTags(input?: any) {
+  const src = typeof input === "string" ? input : input == null ? "" : String(input);
+  return sanitizeHtml(src, { allowedTags: [], allowedAttributes: {} }).trim();
 }
 
 function sanitizeParsed(parsed: any) {
