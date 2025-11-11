@@ -57,6 +57,7 @@ export default function CandidateMenu({
   const [analysisPrompt, setAnalysisPrompt] = useState(null);
   const [transcripts, setTranscripts] = useState(null);
   const [interviewDetails, setInterviewDetails] = useState(null);
+  const [isPreScreenOpen, setIsPreScreenOpen] = useState(false);
   const isLoadingSettingsRef = useRef(false);
   const [isGeneratingAnalysis, setIsGeneratingAnalysis] = useState(true);
   const [isGeneratingSummary, setIsGeneratingSummary] = useState(true);
@@ -74,8 +75,15 @@ export default function CandidateMenu({
             fields: { summary_prompt: 1, analysis_prompt: 1 },
           });
 
-          setSummaryPrompt(configResponse.data.summary_prompt?.prompt || "");
-          setAnalysisPrompt(configResponse.data.analysis_prompt?.prompt || "");
+          const configData = configResponse?.data || {};
+          try {
+            console.log("[CandidateMenu] fetch-global-settings response:", configData);
+          } catch (e) {}
+
+          setSummaryPrompt((configData.summary_prompt && configData.summary_prompt.prompt) || "");
+          setAnalysisPrompt(
+            (configData.analysis_prompt && configData.analysis_prompt.prompt) || ""
+          );
           const interviewDetailsResponse = await axios.post("/api/interview-details", {
             id: candidate.interviewID,
           });
@@ -536,23 +544,116 @@ export default function CandidateMenu({
             {isCVAnalysisOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
           </div>
         </div>
-        {isCVAnalysisOpen && candidate?.cvScreeningReason ? (
-          <div>
-            <p dangerouslySetInnerHTML={{ __html: candidate?.cvScreeningReason }}></p>
-          </div>
-        ) : (
+        {isCVAnalysisOpen ? (
+          candidate?.cvScreeningReason ? (
+            <div>
+              <p dangerouslySetInnerHTML={{ __html: candidate?.cvScreeningReason }}></p>
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                textAlign: "center",
+              }}
+            >
+              <p style={{ fontSize: 16, color: "#717680", fontWeight: 500 }}>
+                Candidate has no uploaded CV. <br /> Analysis unavailable.
+              </p>
+            </div>
+          )
+        ) : null}
+        <div style={{ width: "100%", height: 1, background: "#E9EAEB", margin: "16px 0" }} />
+
+        {/* Pre-screening Answers Accordion */}
+        {(interviewDetails?.preScreenAnswers ||
+          interviewDetails?.preScreeningQuestions ||
+          interviewDetails?.career?.preScreeningQuestions) && (
           <div
             style={{
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "space-between",
               alignItems: "center",
-              width: "100%",
-              textAlign: "center",
+              cursor: "pointer",
+              marginBottom: "20px",
+            }}
+            onClick={(e) => {
+              setIsPreScreenOpen(!isPreScreenOpen);
             }}
           >
-            <p style={{ fontSize: 16, color: "#717680", fontWeight: 500 }}>
-              Candidate has no uploaded CV. <br /> Analysis unavailable.
-            </p>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+              <div
+                style={{
+                  width: 32,
+                  height: 32,
+                  backgroundColor: "#181D27",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <i className="la la-list" style={{ color: "#FFFFFF", fontSize: 16 }}></i>
+              </div>
+              <h2>Pre-screening Answers</h2>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {isPreScreenOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            </div>
+          </div>
+        )}
+
+        {isPreScreenOpen && (
+          <div style={{ marginBottom: 16 }}>
+            {(() => {
+              const qList =
+                interviewDetails?.preScreeningQuestions ||
+                interviewDetails?.career?.preScreeningQuestions ||
+                [];
+              const answers = interviewDetails?.preScreenAnswers || {};
+
+              if (Array.isArray(qList) && qList.length > 0) {
+                return qList.map((q: any, idx: number) => {
+                  const qid = q.id || `q_${idx}`;
+                  const ans = answers[qid];
+
+                  let display = "";
+                  if (Array.isArray(ans)) display = ans.join(", ");
+                  else if (ans && typeof ans === "object")
+                    display = `${ans.min ?? ""}${ans.max ? " - " + ans.max : ""}`;
+                  else display = ans ?? "(no answer)";
+
+                  return (
+                    <div
+                      key={qid}
+                      style={{ marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 8 }}
+                    >
+                      <div style={{ fontSize: 14, fontWeight: 600 }}>
+                        {q.text || q.question || q.title}
+                      </div>
+                      <div style={{ fontSize: 14, color: "#444" }}>{display}</div>
+                    </div>
+                  );
+                });
+              }
+
+              // fallback: show raw answers
+              const keys = Object.keys(answers || {});
+              if (keys.length === 0)
+                return <div style={{ color: "#717680" }}>No pre-screening answers available.</div>;
+
+              return keys.map((k) => (
+                <div
+                  key={k}
+                  style={{ marginBottom: 12, borderBottom: "1px solid #eee", paddingBottom: 8 }}
+                >
+                  <div style={{ fontSize: 14, fontWeight: 600 }}>{k}</div>
+                  <div style={{ fontSize: 14, color: "#444" }}>{JSON.stringify(answers[k])}</div>
+                </div>
+              ));
+            })()}
           </div>
         )}
 
