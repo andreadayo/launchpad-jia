@@ -1,4 +1,4 @@
-import { OpenAI } from "openai";
+import { GoogleGenAI } from "@google/genai";
 
 const messages: any = [{ role: "system", content: "You are a helpful assistant." }];
 
@@ -10,16 +10,22 @@ export async function POST(req: Request) {
     content: text,
   });
 
-  const openai = new OpenAI();
-  const chatResponse = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    messages,
+  const ai = new GoogleGenAI({ apiKey: process.env.GENAI_API_KEY });
+
+  // Convert messages array to a single prompt string for Gemini
+  const prompt = messages.map((m: any) => `${m.role.toUpperCase()}: ${m.content}`).join("\n\n");
+
+  const chatResponse: any = await ai.models.generateContent({
+    model: "gemini-2.5-flash-lite",
+    contents: prompt,
   });
+
+  const assistantText = chatResponse?.text ?? "";
 
   messages.push({
     role: "assistant",
-    content: chatResponse.choices[0].message.content,
+    content: assistantText,
   });
 
-  return new Response(chatResponse.choices[0].message.content);
+  return new Response(assistantText);
 }

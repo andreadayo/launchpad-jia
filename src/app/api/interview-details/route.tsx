@@ -38,6 +38,12 @@ export async function POST(request: Request) {
 
     if (career) {
       interview.careerID = career._id;
+      // attach minimal career info so callers can access pre-screening questions
+      interview.career = {
+        id: career.id,
+        title: career.title || career.name || null,
+        preScreeningQuestions: career.preScreeningQuestions || [],
+      };
     }
 
     interview.config = settings;

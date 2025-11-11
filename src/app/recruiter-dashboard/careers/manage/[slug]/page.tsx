@@ -166,6 +166,7 @@ export default function ManageCareerPage() {
     jobTitle: "",
     description: "",
     questions: [],
+    preScreeningQuestions: [],
     status: "",
     cvScreeningSetting: "",
     aiScreeningSetting: "",
@@ -291,6 +292,7 @@ export default function ManageCareerPage() {
           jobTitle: response.data?.jobTitle || "",
           description: response.data?.description || "",
           questions: deepCopy,
+          preScreeningQuestions: response.data?.preScreeningQuestions || [],
           status: response.data?.status || "",
           cvScreeningSetting:
             response.data?.cvScreeningSetting || response.data?.screeningSetting || "",

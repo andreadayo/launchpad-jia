@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectMongoDB from "@/lib/mongoDB/mongoDB";
-import OpenAI from "openai";
+import { GoogleGenAI } from "@google/genai";
 
 /**
  * This API is used to only analyze the CV of a candidate without auto-promoting the candidate stage.
@@ -84,21 +84,14 @@ export async function POST(request: Request) {
       - DO NOT include \`\`\`json or \`\`\` around the response.
   `;
 
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-  const completion = await openai.responses.create({
-    model: "o4-mini",
-    reasoning: { effort: "high" },
-    input: [
-      {
-        role: "user",
-        content: screeningPrompt,
-      },
-    ],
+  const ai = new GoogleGenAI({ apiKey: process.env.GENAI_API_KEY });
+  const completion: any = await ai.models.generateContent({
+    model: "gemini-2.5-flash-lite",
+    contents: screeningPrompt,
   });
 
-  let result: any = completion.output_text;
+  // Gemini responses expose generated text on .text
+  let result: any = completion?.text ?? "";
 
   try {
     result = result.replace("```json", "").replace("```", "");

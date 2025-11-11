@@ -281,6 +281,135 @@ export default function JobDescription({
               description={formData.description}
             />
           )}
+
+          {/* Pre-Screening Questions Card */}
+          <div className="layered-card-outer" style={{ marginTop: 12 }}>
+            <div className="layered-card-middle">
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  width: "100%",
+                  gap: 8,
+                }}
+              >
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 8,
+                    background: "#181D27",
+                    borderRadius: "60px",
+                  }}
+                >
+                  <i className="la la-filter" style={{ fontSize: 20, color: "#FFFFFF" }} />
+                </div>
+                <span
+                  style={{
+                    fontSize: 16,
+                    color: "#181D27",
+                    fontWeight: 700,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  Pre-Screening Questions
+                  <div
+                    style={{
+                      borderRadius: "50%",
+                      width: 30,
+                      height: 22,
+                      border: "1px solid #D5D9EB",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 14,
+                      backgroundColor: "#F8F9FC",
+                      color: "#181D27",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {Array.isArray(formData.preScreeningQuestions)
+                      ? formData.preScreeningQuestions.length
+                      : 0}
+                  </div>
+                </span>
+              </div>
+              <div className="layered-card-content">
+                {Array.isArray(formData.preScreeningQuestions) &&
+                formData.preScreeningQuestions.length > 0 ? (
+                  <ol style={{ marginLeft: 18 }}>
+                    {formData.preScreeningQuestions.map((pq: any, i: number) => (
+                      <li key={pq.id || pq._id || i} style={{ marginBottom: 12 }}>
+                        <div style={{ fontWeight: 700 }}>{pq.text || pq.question || pq.title}</div>
+                        <div style={{ color: "#6b7280", fontSize: 13, marginTop: 6 }}>
+                          {pq.type === "dropdown" && Array.isArray(pq.options) ? (
+                            <ul style={{ marginTop: 6, marginLeft: 18 }}>
+                              {pq.options.map((opt: any, idx: number) => (
+                                <li key={idx} style={{ marginBottom: 4 }}>
+                                  {opt}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : pq.type === "range" ? (
+                            <div>
+                              Range: {pq.rangeMin ?? ""} - {pq.rangeMax ?? ""}
+                            </div>
+                          ) : pq.type === "checkboxes" ? (
+                            <div>
+                              {Array.isArray(pq.options) && pq.options.length > 0 ? (
+                                <div>
+                                  <ul style={{ marginTop: 6, marginLeft: 18 }}>
+                                    {pq.options.map((opt: any, idx: number) => {
+                                      const label =
+                                        typeof opt === "string"
+                                          ? opt
+                                          : (opt?.label ??
+                                            opt?.text ??
+                                            opt?.value ??
+                                            JSON.stringify(opt));
+                                      return (
+                                        <li key={idx} style={{ marginBottom: 4 }}>
+                                          {label}
+                                        </li>
+                                      );
+                                    })}
+                                  </ul>
+                                  <div style={{ marginTop: 6 }}>
+                                    Selected:{" "}
+                                    {typeof pq.minChecked !== "undefined" ? pq.minChecked : 0} to{" "}
+                                    {typeof pq.maxChecked !== "undefined"
+                                      ? pq.maxChecked
+                                      : (pq.options?.length ?? 0)}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div style={{ color: "#9CA3AF" }}>No options yet</div>
+                              )}
+                            </div>
+                          ) : pq.type === "short" ? (
+                            <div>Short answer</div>
+                          ) : pq.type === "long" ? (
+                            <div>Long answer</div>
+                          ) : (
+                            <div style={{ color: "#6b7280" }}>No additional data</div>
+                          )}
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                ) : (
+                  <div style={{ color: "#6b7280" }}>No pre-screening questions added</div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="right-thread">

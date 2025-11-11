@@ -213,6 +213,9 @@ export default function CareerForm({
   const [country, setCountry] = useState(career?.country || "Philippines");
   const [province, setProvince] = useState(career?.province || "");
   const [city, setCity] = useState(career?.location || "");
+  const [preScreeningQuestions, setPreScreeningQuestions] = useState<any[]>(
+    career?.preScreeningQuestions || []
+  );
   const [provinceList, setProvinceList] = useState([]);
   const [cityList, setCityList] = useState([]);
   const [showSaveModal, setShowSaveModal] = useState("");
@@ -379,6 +382,7 @@ export default function CareerForm({
       workSetup,
       workSetupRemarks,
       questions,
+      preScreeningQuestions,
       lastEditedBy: userInfoSlice,
       status,
       updatedAt: Date.now(),
@@ -452,6 +456,7 @@ export default function CareerForm({
         workSetup,
         workSetupRemarks,
         questions,
+        preScreeningQuestions,
         lastEditedBy: userInfoSlice,
         createdBy: userInfoSlice,
         cvScreeningSetting,
@@ -477,6 +482,7 @@ export default function CareerForm({
       workSetup,
       workSetupRemarks,
       questions,
+      preScreeningQuestions,
       lastEditedBy: userInfoSlice,
       status,
       updatedAt: Date.now(),
@@ -672,6 +678,7 @@ export default function CareerForm({
         workSetup,
         workSetupRemarks,
         questions,
+        preScreeningQuestions,
         lastEditedBy: userInfoSlice,
         createdBy: userInfoSlice,
         cvScreeningSetting,
@@ -929,6 +936,8 @@ export default function CareerForm({
               errors={errors}
               clearError={clearError}
               screeningSettingList={screeningSettingList}
+              preScreeningQuestions={preScreeningQuestions}
+              setPreScreeningQuestions={setPreScreeningQuestions}
             />
           )}
 
@@ -1038,6 +1047,68 @@ export default function CareerForm({
             >
               <div>
                 <strong>CV Screening:</strong> {cvScreeningSetting}
+              </div>
+              <div style={{ marginTop: 12 }}>
+                <strong>Pre-Screening Questions</strong>
+                {preScreeningQuestions && preScreeningQuestions.length > 0 ? (
+                  <ol style={{ marginLeft: 16, marginTop: 8 }}>
+                    {preScreeningQuestions.map((pq: any, i: number) => (
+                      <li key={pq.id || i} style={{ marginBottom: 6 }}>
+                        <div style={{ fontWeight: 600 }}>{pq.text || pq.question || pq.title}</div>
+                        <div style={{ color: "#6b7280", fontSize: 13 }}>
+                          {pq.type === "dropdown" && Array.isArray(pq.options) ? (
+                            <div>Options: {pq.options.join(", ")}</div>
+                          ) : pq.type === "range" ? (
+                            <div>
+                              Range: {pq.rangeMin ?? ""} - {pq.rangeMax ?? ""}
+                            </div>
+                          ) : pq.type === "checkboxes" ? (
+                            <div>
+                              {Array.isArray(pq.options) && pq.options.length > 0 ? (
+                                <div>
+                                  <div style={{ fontWeight: 600, marginBottom: 6 }}>Options</div>
+                                  <ul style={{ marginLeft: 16, marginTop: 6 }}>
+                                    {pq.options.map((opt: any, oi: number) => {
+                                      const label =
+                                        typeof opt === "string"
+                                          ? opt
+                                          : (opt?.label ??
+                                            opt?.text ??
+                                            opt?.value ??
+                                            JSON.stringify(opt));
+                                      return (
+                                        <li key={oi} style={{ marginBottom: 4 }}>
+                                          {label}
+                                        </li>
+                                      );
+                                    })}
+                                  </ul>
+                                  <div style={{ marginTop: 6 }}>
+                                    Selected:{" "}
+                                    {typeof pq.minChecked !== "undefined" ? pq.minChecked : 0} to{" "}
+                                    {typeof pq.maxChecked !== "undefined"
+                                      ? pq.maxChecked
+                                      : (pq.options?.length ?? 0)}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div style={{ color: "#9CA3AF" }}>No options yet</div>
+                              )}
+                            </div>
+                          ) : pq.type === "short" ? (
+                            <div>Short answer</div>
+                          ) : pq.type === "long" ? (
+                            <div>Long answer</div>
+                          ) : null}
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                ) : (
+                  <div style={{ color: "#6b7280", marginTop: 8 }}>
+                    No pre-screening questions added
+                  </div>
+                )}
               </div>
             </CollapsibleLayeredCard>
 
