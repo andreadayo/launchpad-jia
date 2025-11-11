@@ -2,9 +2,21 @@ import { NextResponse } from "next/server";
 import connectMongoDB from "@/lib/mongoDB/mongoDB";
 import { guid } from "@/lib/Utils";
 import { ObjectId } from "mongodb";
+import { validateAndSanitizeCareer } from "@/lib/sanitize/careerInput";
 
 export async function POST(request: Request) {
   try {
+    // Validate and sanitize input
+    let sanitizedInput: any;
+    try {
+      const body = await request.json();
+      sanitizedInput = validateAndSanitizeCareer(body);
+    } catch (err: any) {
+      console.error("Validation error in add-career:", err);
+      const details = err?.issues || err?.errors || err?.message || "Invalid input";
+      return NextResponse.json({ error: "VALIDATION_ERROR", details }, { status: 400 });
+    }
+
     const {
       jobTitle,
       description,
@@ -27,8 +39,9 @@ export async function POST(request: Request) {
       country,
       province,
       employmentType,
-    } = await request.json();
-    // Validate required fields
+    } = sanitizedInput;
+
+    // Validate required fields after sanitization
     if (!jobTitle || !description || !questions || !location || !workSetup) {
       return NextResponse.json(
         {
@@ -88,12 +101,11 @@ export async function POST(request: Request) {
       );
     }
 
-    const career = {
+    let career: any = {
       id: guid(),
       jobTitle,
       description,
       questions,
-      preScreeningQuestions: Array.isArray(preScreeningQuestions) ? preScreeningQuestions : [],
       location,
       workSetup,
       workSetupRemarks,
@@ -114,6 +126,11 @@ export async function POST(request: Request) {
       province,
       employmentType,
     };
+
+    // Only set preScreeningQuestions when explicitly provided in the request.
+    if (Array.isArray(preScreeningQuestions)) {
+      career.preScreeningQuestions = preScreeningQuestions;
+    }
 
     await db.collection("careers").insertOne(career);
 
