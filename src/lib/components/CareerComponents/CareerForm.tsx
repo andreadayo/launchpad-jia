@@ -2,20 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
-import InterviewQuestionGeneratorV2 from "./InterviewQuestionGeneratorV2";
-import RichTextEditor from "@/lib/components/CareerComponents/RichTextEditor";
-import CustomDropdown from "@/lib/components/CareerComponents/CustomDropdown";
 import CollapsibleLayeredCard from "@/lib/components/CareerComponents/CollapsibleLayeredCard";
 import Step1CareerInfo from "@/lib/components/CareerComponents/steps/Step1CareerInfo";
 import Step2CVReview from "@/lib/components/CareerComponents/steps/Step2CVReview";
 import Step3AIInterview from "@/lib/components/CareerComponents/steps/Step3AIInterview";
-import Step4ReviewList from "@/lib/components/CareerComponents/steps/Step4ReviewList";
 import philippineCitiesAndProvinces from "../../../../public/philippines-locations.json";
 import { candidateActionToast, errorToast } from "@/lib/Utils";
 import { useAppContext } from "@/lib/context/AppContext";
 import axios from "axios";
 import CareerActionModal from "./CareerActionModal";
 import FullScreenLoadingAnimation from "./FullScreenLoadingAnimation";
+import { assetConstants } from "@/lib/utils/constantsV2";
+import { validateStepForData, canGoToStep } from "./careerFormUtils";
+import styles from "@/lib/styles/screens/uploadCV.module.scss";
 
 export type CareerFormData = {
   jobTitle?: string;
@@ -25,88 +24,6 @@ export type CareerFormData = {
   questions?: any[];
   workSetup?: string | null;
 };
-
-export function validateStepForData(data: CareerFormData, step: number): boolean {
-  switch (step) {
-    case 1:
-      return !!(
-        data.jobTitle &&
-        data.jobTitle.trim().length > 0 &&
-        data.description &&
-        data.description.trim().length > 0
-      );
-    case 2:
-      return !!data.cvScreeningSetting;
-    case 3:
-      // require an AI screening selection and at least 5 total questions across groups
-      if (!data.aiScreeningSetting) return false;
-      if (!Array.isArray(data.questions)) return false;
-      let totalQuestions = 0;
-      for (const g of data.questions) {
-        if (g && Array.isArray((g as any).questions)) totalQuestions += (g as any).questions.length;
-      }
-      return totalQuestions >= 5;
-    case 4:
-      // overall minimal validity: jobTitle, description, and at least 5 total interview questions
-      if (!data.jobTitle || !data.description) return false;
-      if (!Array.isArray(data.questions)) return false;
-      let total = 0;
-      for (const q of data.questions) {
-        if (q && Array.isArray((q as any).questions)) total += (q as any).questions.length;
-      }
-      return !!(
-        data.jobTitle.trim().length > 0 &&
-        data.description.trim().length > 0 &&
-        total >= 5
-      );
-    default:
-      return false;
-  }
-}
-
-export function canGoToStep(data: CareerFormData, targetStep: number): boolean {
-  // allow navigating to a step only if all previous steps validate
-  for (let s = 1; s < targetStep; s++) {
-    if (!validateStepForData(data, s)) return false;
-  }
-  return true;
-}
-
-// Setting List icons
-const screeningSettingList = [
-  {
-    name: "Good Fit and above",
-    icon: "la la-check",
-  },
-  {
-    name: "Only Strong Fit",
-    icon: "la la-check-double",
-  },
-  {
-    name: "No Automatic Promotion",
-    icon: "la la-times",
-  },
-];
-const workSetupOptions = [
-  {
-    name: "Fully Remote",
-  },
-  {
-    name: "Onsite",
-  },
-  {
-    name: "Hybrid",
-  },
-];
-
-const employmentTypeOptions = [
-  {
-    name: "Full-Time",
-  },
-  {
-    name: "Part-Time",
-  },
-];
 
 // Structured tips per step
 const tipsByStep = {
@@ -150,6 +67,16 @@ const tipsByStep = {
     },
   ],
 };
+
+const screeningSettingList = [
+  { name: "Good Fit and above", icon: "la la-check" },
+  { name: "Only Strong Fit", icon: "la la-check-double" },
+  { name: "No Automatic Promotion", icon: "la la-times" },
+];
+
+const workSetupOptions = [{ name: "Fully Remote" }, { name: "Onsite" }, { name: "Hybrid" }];
+
+const employmentTypeOptions = [{ name: "Full-Time" }, { name: "Part-Time" }];
 
 export default function CareerForm({
   career,
@@ -762,34 +689,80 @@ export default function CareerForm({
     return validateStepForData(data, step);
   }
 
+  // Reuse UploadCV's step CSS/asset classes for a consistent tracker
+  function processState(index: number, isAdvance = false) {
+    const curIdx = (currentStep || 1) - 1;
+    if (curIdx > index) return "Completed";
+    if (curIdx === index) return "In Progress";
+    return "Pending";
+  }
+
+  // Return true if there are validation errors for the given step
+  function hasErrorForStep(step: number) {
+    const map: Record<number, string[]> = {
+      1: [
+        "jobTitle",
+        "description",
+        "employmentType",
+        "workSetup",
+        "country",
+        "province",
+        "city",
+        "minimumSalary",
+        "maximumSalary",
+      ],
+      2: ["cvScreeningSetting"],
+      3: ["aiScreeningSetting", "questions"],
+    };
+    const fields = map[step] || [];
+    return fields.some((f) => Boolean(errors && (errors as any)[f]));
+  }
+
   return (
     <div className="col">
-      {/* Step indicator */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-        {steps.map((s, idx) => {
-          const stepIndex = idx + 1;
-          const allowed = canGoTo(stepIndex);
-          return (
-            <div
-              key={s}
-              onClick={() => {
-                if (allowed) setCurrentStep(stepIndex);
-              }}
-              style={{
-                padding: "8px 12px",
-                borderRadius: 8,
-                cursor: allowed ? "pointer" : "not-allowed",
-                background: currentStep === stepIndex ? "#111827" : "#F3F4F6",
-                color: currentStep === stepIndex ? "#fff" : "#374151",
-                fontWeight: currentStep === stepIndex ? 700 : 500,
-                opacity: allowed ? 1 : 0.5,
-              }}
-            >
-              {stepIndex}. {s}
-            </div>
-          );
-        })}
+      {/* Step indicator: horizontal progress tracker */}
+      <div className={styles.uploadCVContainer} style={{ maxWidth: "100%", margin: "auto" }}>
+        <div className={styles.stepContainer}>
+          <div className={styles.step}>
+            {steps.map((_, index) => (
+              <div className={styles.stepBar} key={index}>
+                {hasErrorForStep(index + 1) ? (
+                  <i className="la la-exclamation-triangle la-2x" style={{ color: "#F04438" }} />
+                ) : (
+                  <img
+                    alt=""
+                    src={
+                      hasErrorForStep(index + 1)
+                        ? assetConstants.alert
+                        : assetConstants[
+                            processState(index, true)
+                              .toLowerCase()
+                              .replace(/ /g, "_") as keyof typeof assetConstants
+                          ]
+                    }
+                  />
+                )}
+
+                {index < steps.length - 1 && (
+                  <hr className={styles[processState(index).toLowerCase().replace(/ /g, "_")]} />
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.step}>
+            {steps.map((item, index) => (
+              <span
+                className={`${styles.stepDetails} ${styles[processState(index, true).toLowerCase().replace(/ /g, "_")]}`}
+                key={index}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
+
       <div
         style={{
           marginBottom: "20px",
