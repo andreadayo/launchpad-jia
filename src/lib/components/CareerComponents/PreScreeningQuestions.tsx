@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, Dispatch, SetStateAction } from "react";
 import CustomDropdown from "./CustomDropdown";
+import ScreeningQuestionModal from "./ScreeningQuestionModal";
 
 export default function PreScreeningQuestions({
   questions,
@@ -11,6 +12,7 @@ export default function PreScreeningQuestions({
   error?: string;
 }) {
   const [showModal, setShowModal] = useState(false);
+  const [showShortModal, setShowShortModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [text, setText] = useState("");
   const [type, setType] = useState<
@@ -26,11 +28,11 @@ export default function PreScreeningQuestions({
 
   // list used by the small type selector dropdown
   const questionTypeList = [
-    { name: "short answer", icon: "las la-user" },
-    { name: "long answer", icon: "las la-align-left" },
-    { name: "dropdown", icon: "las la-chevron-circle-down" },
-    { name: "checkboxes", icon: "la la-check-circle" },
-    { name: "range", icon: "las la-sort-numeric-down" },
+    { name: "short answer", icon: "la la-font" },
+    { name: "long answer", icon: "la la-align-left" },
+    { name: "dropdown", icon: "la la-list" },
+    { name: "checkboxes", icon: "la la-check-square" },
+    { name: "range", icon: "la la-sliders" },
   ];
 
   function displayText(q: any) {
@@ -168,6 +170,27 @@ export default function PreScreeningQuestions({
     }
 
     closeModal();
+  }
+
+  // Handler for the lightweight screening-question modal (creates minimal question then opens full editor)
+  function handleShortModalAction(_action: string, questionText?: string, questionType?: string) {
+    const trimmed = (questionText || "").trim();
+    if (!trimmed) return;
+
+    // create a minimal question and open the full modal so user can add details
+    const q: any = {
+      id: `q_${Date.now()}`,
+      text: trimmed,
+      type: questionType || "dropdown",
+    };
+    if (q.type === "dropdown" || q.type === "checkboxes") q.options = [];
+    if (q.type === "range") {
+      q.rangeMin = "";
+      q.rangeMax = "";
+    }
+
+    setQuestions([...(questions || []), q]);
+    setShowShortModal(false);
   }
 
   // Helpers to coerce min/max to valid bounds relative to options length
@@ -427,7 +450,7 @@ export default function PreScreeningQuestions({
           </div>
           <button
             className="button-primary"
-            onClick={openAddModal}
+            onClick={() => setShowShortModal(true)}
             style={{
               background: "black",
               color: "#fff",
@@ -906,6 +929,17 @@ export default function PreScreeningQuestions({
             ))}
           </div>
 
+          {showShortModal && (
+            <ScreeningQuestionModal
+              action={"add"}
+              questionToEdit={undefined}
+              onAction={(action, question, qtype) =>
+                handleShortModalAction(action, question, qtype)
+              }
+              onClose={() => setShowShortModal(false)}
+            />
+          )}
+
           {showModal && (
             <div
               style={{
@@ -963,14 +997,16 @@ export default function PreScreeningQuestions({
                   />
 
                   <label>Type</label>
-                  <select value={type} onChange={(e) => setType(e.target.value as any)}>
-                    <option value="dropdown">Dropdown</option>
-                    <option value="range">Range</option>
-                    <option value="short answer">Short answer</option>
-                    <option value="long answer">Long answer</option>
-                    <option value="long answer">Long answer</option>
-                    <option value="checkboxes">Checkboxes</option>
-                  </select>
+                  <div style={{ maxWidth: 320 }}>
+                    <CustomDropdown
+                      onSelectSetting={(typeName: string) => setType(typeName as any)}
+                      screeningSetting={type}
+                      settingList={questionTypeList}
+                      placeholder="Select type"
+                      fitContent={true}
+                      invalid={false}
+                    />
+                  </div>
 
                   {(type === "dropdown" || type === "checkboxes") && (
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
