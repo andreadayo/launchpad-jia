@@ -1,4 +1,5 @@
 import connectMongoDB from "@/lib/mongoDB/mongoDB";
+import sanitizePreScreenAnswers from "@/lib/sanitize/preScreenAnswers";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
@@ -40,6 +41,19 @@ export async function POST(request: Request) {
   }
 
   if (!body.forDeletion) {
+    // Sanitize applicant pre-screen answers server-side for defense-in-depth.
+    if (body.preScreenAnswers && typeof body.preScreenAnswers === "object") {
+      try {
+        body.preScreenAnswers = sanitizePreScreenAnswers(body.preScreenAnswers);
+      } catch (e) {
+        // If sanitization fails, avoid persisting untrusted input.
+        return NextResponse.json(
+          { error: "INVALID_INPUT", message: "Unable to sanitize input." },
+          { status: 400 }
+        );
+      }
+    }
+
     await db.collection("interviews").updateOne(
       {
         _id: new ObjectId(interviewData._id),

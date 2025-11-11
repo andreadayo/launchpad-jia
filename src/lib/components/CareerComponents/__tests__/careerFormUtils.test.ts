@@ -1,4 +1,4 @@
-import { validateStepForData, canGoToStep } from "../CareerForm";
+import { validateStepForData, canGoToStep } from "../careerFormUtils";
 
 describe("careerFormUtils", () => {
   test("validateStepForData - step 1 requires title and description", () => {

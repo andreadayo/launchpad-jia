@@ -9,6 +9,7 @@ import { assetConstants, pathConstants } from "@/lib/utils/constantsV2";
 import { checkFile } from "@/lib/utils/helpersV2";
 import { CORE_API_URL } from "@/lib/Utils";
 import axios from "axios";
+import { sanitizePreScreenAnswers } from "@/lib/sanitize/preScreenAnswers";
 import Markdown from "react-markdown";
 import { useEffect, useRef, useState } from "react";
 
@@ -811,10 +812,11 @@ export default function () {
                       setCurrentStep(STEP_WAIT);
 
                       // 1) save pre-screen answers to interview
+                      const cleanedAnswers = sanitizePreScreenAnswers(preScreenAnswers);
                       await axios.post("/api/whitecloak/manage-application", {
                         email: user.email,
                         interviewData: interview,
-                        body: { preScreenAnswers },
+                        body: { preScreenAnswers: cleanedAnswers },
                       });
 
                       // 2) run CV screening now that pre-screen answers are saved
