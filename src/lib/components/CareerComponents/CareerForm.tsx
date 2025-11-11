@@ -1068,9 +1068,9 @@ export default function CareerForm({
                                 <div style={{ color: "#9CA3AF" }}>No options yet</div>
                               )}
                             </div>
-                          ) : pq.type === "short" ? (
+                          ) : pq.type === "short answer" ? (
                             <div>Short answer</div>
-                          ) : pq.type === "long" ? (
+                          ) : pq.type === "long answer" ? (
                             <div>Long answer</div>
                           ) : null}
                         </div>

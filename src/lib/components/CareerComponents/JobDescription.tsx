@@ -393,9 +393,9 @@ export default function JobDescription({
                                 <div style={{ color: "#9CA3AF" }}>No options yet</div>
                               )}
                             </div>
-                          ) : pq.type === "short" ? (
+                          ) : pq.type === "short answer" ? (
                             <div>Short answer</div>
-                          ) : pq.type === "long" ? (
+                          ) : pq.type === "long answer" ? (
                             <div>Long answer</div>
                           ) : (
                             <div style={{ color: "#6b7280" }}>No additional data</div>
