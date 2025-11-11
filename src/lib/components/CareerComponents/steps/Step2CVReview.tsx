@@ -8,7 +8,7 @@ const suggested: any[] = [
     title: "Notice Period",
     text: "How long is your notice period?",
     type: "dropdown",
-    options: ["Immediately", "< 30 days", "> 30 days"],
+    options: ["Immediately", "Less than 30 days", "More than 30 days"],
   },
   {
     id: "s_2",
@@ -91,30 +91,11 @@ export default function Step2CVReview({
         </div>
       </div>
 
-      <div className="layered-card-outer">
-        <div className="layered-card-middle">
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: 8 }}>
-            <span
-              style={{
-                paddingLeft: 12,
-                paddingRight: 12,
-                fontSize: 16,
-                color: "#181D27",
-                fontWeight: 700,
-              }}
-            >
-              2. Pre-Screening Questions (optional)
-            </span>
-          </div>
-          <div className="layered-card-content">
-            <PreScreeningQuestions
-              questions={preScreeningQuestions || []}
-              setQuestions={(setPreScreeningQuestions as any) || (() => {})}
-              error={errors.prescreening}
-            />
-          </div>
-        </div>
-      </div>
+      <PreScreeningQuestions
+        questions={preScreeningQuestions || []}
+        setQuestions={(setPreScreeningQuestions as any) || (() => {})}
+        error={errors.prescreening}
+      />
 
       <div className="layered-card-outer" style={{ marginTop: 12 }}>
         <div className="layered-card-middle">

@@ -464,41 +464,44 @@ export default function () {
           {currentStep == STEP_SUBMIT && (
             <>
               {!buildingCV && !userCV && !file && (
-                <div className={styles.cvManageContainer}>
-                  <div
-                    className={styles.cvContainer}
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                  >
-                    <img alt="" src={assetConstants.uploadV2} />
-                    <button onClick={handleUploadCV}>Upload CV</button>
-                    <span>
-                      Choose or drag and drop a file here. Our AI tools will automatically pre-fill
-                      your CV and also check how well it matches the role.
-                    </span>
-                  </div>
-                  <input
-                    type="file"
-                    accept=".pdf,.doc,.docx,.txt"
-                    style={{ display: "none" }}
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                  />
-
-                  <div className={styles.cvContainer}>
-                    <img alt="" src={assetConstants.review} />
-                    <button
-                      className={`${digitalCV ? "" : "disabled"}`}
-                      disabled={!digitalCV}
-                      onClick={handleReviewCV}
+                <>
+                  <div className={styles.cvManageContainer}>
+                    <div
+                      className={styles.cvContainer}
+                      onDragOver={handleDragOver}
+                      onDrop={handleDrop}
                     >
-                      Review Current CV
-                    </button>
-                    <span>
-                      Already uploaded a CV? Take a moment to review your details before we proceed.
-                    </span>
+                      <img alt="" src={assetConstants.uploadV2} />
+                      <button onClick={handleUploadCV}>Upload CV</button>
+                      <span>
+                        Choose or drag and drop a file here. Our AI tools will automatically
+                        pre-fill your CV and also check how well it matches the role.
+                      </span>
+                    </div>
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx,.txt"
+                      style={{ display: "none" }}
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                    />
+
+                    <div className={styles.cvContainer}>
+                      <img alt="" src={assetConstants.review} />
+                      <button
+                        className={`${digitalCV ? "" : "disabled"}`}
+                        disabled={!digitalCV}
+                        onClick={handleReviewCV}
+                      >
+                        Review Current CV
+                      </button>
+                      <span>
+                        Already uploaded a CV? Take a moment to review your details before we
+                        proceed.
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </>
               )}
 
               {buildingCV && file && (
@@ -647,165 +650,219 @@ export default function () {
           )}
 
           {currentStep == STEP_PRESCREEN && (
-            <div className={styles.preScreeningContainer}>
-              <img alt="questions" src="/icons/question-circle.svg" />
-              <span className={styles.title}>Pre-screening Questions</span>
+            <>
+              {(
+                interview?.preScreeningQuestions ||
+                interview?.career?.preScreeningQuestions ||
+                []
+              ).map((q: any, idx: number) => {
+                const qid = q.id || `q_${idx}`;
+                const value = preScreenAnswers[qid];
 
-              <div className={styles.preScreeningList}>
-                {(
-                  interview?.preScreeningQuestions ||
-                  interview?.career?.preScreeningQuestions ||
-                  []
-                ).map((q: any, idx: number) => {
-                  const qid = q.id || `q_${idx}`;
-                  const value = preScreenAnswers[qid];
-
-                  if (q.type === "short") {
-                    return (
-                      <div key={qid} className={styles.preQuestion}>
-                        <label>{q.text || q.question || q.title}</label>
-                        <input
-                          type="text"
-                          value={value || ""}
-                          onChange={(e) =>
-                            setPreScreenAnswers((s) => ({ ...s, [qid]: e.target.value }))
-                          }
-                        />
-                      </div>
-                    );
-                  }
-
-                  if (q.type === "long") {
-                    return (
-                      <div key={qid} className={styles.preQuestion}>
-                        <label>{q.text || q.question || q.title}</label>
-                        <textarea
-                          value={value || ""}
-                          onChange={(e) =>
-                            setPreScreenAnswers((s) => ({ ...s, [qid]: e.target.value }))
-                          }
-                        />
-                      </div>
-                    );
-                  }
-
-                  if (q.type === "dropdown") {
-                    return (
-                      <div key={qid} className={styles.preQuestion}>
-                        <label>{q.text || q.question || q.title}</label>
-                        <select
-                          value={value || ""}
-                          onChange={(e) =>
-                            setPreScreenAnswers((s) => ({ ...s, [qid]: e.target.value }))
-                          }
-                        >
-                          <option value="">Select</option>
-                          {(q.options || []).map((opt: string, oi: number) => (
-                            <option key={oi} value={opt}>
-                              {opt}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    );
-                  }
-
-                  if (q.type === "checkboxes") {
-                    const sel: string[] = Array.isArray(value) ? value : [];
-                    return (
-                      <div key={qid} className={styles.preQuestion}>
-                        <label>{q.text || q.question || q.title}</label>
-                        <div className={styles.checkboxGroup}>
-                          {(q.options || []).map((opt: string, oi: number) => (
-                            <label key={oi} className={styles.checkboxLabel}>
-                              <input
-                                type="checkbox"
-                                checked={sel.includes(opt)}
-                                onChange={(e) => {
-                                  const next = e.target.checked
-                                    ? [...sel, opt]
-                                    : sel.filter((s) => s !== opt);
-                                  setPreScreenAnswers((s) => ({ ...s, [qid]: next }));
-                                }}
-                              />
-                              {opt}
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  if (q.type === "range") {
-                    const current = value || {};
-                    const minVal = current.min ?? "";
-                    const maxVal = current.max ?? "";
-
-                    return (
-                      <div key={qid} className={styles.preQuestion}>
-                        <label>
-                          {q.text || q.question || q.title}
-                          <span className={styles.rangeHint}>
-                            {` (range ${q.rangeMin ?? 0} - ${q.rangeMax ?? 100})`}
-                          </span>
-                        </label>
-
-                        <div className={styles.rangeInputs}>
-                          <input
-                            type="number"
-                            placeholder="Min"
-                            min={q.rangeMin ?? 0}
-                            max={q.rangeMax ?? 100}
-                            value={minVal}
-                            onChange={(e) =>
-                              setPreScreenAnswers((s) => ({
-                                ...s,
-                                [qid]: {
-                                  ...(s[qid] || {}),
-                                  min: e.target.value ? Number(e.target.value) : "",
-                                },
-                              }))
-                            }
-                          />
-
-                          <input
-                            type="number"
-                            placeholder="Max"
-                            min={q.rangeMin ?? 0}
-                            max={q.rangeMax ?? 100}
-                            value={maxVal}
-                            onChange={(e) =>
-                              setPreScreenAnswers((s) => ({
-                                ...s,
-                                [qid]: {
-                                  ...(s[qid] || {}),
-                                  max: e.target.value ? Number(e.target.value) : "",
-                                },
-                              }))
-                            }
-                          />
-                        </div>
-                      </div>
-                    );
-                  }
-
+                if (q.type === "short answer") {
                   return (
-                    <div key={qid} className={styles.preQuestion}>
-                      <label>{q.text || q.question || q.title}</label>
-                      <input
-                        type="text"
-                        value={value || ""}
-                        onChange={(e) =>
-                          setPreScreenAnswers((s) => ({ ...s, [qid]: e.target.value }))
-                        }
-                      />
+                    <div key={qid} className={styles.cvDetailsContainer}>
+                      <div className={styles.gradient}>
+                        <div className={styles.cvDetailsCard}>
+                          <span className={styles.sectionTitle}>
+                            {q.text || q.question || q.title}
+                          </span>
+
+                          <div className={styles.detailsContainer}>
+                            <input
+                              type="text"
+                              value={value || ""}
+                              onChange={(e) =>
+                                setPreScreenAnswers((s) => ({
+                                  ...s,
+                                  [qid]: e.target.value,
+                                }))
+                              }
+                              placeholder="Your answer"
+                              style={{ width: "50%" }}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   );
-                })}
-              </div>
+                }
+
+                if (q.type === "long answer") {
+                  return (
+                    <div key={qid} className={styles.cvDetailsContainer}>
+                      <div className={styles.gradient}>
+                        <div className={styles.cvDetailsCard}>
+                          <span className={styles.sectionTitle}>
+                            {q.text || q.question || q.title}
+                          </span>
+
+                          <div className={styles.detailsContainer}>
+                            <textarea
+                              value={value || ""}
+                              onChange={(e) =>
+                                setPreScreenAnswers((s) => ({
+                                  ...s,
+                                  [qid]: e.target.value,
+                                }))
+                              }
+                              placeholder="Your answer"
+                              style={{ height: 48 }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
+                if (q.type === "dropdown") {
+                  return (
+                    <div key={qid} className={styles.cvDetailsContainer}>
+                      <div className={styles.gradient}>
+                        <div className={styles.cvDetailsCard}>
+                          <span className={styles.sectionTitle}>
+                            {q.text || q.question || q.title}
+                          </span>
+
+                          <div className={styles.detailsContainer}>
+                            <select
+                              value={value || ""}
+                              onChange={(e) =>
+                                setPreScreenAnswers((s) => ({ ...s, [qid]: e.target.value }))
+                              }
+                              className="form-control"
+                            >
+                              <option value="">Select</option>
+                              {(q.options || []).map((opt: string, oi: number) => (
+                                <option key={oi} value={opt}>
+                                  {opt}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
+                if (q.type === "checkboxes") {
+                  const sel: string[] = Array.isArray(value) ? value : [];
+                  return (
+                    <div key={qid} className={styles.cvDetailsContainer}>
+                      <div className={styles.gradient}>
+                        <div className={styles.cvDetailsCard}>
+                          <span className={styles.sectionTitle}>
+                            {q.text || q.question || q.title}
+                          </span>
+
+                          <div className={styles.detailsContainer}>
+                            <div
+                              className={styles.checkboxGroup}
+                              style={{ display: "flex", flexDirection: "column" }}
+                            >
+                              {(q.options || []).map((opt: string, oi: number) => (
+                                <label key={oi} className={styles.checkboxLabel}>
+                                  <input
+                                    type="checkbox"
+                                    checked={sel.includes(opt)}
+                                    onChange={(e) => {
+                                      const next = e.target.checked
+                                        ? [...sel, opt]
+                                        : sel.filter((s) => s !== opt);
+                                      setPreScreenAnswers((s) => ({ ...s, [qid]: next }));
+                                    }}
+                                  />
+                                  {opt}
+                                </label>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
+                if (q.type === "range") {
+                  const current = value || {};
+                  const minVal = current.min ?? "";
+                  const maxVal = current.max ?? "";
+
+                  return (
+                    <div key={qid} className={styles.cvDetailsContainer}>
+                      <div className={styles.gradient}>
+                        <div className={styles.cvDetailsCard}>
+                          <span className={styles.sectionTitle}>
+                            {q.text || q.question || q.title}
+                          </span>
+
+                          <div className={styles.detailsContainer}>
+                            <div style={{ display: "flex", gap: 8 }}>
+                              <input
+                                type="number"
+                                placeholder="Min"
+                                min={q.rangeMin ?? 0}
+                                max={q.rangeMax ?? 100}
+                                value={minVal}
+                                onChange={(e) =>
+                                  setPreScreenAnswers((s) => ({
+                                    ...s,
+                                    [qid]: {
+                                      ...(s[qid] || {}),
+                                      min: e.target.value ? Number(e.target.value) : "",
+                                    },
+                                  }))
+                                }
+                              />
+
+                              <input
+                                type="number"
+                                placeholder="Max"
+                                min={q.rangeMin ?? 0}
+                                max={q.rangeMax ?? 100}
+                                value={maxVal}
+                                onChange={(e) =>
+                                  setPreScreenAnswers((s) => ({
+                                    ...s,
+                                    [qid]: {
+                                      ...(s[qid] || {}),
+                                      max: e.target.value ? Number(e.target.value) : "",
+                                    },
+                                  }))
+                                }
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div key={qid} className={styles.preQuestion}>
+                    <label>{q.text || q.question || q.title}</label>
+                    <input
+                      type="text"
+                      value={value || ""}
+                      onChange={(e) =>
+                        setPreScreenAnswers((s) => ({ ...s, [qid]: e.target.value }))
+                      }
+                    />
+                  </div>
+                );
+              })}
 
               <div style={{ marginTop: 16 }}>
                 <button
+                  style={{
+                    background: "black",
+                    color: "#fff",
+                    borderRadius: "60px",
+                    padding: "8px 16px",
+                  }}
                   onClick={async () => {
                     try {
                       // show transient waiting UI while saving answers and running screening
@@ -853,7 +910,7 @@ export default function () {
                   Submit Answers
                 </button>
               </div>
-            </div>
+            </>
           )}
 
           {currentStep == STEP_REVIEW && screeningResult && (

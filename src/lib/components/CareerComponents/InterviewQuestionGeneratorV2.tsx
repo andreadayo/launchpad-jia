@@ -641,37 +641,42 @@ export default function InterviewQuestionGeneratorV2(props: any) {
                             marginRight: "10px",
                             marginTop: "10px",
                             paddingTop: "5px",
+                            fontSize: 14,
                           }}
                         >
-                          # of Questions to Ask:
+                          # of questions to ask:
                         </p>
                         <input
                           type="number"
                           id="questionCount"
                           placeholder={questionCount.toString()}
-                          value={group.questionCountToAsk !== null ? group.questionCountToAsk : ""}
+                          value={
+                            typeof group.questionCountToAsk === "number"
+                              ? group.questionCountToAsk
+                              : group.questions.length
+                          }
                           max={group.questions.length}
                           min={0}
-                          style={{
-                            maxWidth: "40px",
-                            maxHeight: "40px",
-                          }}
+                          className="form-control"
+                          style={{ maxWidth: 60 }}
                           onChange={(e) => {
-                            let value = parseInt(e.target.value);
-
-                            if (isNaN(value)) {
-                              value = null;
+                            const raw = e.target.value;
+                            // empty string => treat as null (no explicit override)
+                            if (raw === "") {
+                              const updatedQuestions = [...questions];
+                              updatedQuestions[index].questionCountToAsk = null;
+                              setQuestions(updatedQuestions);
+                              return;
                             }
 
-                            if (value > group.questions.length) {
-                              value = group.questions.length;
-                            }
-
-                            // Update the input's displayed value to match the parsed number
-                            e.target.value = value === null ? "" : value.toString();
+                            let parsed = parseInt(raw, 10);
+                            if (isNaN(parsed)) parsed = 0;
+                            // clamp to valid range
+                            if (parsed > group.questions.length) parsed = group.questions.length;
+                            if (parsed < 0) parsed = 0;
 
                             const updatedQuestions = [...questions];
-                            updatedQuestions[index].questionCountToAsk = value;
+                            updatedQuestions[index].questionCountToAsk = parsed;
                             setQuestions(updatedQuestions);
                           }}
                           onKeyDown={(e) => {
